@@ -1,0 +1,22 @@
+.sbw_container {
+    /* border: 1px solid red; */
+    position: relative;
+    isolation: isolate;
+    color: inherit;
+}
+
+.sbw_container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    aspect-ratio: 1;
+    background-color: var(--clr-shadow-light);
+    border-radius: 100vmax;
+    box-shadow: 0 0 0 10px var(--clr-shadow-light);
+    transform: scale(0);
+    transition: transform 0.2s;
+}
+.sbw_container:hover::before {
+    transform: scale(1);
+}

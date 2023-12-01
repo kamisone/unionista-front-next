@@ -1,0 +1,26 @@
+.sbc_container {
+    /* border: solid red; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(0.1rem, 2vw, 1rem);
+    padding: 0.75rem;
+    font-family: Roboto;
+    color: white;
+    /* background-color: var(--clg-color-sem-text-primary); */
+    background-color: var(--clr-grey-light);
+    border-radius: 5px;
+}
+
+.sbc_container.success {
+    background-color: var(--clr-success);
+}
+.sbc_container.info {
+    background-color: var(--clr-info);
+}
+.sbc_container.warning {
+    background-color: var(--clr-warning);
+}
+.sbc_container.error {
+    background-color: var(--clr-error);
+}

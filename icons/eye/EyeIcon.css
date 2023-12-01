@@ -1,0 +1,14 @@
+
+.ei_container {
+    /* border: solid yellow; */
+    position: relative;
+    min-width: 1.35rem;
+    aspect-ratio: 1;
+
+}
+
+.ei_container > * {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+}

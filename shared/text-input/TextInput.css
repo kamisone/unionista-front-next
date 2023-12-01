@@ -1,0 +1,66 @@
+.ti_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* gap: 1rem; */
+}
+
+.ti_container.icon_gap_tiny {
+    gap: 0.25rem;
+}
+
+.ti_container.icon_gap_medium {
+    gap: 0.5rem;
+}
+.ti_container.icon_gap_large {
+    gap: 1rem;
+}
+.ti_container > input.small {
+    padding: 0.5rem 0.5rem;
+}
+
+.ti_container > input.medium {
+    padding: 0.75rem 0.5rem;
+}
+
+.ti_container > input.large {
+    padding: 1rem 0.5rem;
+}
+
+.ti_container > input {
+    flex: 1 1 0;
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+}
+
+.ti_container .ti_input_icon {
+    position: relative;
+    line-height: 0;
+    aspect-ratio: 1;
+    color: var(--clr-white);
+    margin-right: 0.5rem;
+}
+
+.ti_container .ti_input_icon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    border-radius: 100%;
+    transition:
+        border-radius 125ms ease,
+        box-shadow 125ms ease;
+}
+
+.ti_container.bg_icon_active .ti_input_icon::before {
+    background-color: var(--clg-color-sem-text-brand);
+    box-shadow: 0 0 0 5px var(--clg-color-sem-text-brand);
+}
+.ti_container.bg_icon_active:focus-within .ti_input_icon::before,
+.ti_container.bg_icon_active:hover .ti_input_icon::before {
+    border-radius: 0;
+    box-shadow: 0 0 0 10px var(--clg-color-sem-text-brand);
+}

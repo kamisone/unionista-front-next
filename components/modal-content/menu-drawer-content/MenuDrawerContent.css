@@ -1,0 +1,16 @@
+.mdc_container {
+    border: solid red;
+    display: grid;
+    align-items: center;
+    overflow-y: scroll;
+    padding-inline: 1rem;
+}
+.mdc_container li {
+    border: 1px solid blue;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+    font-family: GraphikFont;
+    text-transform: capitalize;
+}

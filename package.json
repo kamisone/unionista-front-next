@@ -7,7 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "lint-staged": "lint-staged"
     },
     "lint-staged": {
         "**/*.{js,ts}": [
@@ -27,6 +28,8 @@
         "typescript": "5.3.2"
     },
     "devDependencies": {
-        "husky": "^8.0.0"
+        "husky": "^8.0.0",
+        "lint-staged": "^15.1.0",
+        "prettier": "^3.1.0"
     }
 }

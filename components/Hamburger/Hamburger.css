@@ -1,0 +1,24 @@
+.ham_container {
+    position: relative;
+    /* border: solid; */
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+}
+
+.ham_container span {
+    position: absolute;
+    z-index: -1;
+    inset: -4px;
+    background-color: var(--clg-color-pal-blue-150);
+    border-radius: 100vmax;
+    transform: scale(0);
+    transition: transform 0.1s ease-in-out;
+}
+
+.ham_container:hover span {
+
+    transform: scale(1);
+}

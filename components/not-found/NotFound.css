@@ -1,0 +1,36 @@
+
+.nf_container {
+    border: 1px solid blue;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    gap: 2rem;
+    font-family: 'Montserrat';
+
+}
+.nf_container h2{
+    font-size: clamp(2rem, 30vw, 10rem);
+    color: var(--clg-color-sem-text-brand);
+    text-transform: capitalize;
+    font-weight: 900;
+
+}
+.nf_container h6{
+    font-size: 2rem;
+
+}
+.nf_container h6:first-letter {
+    text-transform: uppercase;
+}
+.nf_container p{
+    font-size: 1rem;
+
+}
+.nf_container p:first-letter {
+    text-transform: uppercase;
+}
+
+.nf_container .nf_go_back_btn {
+    color: var(--clg-color-pal-new-orange-050);
+}
+
