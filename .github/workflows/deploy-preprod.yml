@@ -35,7 +35,7 @@ jobs:
               uses: actions/upload-artifact@master
               with:
                   name: bundle
-                  path: ./.next
+                  path: ./
 
     deploy:
         runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
               uses: actions/download-artifact@master
               with:
                   name: bundle
-                  path: ./.next
+                  path: ./
 
             - name: Deploy project with SSH
               uses: easingthemes/ssh-deploy@v2.1.4
@@ -55,5 +55,5 @@ jobs:
                   SSH_PRIVATE_KEY: ${{ secrets.REMOTE_SSH_KEY }}
                   REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
                   REMOTE_USER: ${{ secrets.REMOTE_USER }}
-                  SOURCE: './.next'
+                  SOURCE: './'
                   TARGET: '/srv/front'
