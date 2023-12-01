@@ -7,7 +7,6 @@ import Footer from '@/components/footer/Footer';
 import ModalSpot from '@/shared/modal-spot/ModalSpot';
 import MenuDrawerContent from '@/components/modal-content/menu-drawer-content/MenuDrawerContent';
 import { ModalContentMapping } from '@/utils/bottom-modal';
-import { HttpService } from '@/services/http.service';
 import { Snackbar, Slide } from '@mui/material';
 import SnackbarContent from '@/shared/snackbar-content/SnackbarContent';
 import {
@@ -68,7 +67,6 @@ export default function Home() {
     }
     return (
         <div className="app_container">
-            <h2>minemine{headerState.currentContent}</h2>
             <Header />
             <div className="app_body_container">{/* <RenderRoutes /> */}</div>
             <Footer />
