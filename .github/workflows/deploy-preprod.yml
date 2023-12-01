@@ -20,6 +20,7 @@ jobs:
 
     build:
         runs-on: ubuntu-latest
+        environment: preprod
         needs: remove
         steps:
             - name: Download project from git
@@ -31,23 +32,14 @@ jobs:
             - name: Build project
               run: npm run build
 
-            - name: Download project as artifact
-              uses: actions/upload-artifact@master
-              with:
-                  name: bundle
-                  path: ./
-
     deploy:
         runs-on: ubuntu-latest
         environment: preprod
         needs: build
 
         steps:
-            - name: Download artifact
-              uses: actions/download-artifact@master
-              with:
-                  name: bundle
-                  path: ./
+            - name: Download project from git
+              uses: actions/checkout@v2
 
             - name: Deploy project with SSH
               uses: easingthemes/ssh-deploy@v2.1.4
