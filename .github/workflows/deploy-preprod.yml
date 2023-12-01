@@ -49,3 +49,16 @@ jobs:
                   REMOTE_USER: ${{ secrets.REMOTE_USER }}
                   SOURCE: './'
                   TARGET: '/srv/front'
+    restart_pm2:
+      runs-on: ubuntu-latest
+      environment: preprod
+      needs: deploy
+      steps:
+        - name: launch SSR server
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.REMOTE_HOST }}
+            username: ${{ secrets.REMOTE_USER }}
+            key: ${{ secrets.REMOTE_SSH_KEY }}
+            port: ${{ secrets.REMOTE_PORT }}
+            script: "pm2 restart front-next"
