@@ -41,6 +41,12 @@ jobs:
             - name: Download project from git
               uses: actions/checkout@v2
 
+            - name: Export environment variables
+              run: |
+                  echo NEXT_START_CMD="$NEXT_START_CMD" >> ./.env
+              env:
+                  NEXT_START_CMD: '${{ secrets.NEXT_START_CMD }}'
+
             - name: Deploy project with SSH
               uses: easingthemes/ssh-deploy@v2.1.4
               env:
@@ -50,15 +56,15 @@ jobs:
                   SOURCE: './'
                   TARGET: '/srv/front'
     restart_pm2:
-      runs-on: ubuntu-latest
-      environment: preprod
-      needs: deploy
-      steps:
-        - name: launch SSR server
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.REMOTE_HOST }}
-            username: ${{ secrets.REMOTE_USER }}
-            key: ${{ secrets.REMOTE_SSH_KEY }}
-            port: ${{ secrets.REMOTE_PORT }}
-            script: "pm2 restart front-next"
+        runs-on: ubuntu-latest
+        environment: preprod
+        needs: deploy
+        steps:
+            - name: launch SSR server
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.REMOTE_HOST }}
+                  username: ${{ secrets.REMOTE_USER }}
+                  key: ${{ secrets.REMOTE_SSH_KEY }}
+                  port: ${{ secrets.REMOTE_PORT }}
+                  script: 'pm2 restart front-next'
