@@ -22,7 +22,7 @@ const authService = AuthService.getInstance();
 
 const FADE_IN_ANIMATE_MS = 700; // 700ms;
 
-type FormValues = {
+export type FormValues = {
     email: string;
     password: string;
     fullName: string;

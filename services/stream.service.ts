@@ -1,5 +1,5 @@
 export class StreamService {
-    static myInstance;
+    static myInstance: StreamService;
     constructor() {}
 
     static getInstance() {

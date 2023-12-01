@@ -43,8 +43,8 @@ export class HttpService {
     }: {
         path: string;
         body: Record<string, unknown>;
-        queryParams: Record<string, string>;
-        headers: AxiosHeaders;
+        queryParams?: Record<string, string>;
+        headers?: AxiosHeaders;
     }) {
         if (queryParams) {
             path = this._addQueryParams(path, queryParams);

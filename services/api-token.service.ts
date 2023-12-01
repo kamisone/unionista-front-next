@@ -1,5 +1,5 @@
 export class ApiTokenService {
-    static myInstance;
+    static myInstance: ApiTokenService;
     token = null;
 
     static getInstance() {
@@ -13,7 +13,7 @@ export class ApiTokenService {
         return this.token;
     }
 
-    setToken(newToken) {
-        this.token = newToken;
+    setToken() {
+        // this.token = newToken;
     }
 }
