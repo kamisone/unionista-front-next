@@ -47,14 +47,15 @@ jobs:
               env:
                   NEXT_START_CMD: '${{ secrets.NEXT_START_CMD }}'
 
-            - name: Deploy project with SSH
-              uses: easingthemes/ssh-deploy@v2.1.4
-              env:
-                  SSH_PRIVATE_KEY: ${{ secrets.REMOTE_SSH_KEY }}
-                  REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-                  REMOTE_USER: ${{ secrets.REMOTE_USER }}
-                  SOURCE: './'
-                  TARGET: '/srv/front'
+            - name: copy .env file via ssh
+              uses: appleboy/scp-action@master
+              with:
+                  host: ${{ secrets.REMOTE_HOST }}
+                  username: ${{ secrets.REMOTE_USER }}
+                  key: ${{ secrets.REMOTE_SSH_KEY }}
+                  # password: ${{ secrets.PREPROD_PASSWORD }}
+                  source: '.env'
+                  target: '/srv/front/source'
             # - name: Set up SSH
             #   run: |
             #       mkdir -p ~/.ssh/
@@ -74,7 +75,7 @@ jobs:
               shell: bash
               env:
                   REMOTE_SSH_KEY: ${{secrets.REMOTE_SSH_KEY}}
-                  # SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+                  SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
 
             - name: Install PM2
               run: npm i pm2 --force

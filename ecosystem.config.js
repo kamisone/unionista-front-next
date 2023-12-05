@@ -5,8 +5,8 @@ module.exports = {
     apps: [
         {
             name: 'front',
-            script: '/srv/front/start_front.sh',
-            cwd: '/srv/front',
+            script: '/srv/front/current/start_front.sh',
+            cwd: '/srv/front/current',
             time: true,
             instances: 1,
             autorestart: true,
