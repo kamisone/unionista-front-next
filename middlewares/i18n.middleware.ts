@@ -25,6 +25,7 @@ export function i18nMiddleware(req: NextRequest) {
             req.headers.get('accept-language')
         ) as SupportedLanguages;
     }
+    console.log('lng: here: ', lng);
     if (!lng) {
         lng = fallbackLng;
     }
@@ -33,12 +34,6 @@ export function i18nMiddleware(req: NextRequest) {
         !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
         !req.nextUrl.pathname.startsWith('/_next')
     ) {
-        // console.log(
-        //     'middleware stared',
-        //     `/${lng}/${req.nextUrl.pathname}`,
-        //     req.url
-        // );
-
         return NextResponse.redirect(
             new URL(`/${lng}/${req.nextUrl.pathname}`, req.url)
         );
