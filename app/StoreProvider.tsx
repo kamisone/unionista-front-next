@@ -1,7 +1,7 @@
 'use client';
 
-import headerSlice from '@/lib/features/header/headerSlice';
-import { AppStore, makeStore } from '@/lib/store';
+import headerSlice from '@/app/lib/features/header/headerSlice';
+import { AppStore, makeStore } from '@/app/lib/store';
 import { useRef } from 'react';
 import { Provider } from 'react-redux';
 

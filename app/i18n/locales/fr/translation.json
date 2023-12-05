@@ -1,0 +1,47 @@
+{
+    "page-not-found": {
+        "title": "404 - Page non trouvée",
+        "message-1": "la page que vous recherchez a peut-être été supprimée",
+        "message-2": "son nom a changé ou est temporairement indisponible",
+        "go-back": "aller à la page d'accueil"
+    },
+    "sign-up": {
+        "title": "créez votre compte",
+        "action-title": "S'inscrire",
+        "subtitle": "inscrivez-vous en toute simplicité.",
+        "full_name": "nom complet",
+        "sign-in-action": "se connecter",
+        "validation": {
+            "full_name-empty": "veuillez saisir votre nom complet.",
+            "full_name-short": "veuillez utiliser au moins {{minLength}} caractères."
+        },
+        "receive-newsletter": {
+            "title": "Oui ! Envoyez-moi des offres exclusives, des idées de cadeaux uniques et des astuces personnalisées pour acheter sur Unionistashop"
+        }
+    },
+    "sign-in": {
+        "title": "Se connecter",
+        "sign-up-action": "s'inscrire",
+        "email-label": "adresse e-mail",
+        "password-label": "mot de passe",
+        "remember-me": "Rester connecté",
+        "forgot-password": "Mot de passe oublié?",
+        "divider-title": "ou",
+        "sso-google-title": "continuer avec Google",
+        "validation": {
+            "email-not-valid": "veuillez saisir une adresse e-mail valide",
+            "email-empty": "veuillez saisir votre adresse e-mail",
+            "password-empty": "veuillez saisir votre mot de passe",
+            "password-short": "le mot de passe est trop court. veuillez utiliser au moins 8 caractères"
+        },
+        "server-errors": {
+            "unauthorized": "adresse email ou mot de passe non valide."
+        }
+    },
+    "header": {
+        "search-input-placeholder": "Recherche"
+    },
+    "drawer": {
+        "title": "Parcourir les catégories"
+    }
+}

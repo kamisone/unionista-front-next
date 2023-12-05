@@ -9,6 +9,13 @@ services:
         volumes:
             - '.:/srv/front:rw,cached'
             - '/srv/front/node_modules'
-        ports:
-            - 3000:3000
+        # ports:
+        #     - 3000:3000
         command: npm run ${NEXT_START_CMD}
+        networks:
+            - unionistashop_network
+
+networks:
+    unionistashop_network:
+        driver: bridge
+        name: unionistashop_network

@@ -5,6 +5,7 @@ const AdminPage = () => {
     return (
         <StoreProvider>
             <div>Admin</div>
+            
         </StoreProvider>
     );
 };
