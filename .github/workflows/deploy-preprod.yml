@@ -55,16 +55,44 @@ jobs:
                   REMOTE_USER: ${{ secrets.REMOTE_USER }}
                   SOURCE: './'
                   TARGET: '/srv/front'
-    restart_pm2:
-        runs-on: ubuntu-latest
-        environment: preprod
-        needs: deploy
-        steps:
-            - name: launch SSR server
-              uses: appleboy/ssh-action@master
-              with:
-                  host: ${{ secrets.REMOTE_HOST }}
-                  username: ${{ secrets.REMOTE_USER }}
-                  key: ${{ secrets.REMOTE_SSH_KEY }}
-                  port: ${{ secrets.REMOTE_PORT }}
-                  script: 'pm2 restart front'
+            # - name: Set up SSH
+            #   run: |
+            #       mkdir -p ~/.ssh/
+            #       echo "$PREPROD_SSH_KEY" > ./deploy.key
+            #       sudo chmod 600 ./deploy.key
+            #       echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+            #   shell: bash
+            #   env:
+            #       PREPROD_SSH_KEY: ${{secrets.PREPROD_SSH_KEY}}
+            #       SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+            - name: Set up deploy.key
+              run: |
+                  mkdir -p ~/.ssh/
+                  echo "$REMOTE_SSH_KEY" > ./deploy.key
+                  sudo chmod 600 ./deploy.key
+                  # echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+              shell: bash
+              env:
+                  REMOTE_SSH_KEY: ${{secrets.REMOTE_SSH_KEY}}
+                  # SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+
+            - name: Install PM2
+              run: npm i pm2 --force
+
+            - name: Deploy
+              run: |
+                  npm run deploy-preprod
+
+    # restart_pm2:
+    #     runs-on: ubuntu-latest
+    #     environment: preprod
+    #     needs: deploy
+    #     steps:
+    #         - name: launch SSR server
+    #           uses: appleboy/ssh-action@master
+    #           with:
+    #               host: ${{ secrets.REMOTE_HOST }}
+    #               username: ${{ secrets.REMOTE_USER }}
+    #               key: ${{ secrets.REMOTE_SSH_KEY }}
+    #               port: ${{ secrets.REMOTE_PORT }}
+    #               script: 'pm2 restart front'

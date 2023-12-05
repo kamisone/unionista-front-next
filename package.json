@@ -8,7 +8,8 @@
         "start": "next start",
         "lint": "next lint",
         "prepare": "husky install",
-        "lint-staged": "lint-staged"
+        "lint-staged": "lint-staged",
+        "deploy-preprod": "pm2 deploy ecosystem.config.js preprod --force --update-env"
     },
     "lint-staged": {
         "**/*.{js,ts}": [
