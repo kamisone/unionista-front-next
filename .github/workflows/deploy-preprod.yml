@@ -67,4 +67,4 @@ jobs:
                   username: ${{ secrets.REMOTE_USER }}
                   key: ${{ secrets.REMOTE_SSH_KEY }}
                   port: ${{ secrets.REMOTE_PORT }}
-                  script: 'pm2 restart front-next'
+                  script: 'pm2 restart front'
