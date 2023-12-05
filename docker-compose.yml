@@ -1,8 +1,8 @@
 version: '3.1'
 
 services:
-    front_ssr_fr:
-        container_name: front_ssr_fr
+    front_ssr:
+        container_name: front_ssr
         build:
             context: './'
             dockerfile: './docker/Dockerfile'
