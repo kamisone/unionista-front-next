@@ -32,7 +32,7 @@ module.exports = {
             repo: 'git@github.com:mohamedBENKHOUYA/unionista-front-next.git',
             path: '/srv/front',
             'post-deploy':
-                'npm i dotenv && pm2 kill && pm2 reload ecosystem.config.js --env preprod --update-env && pm2 save',
+                'npm i dotenv && pm2 kill && pm2 start ecosystem.config.js --env preprod --update-env && pm2 save',
         },
     },
 };
