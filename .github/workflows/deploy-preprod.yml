@@ -5,23 +5,9 @@ on:
         branches: [dev]
 
 jobs:
-    remove:
-        runs-on: ubuntu-latest
-        environment: preprod
-        steps:
-            - name: remove existing folder front
-              uses: appleboy/ssh-action@master
-              with:
-                  host: ${{ secrets.REMOTE_HOST }}
-                  username: ${{ secrets.REMOTE_USER }}
-                  password: ${{ secrets.REMOTE_PASSWORD }}
-                  port: ${{ secrets.REMOTE_PORT }}
-                  script: '[ ! -e /srv/front/* ] || rm -r /srv/front/*'
-
     build:
         runs-on: ubuntu-latest
         environment: preprod
-        needs: remove
         steps:
             - name: Download project from git
               uses: actions/checkout@v2
