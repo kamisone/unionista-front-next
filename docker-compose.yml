@@ -11,7 +11,7 @@ services:
             - '/srv/front/node_modules'
         # ports:
         #     - 3000:3000
-        command: npm run ${NEXT_START_CMD}
+        command: bash -c "npm install && npm run build && npm run ${NEXT_START_CMD}"
         networks:
             - unionistashop_network
 
