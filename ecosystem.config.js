@@ -21,6 +21,24 @@ module.exports = {
                 TYPEORM_MIGRATIONS_DIR: 'scripts/migrations',
             },
         },
+        {
+            name: 'back',
+            script: '/srv/back/current/start_back.sh',
+            cwd: '/',
+            time: true,
+            instances: 1,
+            autorestart: true,
+            max_restarts: 50,
+            watch: false,
+            max_memory_restart: '1G',
+            env_preprod: {
+                PORT: 3001,
+                NODE_ENV: 'preprod',
+                JWT_ISSUER: 'UnionistaShop',
+                JWT_TTL: '12h',
+                TYPEORM_MIGRATIONS_DIR: 'scripts/migrations',
+            },
+        },
     ],
     deploy: {
         preprod: {
@@ -32,7 +50,7 @@ module.exports = {
             repo: 'git@github.com:mohamedBENKHOUYA/unionista-front-next.git',
             path: '/srv/front',
             'post-deploy':
-                'npm i dotenv && pm2 kill && pm2 start ecosystem.config.js --env preprod --update-env',
+                'npm i dotenv && pm2 kill && pm2 start ecosystem.config.js --env preprod --update-env && pm2 save',
         },
     },
 };
