@@ -6,7 +6,7 @@ module.exports = {
         {
             name: 'front',
             script: '/srv/front/current/start_front.sh',
-            cwd: '/',
+            cwd: '/srv/front',
             time: true,
             instances: 1,
             autorestart: true,
