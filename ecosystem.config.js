@@ -6,7 +6,7 @@ module.exports = {
         {
             name: 'front',
             script: '/srv/front/current/start_front.sh',
-            cwd: '/srv/front',
+            cwd: '/',
             time: true,
             instances: 1,
             autorestart: true,
@@ -32,7 +32,7 @@ module.exports = {
             repo: 'git@github.com:mohamedBENKHOUYA/unionista-front-next.git',
             path: '/srv/front',
             'post-deploy':
-                'pm2 kill && pm2 reload ecosystem.config.js --env preprod --update-env && pm2 save',
+                'ls -a && pm2 kill && pm2 reload ecosystem.config.js --env preprod --update-env && pm2 save',
         },
     },
 };
