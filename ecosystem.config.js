@@ -1,5 +1,5 @@
 const path = require('path');
-// require('dotenv').config({ path: path.join(__dirname, '.env') });
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 module.exports = {
     apps: [
@@ -32,7 +32,7 @@ module.exports = {
             repo: 'git@github.com:mohamedBENKHOUYA/unionista-front-next.git',
             path: '/srv/front',
             'post-deploy':
-                'ls -a && pm2 kill && pm2 reload ecosystem.config.js --env preprod --update-env && pm2 save',
+                'npm i dotenv && pm2 kill && pm2 reload ecosystem.config.js --env preprod --update-env && pm2 save',
         },
     },
 };
