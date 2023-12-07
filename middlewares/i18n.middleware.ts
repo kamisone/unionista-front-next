@@ -9,10 +9,6 @@ import acceptLanguage from 'accept-language';
 
 acceptLanguage.languages(languages);
 
-export const config = {
-    matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js).*)'],
-};
-
 export function i18nMiddleware(req: NextRequest) {
     let lng: SupportedLanguages | null = null;
     if (req.cookies.has(cookieName)) {

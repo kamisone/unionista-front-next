@@ -65,10 +65,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
         }, FADE_IN_ANIMATE_MS);
     }, []);
 
-    // const t = {} as any;
-
     async function onSubmit(data: FormValues) {
-        console.log('called: ', data);
         setIsSubmitting(true);
         try {
             const response = isSignin

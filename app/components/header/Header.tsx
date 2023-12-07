@@ -18,6 +18,10 @@ import { useTranslation } from '@/app/i18n/client';
 import { SupportedLanguages } from '@/app/i18n/settings';
 import clsx from 'clsx';
 import { Graphik } from '@/app/fonts/fonts';
+import FranceFlagIcon from '@/app/icons/country/FranceFlagIcon';
+import SpainFlagIcon from '@/app/icons/country/SpainFlagIcon';
+import EnglandFlagIcon from '@/app/icons/country/EnglandFlagIcon';
+import SwitchLanguage from '../switch-language/SwitchLanguage';
 
 interface HeaderProps {
     lng: SupportedLanguages;
@@ -34,7 +38,7 @@ const Header = ({ lng }: HeaderProps) => {
         <div className="h_container">
             <div className="h_top_part">
                 <figure className="h_logo">
-                    <img src="/icons/unionista-logo2.png" alt="logo" />
+                    <img src="/assets/icons/unionista-logo2.png" alt="logo" />
                 </figure>
                 <ul className={clsx('h_nav_bar', Graphik.className)}>
                     <li
@@ -49,6 +53,9 @@ const Header = ({ lng }: HeaderProps) => {
                         className="h_nav_item h_text h_signin"
                     >
                         <button>{t('sign-in.title')}</button>
+                    </li>
+                    <li className={clsx('h_nav_item h_icon h_country_icon')}>
+                        <SwitchLanguage lng={lng} />
                     </li>
                     <li className="h_nav_item h_icon h_bo_icon">
                         <Link

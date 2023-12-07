@@ -1,0 +1,19 @@
+.container {
+    position: relative;
+    border: solid blue;
+}
+
+.current_lng {
+    width: 20px;
+    height: 20px;
+}
+
+.lng_choices {
+    position: absolute;
+    /* inset: 0;
+    margin: auto; */
+    /* text-align: right; */
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px solid green;
+}

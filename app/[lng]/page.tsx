@@ -21,7 +21,7 @@ async function Home({ params: { lng } }: HomeProps) {
         <div className="app_container">
             <Header lng={lng} />
             <div className="app_body_container">{/* <RenderRoutes /> */}</div>
-            <Footer />
+            <Footer lng={lng} />
             <CustomSnackbar />
             <BottomModal lng={lng} />
         </div>
