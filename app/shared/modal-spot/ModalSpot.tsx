@@ -7,17 +7,22 @@ import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import ScaleBgWrapper from '@/app/shared/scale-bg-wrapper/ScaleBgWrapper';
 import CloseIcon from '@/app/icons/close-icon/CloseIcon';
-import { Graphik } from '@/app/fonts/fonts';
+import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
+import {
+    SupportedLanguages,
+    SupportedLanguagesEnum,
+} from '@/app/i18n/settings';
 // import ScaleBgWrapper from 'shared/scale-bg-wrapper/ScaleBgWrapper';
 
 interface ModalSpotProps {
     children: ReactNode[] | ReactNode | string;
+    lng: SupportedLanguages;
 }
 
 const ModalSpot = (props: ModalSpotProps) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const { children } = props;
+    const { children, lng } = props;
     const [isDrawerQuitting, setIsDrawerQuitting] = useState(false);
 
     const onCloseDrawer = (duration = 300) => {
@@ -45,7 +50,13 @@ const ModalSpot = (props: ModalSpotProps) => {
             >
                 <div className="ms_title_container">
                     <span>{/*placeholder*/}</span>
-                    <h2 className={clsx(Graphik.className)}>
+                    <h2
+                        className={clsx(
+                            lng === SupportedLanguagesEnum.AR
+                                ? UthmanicFont.className
+                                : Graphik.className
+                        )}
+                    >
                         {t('drawer.title')}
                     </h2>
                     <div className="ms_close_icon">

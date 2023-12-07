@@ -1,4 +1,5 @@
 'use client';
+import { SupportedLanguages } from '@/app/i18n/settings';
 import {
     INotifyOptions,
     SNACKBAR_DURATION,
@@ -11,7 +12,11 @@ import { useEffect, useState } from 'react';
 
 const snackbarService = SnackbarService.getInstance();
 
-const CustomSnackbar = () => {
+interface CustomSnackbarProps {
+    lng: SupportedLanguages;
+}
+
+const CustomSnackbar = ({ lng }: CustomSnackbarProps) => {
     const [isSnackShowed, setIsSnackShowed] = useState(false);
     const [snackSeverity, setSnackSeverity] = useState<SnackbarSeverity>(
         SnackbarSeverity.INFO
@@ -51,6 +56,7 @@ const CustomSnackbar = () => {
             ClickAwayListenerProps={{ mouseEvent: false }}
         >
             {SnackbarContent({
+                lng: lng,
                 severity: snackSeverity,
                 onClose: onSnackClose,
                 message: snackMessage ?? '',

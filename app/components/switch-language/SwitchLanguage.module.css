@@ -68,10 +68,11 @@
     justify-content: start;
     gap: 0.5rem;
     padding: 0.25rem 0.5rem;
-    text-transform: capitalize;
     transition: all 0.5s ease;
     border-radius: 0.25rem;
+    text-transform: capitalize;
 }
+
 .lng_choices .lng_option:hover a,
 .lng_choices .lng_option:focus-within a {
     background-color: var(--clg-color-pal-blue-800);

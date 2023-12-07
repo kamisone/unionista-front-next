@@ -1,21 +1,21 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { SupportedLanguages } from '@/app/i18n/settings';
+import { SupportedLanguages, SupportedLanguagesEnum, languages } from '@/app/i18n/settings';
 import Link from 'next/link';
 import React, { useRef, useState } from 'react';
-import { Trans } from 'react-i18next';
 import styles from '@/app/components/switch-language/SwitchLanguage.module.css';
 import FranceFlagIcon from '@/app/icons/country/FranceFlagIcon';
 import EnglandFlagIcon from '@/app/icons/country/EnglandFlagIcon';
 import SpainFlagIcon from '@/app/icons/country/SpainFlagIcon';
 import clsx from 'clsx';
-import { Graphik } from '../../fonts/fonts';
+import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
+import ArabeFlagIcon from '@/app/icons/country/ArabeFlagIcon';
 
 interface SwitchLanguageProps {
     lng: SupportedLanguages;
 }
 
-const languages: SupportedLanguages[] = ['fr', 'en', 'es'];
+// const languages: SupportedLanguages[] = ['fr', 'en', 'es'];
 
 const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
     const [isSwitchOpened, setIsSwitchOpened] = useState(false);
@@ -36,9 +36,15 @@ const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
                 {LanguageIconsMapping[lng]}
             </div>
             <ul
-                className={clsx(styles.lng_choices, Graphik.className, {
-                    [styles.open]: isSwitchOpened,
-                })}
+                className={clsx(
+                    styles.lng_choices,
+                    lng === SupportedLanguagesEnum.AR
+                        ? UthmanicFont.className
+                        : Graphik.className,
+                    {
+                        [styles.open]: isSwitchOpened,
+                    }
+                )}
             >
                 {languages
                     .filter((l) => lng !== l)
@@ -66,6 +72,7 @@ const LanguageIconsMapping = {
     fr: <FranceFlagIcon />,
     en: <EnglandFlagIcon />,
     es: <SpainFlagIcon />,
+    ar: <ArabeFlagIcon />,
 };
 
 export default SwitchLanguage;

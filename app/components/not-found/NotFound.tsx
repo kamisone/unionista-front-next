@@ -3,13 +3,28 @@ import React from 'react';
 import './NotFound.css';
 import ActionButton from '@/app/shared/action-button/ActionButton';
 import clsx from 'clsx';
-import { Montserrat } from '@/app/fonts/fonts';
+import { Montserrat, UthmanicFont } from '@/app/fonts/fonts';
+import {
+    SupportedLanguages,
+    SupportedLanguagesEnum,
+} from '@/app/i18n/settings';
 
-const NotFound = () => {
+interface NotFoundProps {
+    lng: SupportedLanguages;
+}
+
+const NotFound = ({ lng }: NotFoundProps) => {
     const { t } = useTranslation();
 
     return (
-        <div className={clsx('nf_container', Montserrat.className)}>
+        <div
+            className={clsx(
+                'nf_container',
+                lng === SupportedLanguagesEnum.AR
+                    ? UthmanicFont.className
+                    : Montserrat.className
+            )}
+        >
             <h2>Oops!</h2>
             <h6>{t('page-not-found.title')}</h6>
             <div>
@@ -17,7 +32,7 @@ const NotFound = () => {
                 <p>{t('page-not-found.message-2')}</p>
             </div>
 
-            <ActionButton to="/" radius="pilled" boxShadow={true}>
+            <ActionButton lng={lng} to="/" radius="pilled" boxShadow={true}>
                 <p className="nf_go_back_btn">{t('page-not-found.go-back')}</p>
             </ActionButton>
         </div>

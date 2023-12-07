@@ -18,8 +18,11 @@ import clsx from 'clsx';
 import { useAppSelector } from '@/app/lib/store';
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
-import { SupportedLanguages } from '@/app/i18n/settings';
-import { Graphik } from '@/app/fonts/fonts';
+import {
+    SupportedLanguages,
+    SupportedLanguagesEnum,
+} from '@/app/i18n/settings';
+import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
 
 const authService = AuthService.getInstance();
 
@@ -88,14 +91,22 @@ const LoginContent = ({ lng }: LoginContentProps) => {
 
     return (
         <div
-            className={clsx('sic_container', Graphik.className, {
-                switched: isSwitched,
-            })}
+            className={clsx(
+                'sic_container',
+                lng,
+                lng === SupportedLanguagesEnum.AR
+                    ? UthmanicFont.className
+                    : Graphik.className,
+                {
+                    switched: isSwitched,
+                }
+            )}
         >
             <div className="sic_head">
                 <h2>{isSignin ? t('sign-in.title') : t('sign-up.title')}</h2>
 
                 <ActionButton
+                    lng={lng}
                     onClick={() => {
                         setIsSwitched(true);
                         setTimeout(() => {
@@ -126,6 +137,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         {t('sign-in.email-label')}
                     </label>
                     <InputControl
+                        lng={lng}
                         radius="rounded_1"
                         borderVariant="border_light"
                         insetShadow
@@ -133,6 +145,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         isDirty={!!dirtyFields['email']}
                     >
                         <TextInput
+                            lng={lng}
                             register={register('email', {
                                 required: {
                                     value: true,
@@ -159,6 +172,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                             {t('sign-up.full_name')}
                         </label>
                         <InputControl
+                            lng={lng}
                             radius="rounded_1"
                             borderVariant="border_light"
                             insetShadow
@@ -166,6 +180,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                             isDirty={!!dirtyFields['fullName']}
                         >
                             <TextInput
+                                lng={lng}
                                 register={register('fullName', {
                                     required: {
                                         value: true,
@@ -194,6 +209,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         {t('sign-in.password-label')}
                     </label>
                     <InputControl
+                        lng={lng}
                         radius="rounded_1"
                         borderVariant="border_light"
                         insetShadow
@@ -201,6 +217,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         isDirty={!!dirtyFields['password']}
                     >
                         <TextInput
+                            lng={lng}
                             register={register('password', {
                                 required: {
                                     value: true,
@@ -261,6 +278,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                     </Link>
                 </div>
                 <ActionButton
+                    lng={lng}
                     disabled={!isValid}
                     loading={isSubmitting}
                     onClick={handleSubmit(onSubmit)}
@@ -274,6 +292,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
             </form>
             <p className="sic_divider">{t('sign-in.divider-title')}</p>
             <ActionButton
+                lng={lng}
                 onClick={() => {}}
                 variant="secondary"
                 fit="max"

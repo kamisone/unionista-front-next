@@ -2,8 +2,10 @@ import React, { ReactNode } from 'react';
 import './TextInput.css';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { SupportedLanguages } from '@/app/i18n/settings';
 
 interface TextInputProps {
+    lng: SupportedLanguages;
     placeholder?: string;
     children?: ReactNode[] | ReactNode | string;
     size?: 'small' | 'medium' | 'large';
@@ -31,9 +33,14 @@ const TextInput = (props: TextInputProps) => {
     return (
         <>
             <div
-                className={clsx('ti_container', `icon_gap_${iconGap}`, {
-                    bg_icon_active: isIconBgActive,
-                })}
+                className={clsx(
+                    'ti_container',
+                    `icon_gap_${iconGap}`,
+                    props.lng,
+                    {
+                        bg_icon_active: isIconBgActive,
+                    }
+                )}
             >
                 <input
                     className={clsx(size, { error: isError })}

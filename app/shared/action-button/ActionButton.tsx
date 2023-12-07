@@ -5,10 +5,15 @@ import './ActionButton.css';
 import clsx from 'clsx';
 import LoadingIndicator from '../loading-indicator/LoadingIndicator';
 import Link from 'next/link';
-import { Graphik } from '@/app/fonts/fonts';
+import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
+import {
+    SupportedLanguages,
+    SupportedLanguagesEnum,
+} from '@/app/i18n/settings';
 
 interface ActionButtonProps {
     onClick?: () => void;
+    lng: SupportedLanguages;
     radius?: 'rounded' | 'pilled';
     boxShadow?: boolean;
     to?: string;
@@ -23,6 +28,7 @@ interface ActionButtonProps {
 const ActionButton = (props: ActionButtonProps) => {
     const {
         onClick,
+        lng,
         radius,
         variant,
         boxShadow = false,
@@ -39,7 +45,10 @@ const ActionButton = (props: ActionButtonProps) => {
             onClick={onClick}
             className={clsx(
                 'ab_container',
-                Graphik.className,
+                lng,
+                lng === SupportedLanguagesEnum.AR
+                    ? UthmanicFont.className
+                    : Graphik.className,
                 radius,
                 variant,
                 fit,

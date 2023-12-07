@@ -3,16 +3,26 @@ import React from 'react';
 import propTypes from 'prop-types';
 import '@/app/components/modal-content/menu-drawer-content/MenuDrawerContent.css';
 import clsx from 'clsx';
-import { Graphik } from '@/app/fonts/fonts';
+import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
+import { SupportedLanguages, SupportedLanguagesEnum } from '@/app/i18n/settings';
 
 interface MenuDrawerContentProps {
+    lng: SupportedLanguages;
     menuItems: string[];
 }
 
 const MenuDrawerContent = (props: MenuDrawerContentProps) => {
-    const { menuItems } = props;
+    const { menuItems, lng } = props;
     return (
-        <ul className={clsx('mdc_container', Graphik.className)}>
+        <ul
+            className={clsx(
+                'mdc_container',
+                lng,
+                lng === SupportedLanguagesEnum.AR
+                    ? UthmanicFont.className
+                    : Graphik.className
+            )}
+        >
             {menuItems.map((menuItem) => {
                 return (
                     <li key={menuItem}>

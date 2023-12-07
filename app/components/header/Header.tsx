@@ -15,9 +15,12 @@ import { ModalContentMapping } from '@/app/utils/bottom-modal';
 import Link from 'next/link';
 import { useAppSelector } from '@/app/lib/store';
 import { useTranslation } from '@/app/i18n/client';
-import { SupportedLanguages } from '@/app/i18n/settings';
+import {
+    SupportedLanguages,
+    SupportedLanguagesEnum,
+} from '@/app/i18n/settings';
 import clsx from 'clsx';
-import { Graphik } from '@/app/fonts/fonts';
+import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
 import SwitchLanguage from '../switch-language/SwitchLanguage';
 
 interface HeaderProps {
@@ -32,12 +35,19 @@ const Header = ({ lng }: HeaderProps) => {
     );
 
     return (
-        <div className="h_container">
+        <div className={clsx('h_container', lng)}>
             <div className="h_top_part">
                 <figure className="h_logo">
                     <img src="/assets/icons/unionista-logo2.png" alt="logo" />
                 </figure>
-                <ul className={clsx('h_nav_bar', Graphik.className)}>
+                <ul
+                    className={clsx(
+                        'h_nav_bar',
+                        lng === SupportedLanguagesEnum.AR
+                            ? UthmanicFont.className
+                            : Graphik.className
+                    )}
+                >
                     <li
                         onClick={() =>
                             dispatch(
@@ -97,8 +107,9 @@ const Header = ({ lng }: HeaderProps) => {
                 >
                     <Hamburger />
                 </button>
-                <InputControl radius="pilled">
+                <InputControl lng={lng} radius="pilled">
                     <TextInput
+                        lng={lng}
                         iconGap="large"
                         size="medium"
                         placeholder={t('header.search-input-placeholder')}

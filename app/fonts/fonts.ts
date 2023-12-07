@@ -29,6 +29,14 @@ export const Montserrat = localFont({
     ],
 });
 
+export const UthmanicFont = localFont({
+    src: [
+        {
+            path: './UthmanicFont/UthmanicFontRegular.otf',
+        },
+    ],
+});
+
 export const Graphik = localFont({
     src: [
         {

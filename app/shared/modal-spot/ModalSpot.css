@@ -67,6 +67,7 @@
     font-size: 1.2rem;
     text-transform: capitalize;
 }
+
 .ms_container .ms_title_container .ms_close_icon {
     opacity: 0;
     animation: fade_in_animate 0.75s forwards 0.45s;

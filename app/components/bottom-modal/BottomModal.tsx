@@ -39,21 +39,21 @@ function _BottomModalContent(
     switch (currentContent) {
         case ModalContentMapping.MENU_DRAWER:
             return (
-                <ModalSpot>
-                    <MenuDrawerContent menuItems={menuItems} />
+                <ModalSpot lng={lng}>
+                    <MenuDrawerContent menuItems={menuItems} lng={lng} />
                 </ModalSpot>
             );
         case ModalContentMapping.SIGN_IN:
         case ModalContentMapping.SIGN_UP:
             return (
-                <ModalSpot>
+                <ModalSpot lng={lng}>
                     <LoginContent lng={lng} />
                 </ModalSpot>
             );
 
         default:
             return (
-                <ModalSpot>
+                <ModalSpot lng={lng}>
                     <h2>no content found</h2>{' '}
                 </ModalSpot>
             );

@@ -1,9 +1,17 @@
 import { Namespace } from 'i18next';
 
 export const fallbackLng = 'en';
-export const languages = [fallbackLng, 'es', 'fr'];
 
-export type SupportedLanguages = 'en' | 'fr' | 'es';
+export type SupportedLanguages = 'en' | 'fr' | 'es' | 'ar';
+export enum SupportedLanguagesEnum {
+    EN = 'en',
+    ES = 'es',
+    AR = 'ar',
+    FR = 'fr',
+}
+
+export const languages: SupportedLanguages[] = [fallbackLng, 'es', 'fr', 'ar'];
+
 export const cookieName = 'lng';
 export const defaultNs = 'translation';
 

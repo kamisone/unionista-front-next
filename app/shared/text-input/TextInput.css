@@ -42,6 +42,10 @@
     color: var(--clr-white);
     margin-right: 0.5rem;
 }
+.ti_container.ar .ti_input_icon {
+    margin-right: revert;
+    margin-left: 0.5rem;
+}
 
 .ti_container .ti_input_icon::before {
     content: '';
