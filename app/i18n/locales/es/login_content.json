@@ -1,0 +1,36 @@
+{
+    
+    "sign-up": {
+        "title": "cree su cuenta",
+        "action-title": "Inscribirse",
+        "subtitle": "registrarse fácilmente.",
+        "full_name": "nombre completo",
+        "sign-in-action": "conectarse",
+        "validation": {
+            "full_name-empty": "Por favor ingresa tu nombre completo.",
+            "full_name-short": "utilice al menos {{minLength}} caracteres."
+        },
+        "receive-newsletter": {
+            "title": "Sí ! Envíame ofertas exclusivas, ideas de regalos únicas y consejos personalizados para comprar en Unionstashop."
+        }
+    },
+    "sign-in": {
+        "title": "Iniciar sesión",
+        "sign-up-action": "inscribirse",
+        "email-label": "dirección de correo electrónico",
+        "password-label": "contraseña",
+        "remember-me": "Permanecer registrado",
+        "forgot-password": "¿Olvidaste tu contraseña?",
+        "divider-title": "o",
+        "sso-google-title": "continuar con google",
+        "validation": {
+            "email-not-valid": "por favor, ingrese una dirección de correo electrónico válida",
+            "email-empty": "por favor, ingrese una dirección de correo electrónico",
+            "password-empty": "por favor, ingrese su contraseña.",
+            "password-short": "la contraseña es demasiado corta. Por favor, use al menos 8 caracteres."
+        },
+        "server-errors": {
+            "unauthorized": "dirección de correo electrónico o contraseña no válida."
+        }
+    }
+}

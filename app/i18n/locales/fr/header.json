@@ -1,0 +1,13 @@
+{
+    "icons": {
+        "hover": {
+            "admin": "admin",
+            "notifications": "notifications",
+            "cart": "Chariot"
+        }
+    },
+    "sign-in": {
+        "title": "Se connecter"
+    },
+    "search-input-placeholder": "Recherche"
+}

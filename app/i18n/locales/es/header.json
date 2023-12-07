@@ -1,0 +1,13 @@
+{
+    "icons": {
+        "hover": {
+            "admin": "administración",
+            "notifications": "notificaciones",
+            "cart": "carro"
+        }
+    },
+    "sign-in": {
+        "title": "Iniciar sesión"
+    },
+    "search-input-placeholder": "Buscar cualquier cosa"
+}

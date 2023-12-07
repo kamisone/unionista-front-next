@@ -5,7 +5,7 @@ const ArabeFlagIcon = () => {
         <svg
             width="20"
             height="20"
-            enable-background="new 0 0 1773 1182"
+            enableBackground="new 0 0 1773 1182"
             version="1.1"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -14,7 +14,7 @@ const ArabeFlagIcon = () => {
                 id="green"
                 d="m0 600h900v-600h-900z"
                 fill="#005430"
-                stroke-width=".375"
+                strokeWidth=".375"
             />
             <g id="white" transform="scale(.375)">
                 <g id="shahada">

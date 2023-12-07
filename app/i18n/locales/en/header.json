@@ -1,0 +1,13 @@
+{
+    "icons": {
+        "hover": {
+            "admin": "admin",
+            "notifications": "notifications",
+            "cart": "cart"
+        }
+    },
+    "sign-in": {
+        "title": "Sign in"
+    },
+    "search-input-placeholder": "Search for anything"
+}

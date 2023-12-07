@@ -5,42 +5,7 @@
         "message-2": "تم تغيير اسمه أو أنه غير متاح مؤقتًا",
         "go-back": "اذهب إلى الصفحة الرئيسية"
     },
-    "sign-up": {
-        "title": "أنشئ حسابك",
-        "action-title": "اشتراك",
-        "subtitle": "تسجل بسهولة",
-        "full_name": "الإسم الكامل",
-        "sign-in-action": "تسجيل الدخول",
-        "validation": {
-            "full_name-empty": "من فضلك ادخل اسمك الكامل.",
-            "full_name-short": "الرجاء استخدام {{minLength}} حرفًا على الأقل."
-        },
-        "receive-newsletter": {
-            "title": "نعم ! أرسل لي عروضًا حصرية وأفكار هدايا فريدة ونصائح مخصصة للشراء على Unionistashop"
-        }
-    },
-    "sign-in": {
-        "title": "تسجيل الدخول",
-        "sign-up-action": "أنشئ حسابك",
-        "email-label": "عنوان البريد الإلكتروني",
-        "password-label": "كلمة المرور",
-        "remember-me": "البقاء مسجل الدخول",
-        "forgot-password": "نسيت كلمة السر؟",
-        "divider-title": "أو",
-        "sso-google-title": "الاستمرار مع جوجل",
-        "validation": {
-            "email-not-valid": "يرجى إدخال عنوان بريد إلكتروني صالح",
-            "email-empty": "الرجاء إدخال عنوان البريد الإلكتروني الخاص بك",
-            "password-empty": "من فضلك أدخل رقمك السري",
-            "password-short": "كلمة المرور قصيرة جدًا، يرجى استخدام {{minLength}} من الأحرف على الأقل"
-        },
-        "server-errors": {
-            "unauthorized": "عنوان البريد الإلكتروني أو كلمة المرور غير صالحة."
-        }
-    },
-    "header": {
-        "search-input-placeholder": "ابحث عن أي شيء"
-    },
+   
     "drawer": {
         "title": "تصفح الفئات"
     }

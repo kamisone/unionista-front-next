@@ -1,0 +1,13 @@
+{
+    "icons": {
+        "hover": {
+            "admin": "مدير",
+            "notifications": "إشعارات",
+            "cart": "عربة التسوق"
+        }
+    },
+    "sign-in": {
+        "title": "تسجيل الدخول"
+    },
+    "search-input-placeholder": "ابحث عن أي شيء"
+}

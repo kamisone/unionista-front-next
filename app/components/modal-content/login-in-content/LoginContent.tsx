@@ -46,7 +46,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
     const isSignin = headerState.currentContent == ModalContentMapping.SIGN_IN;
     const [isSwitched, setIsSwitched] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { t } = useTranslation(lng);
+    const { t } = useTranslation(lng, 'login_content');
 
     const {
         register,

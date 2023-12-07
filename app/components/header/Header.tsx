@@ -28,7 +28,7 @@ interface HeaderProps {
 }
 
 const Header = ({ lng }: HeaderProps) => {
-    const { t } = useTranslation(lng);
+    const { t } = useTranslation(lng, 'header');
     const dispatch = useDispatch();
     const isBottomModalOpen = useAppSelector(
         (state) => state.header.isBottomModalOpen
@@ -68,7 +68,7 @@ const Header = ({ lng }: HeaderProps) => {
                         <Link
                             href="/admin"
                             // @ts-ignore
-                            style={{ '--nav-icon-title': '"admin"' }}
+                            style={{ '--nav-icon-title': t('icons.hover.admin') }}
                         >
                             <BoSettingsIcon />
                         </Link>
@@ -77,7 +77,7 @@ const Header = ({ lng }: HeaderProps) => {
                         <Link
                             href="/notifications"
                             // @ts-ignore
-                            style={{ '--nav-icon-title': '"notifications"' }}
+                            style={{ '--nav-icon-title': t('icons.hover.notifications') }}
                         >
                             <NotificationIcon />
                         </Link>
@@ -86,7 +86,7 @@ const Header = ({ lng }: HeaderProps) => {
                         <Link
                             href="/cart"
                             // @ts-ignore
-                            style={{ '--nav-icon-title': '"Cart"' }}
+                            style={{ '--nav-icon-title': t('icons.hover.cart') }}
                         >
                             <CartIcon />
                         </Link>
@@ -112,7 +112,7 @@ const Header = ({ lng }: HeaderProps) => {
                         lng={lng}
                         iconGap="large"
                         size="medium"
-                        placeholder={t('header.search-input-placeholder')}
+                        placeholder={t('search-input-placeholder')}
                     >
                         <SearchIcon />
                     </TextInput>

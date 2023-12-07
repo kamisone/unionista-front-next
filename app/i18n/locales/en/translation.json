@@ -5,42 +5,7 @@
         "message-2": "had its name changed or is temporarily unavailable",
         "go-back": "go to homepage"
     },
-    "sign-up": {
-        "title": "create your account",
-        "action-title": "Sign up",
-        "subtitle": "register easily.",
-        "full_name": "full name",
-        "sign-in-action": "sign in",
-        "validation": {
-            "full_name-empty": "please enter your full name.",
-            "full_name-short": "please use at least {{minLength}} characters."
-        },
-        "receive-newsletter": {
-            "title": "Yes ! Send me exclusive deals, unique gift ideas, and personalized tips for buying on Unionistashop"
-        }
-    },
-    "sign-in": {
-        "title": "Sign in",
-        "sign-up-action": "register",
-        "email-label": "email address",
-        "password-label": "password",
-        "remember-me": "Stay signed in",
-        "forgot-password": "Forgot your password?",
-        "divider-title": "or",
-        "sso-google-title": "continue with google",
-        "validation": {
-            "email-not-valid": "please enter a valid email address",
-            "email-empty": "please enter your email address",
-            "password-empty": "please enter your password",
-            "password-short": "password is too short, please use at least {{minLength}} characters"
-        },
-        "server-errors": {
-            "unauthorized": "email address or password not valid."
-        }
-    },
-    "header": {
-        "search-input-placeholder": "Search for anything"
-    },
+   
     "drawer": {
         "title": "browse categories"
     }
