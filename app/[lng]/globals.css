@@ -863,9 +863,6 @@ body {
     width: 1px;
 }
 
-.ar * {
-    text-align: right !important;
-}
 .ar *::first-letter {
     text-transform: revert !important;
 }

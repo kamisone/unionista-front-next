@@ -33,9 +33,7 @@
 .sic_input_container > label {
     display: block;
     font-size: var(--fs-300);
-    text-align: left;
     margin-bottom: var(--size-200);
-    text-align: right;
 }
 .sic_container .sic_input_container > label::first-letter {
     text-transform: capitalize;
