@@ -42,7 +42,7 @@ const EnglandFlagIcon = () => {
                     ></feColorMatrix>
                 </filter>
             </defs>
-            <g fill="none" fill-rule="evenodd">
+            <g fill="none" fillRule="evenodd">
                 <path fill="#00247F" d="M0 20h20V0H0"></path>
                 <path
                     fill="#FFF"

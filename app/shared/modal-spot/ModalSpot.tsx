@@ -39,9 +39,7 @@ const ModalSpot = (props: ModalSpotProps) => {
             })}
             onClick={() => onCloseDrawer()}
         >
-            {/*placeholder to close menuDrawer quickly*/}
-            {/* <input id="ms_close_checkbox" type="checkbox" /> */}
-            <button
+            <div
                 className={clsx('ms_content')}
                 onClick={(e) => e.stopPropagation()}
             >
@@ -58,7 +56,7 @@ const ModalSpot = (props: ModalSpotProps) => {
                     </div>
                 </div>
                 {children}
-            </button>
+            </div>
         </div>
     );
 };

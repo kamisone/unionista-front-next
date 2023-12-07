@@ -1,12 +1,15 @@
-import { useTranslation } from '@/app/i18n';
+'use client';
+import { useTranslation } from '@/app/i18n/client';
 import { SupportedLanguages } from '@/app/i18n/settings';
 import Link from 'next/link';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Trans } from 'react-i18next';
 import styles from '@/app/components/switch-language/SwitchLanguage.module.css';
 import FranceFlagIcon from '@/app/icons/country/FranceFlagIcon';
 import EnglandFlagIcon from '@/app/icons/country/EnglandFlagIcon';
 import SpainFlagIcon from '@/app/icons/country/SpainFlagIcon';
+import clsx from 'clsx';
+import { Graphik } from '../../fonts/fonts';
 
 interface SwitchLanguageProps {
     lng: SupportedLanguages;
@@ -14,29 +17,48 @@ interface SwitchLanguageProps {
 
 const languages: SupportedLanguages[] = ['fr', 'en', 'es'];
 
-const SwitchLanguage = async ({ lng }: SwitchLanguageProps) => {
-    const { t } = await useTranslation(lng);
+const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
+    const [isSwitchOpened, setIsSwitchOpened] = useState(false);
+    const buttonElement = useRef<HTMLButtonElement>(null);
+    const { t } = useTranslation(lng, 'switch_language');
     return (
-        <div className={styles.container}>
+        <button
+            ref={buttonElement}
+            onBlur={() => {
+                setIsSwitchOpened(false);
+            }}
+            onFocusCapture={() => {
+                setIsSwitchOpened(true);
+            }}
+            className={styles.container}
+        >
             <div className={styles.current_lng}>
                 {LanguageIconsMapping[lng]}
             </div>
-            <ul className={styles.lng_choices}>
-                <Trans i18nKey="languageSwitcher" t={t}>
-                    {t('page-not-found.title')} <strong>{lng}</strong> to:{' '}
-                </Trans>
+            <ul
+                className={clsx(styles.lng_choices, Graphik.className, {
+                    [styles.open]: isSwitchOpened,
+                })}
+            >
                 {languages
                     .filter((l) => lng !== l)
                     .map((l) => {
                         return (
-                            <li key={l}>
-                                {LanguageIconsMapping[l]}
-                                <Link href={`/${l}`}>{l}</Link>
+                            <li className={styles.lng_option} key={l}>
+                                <Link
+                                    href={`/${l}`}
+                                    // onClick={() => setIsSwitchOpened(false)}
+                                >
+                                    <div className={styles.icon}>
+                                        {LanguageIconsMapping[l]}
+                                    </div>
+                                    {t(`language.${l}.title`)}
+                                </Link>
                             </li>
                         );
                     })}
             </ul>
-        </div>
+        </button>
     );
 };
 

@@ -18,9 +18,6 @@ import { useTranslation } from '@/app/i18n/client';
 import { SupportedLanguages } from '@/app/i18n/settings';
 import clsx from 'clsx';
 import { Graphik } from '@/app/fonts/fonts';
-import FranceFlagIcon from '@/app/icons/country/FranceFlagIcon';
-import SpainFlagIcon from '@/app/icons/country/SpainFlagIcon';
-import EnglandFlagIcon from '@/app/icons/country/EnglandFlagIcon';
 import SwitchLanguage from '../switch-language/SwitchLanguage';
 
 interface HeaderProps {
@@ -54,7 +51,7 @@ const Header = ({ lng }: HeaderProps) => {
                     >
                         <button>{t('sign-in.title')}</button>
                     </li>
-                    <li className={clsx('h_nav_item h_icon h_country_icon')}>
+                    <li className={clsx('h_nav_item h_country_icon')}>
                         <SwitchLanguage lng={lng} />
                     </li>
                     <li className="h_nav_item h_icon h_bo_icon">

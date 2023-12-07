@@ -10,7 +10,7 @@ const CountryIcon = () => {
             aria-hidden="true"
             focusable="false"
         >
-            <g transform="translate(-1 -.004)" fill="none" fill-rule="evenodd">
+            <g transform="translate(-1 -.004)" fill="none" fillRule="evenodd">
                 <path
                     fill="#B73C24"
                     d="M.547 6.002h20v-6h-22m2 20h20v-6h-20"

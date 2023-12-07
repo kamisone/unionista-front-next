@@ -40,7 +40,8 @@
     border-radius: 100vmax;
 }
 
-.h_nav_item:hover {
+.h_nav_item:hover,
+.h_nav_item:focus-within {
     transition: background-color 0.25s ease-in-out;
     background-color: var(--clg-color-pal-blue-150);
 }
@@ -95,7 +96,6 @@
     grid-template-columns: auto 1fr;
     align-items: center;
     gap: clamp(0rem, 2vw, 1rem);
-    
 }
 .h_container .h_sub_part > button {
     padding-bottom: var(--error-placeholder-size);
