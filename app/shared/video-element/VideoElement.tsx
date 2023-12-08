@@ -7,7 +7,7 @@ const VideoElement = () => {
         <div className="ve_container">
             <video ref={videoRef} width={320} height={240}>
                 <source
-                    src={`http://dlocalhost/api/user/videos/`}
+                    src={`http://localhost/api/user/videos/`}
                     type="video/mp4"
                 ></source>
                 Your browser does not support the video tag

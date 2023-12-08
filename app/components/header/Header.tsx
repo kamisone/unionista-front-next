@@ -4,7 +4,7 @@ import '@/app/components/header/Header.css';
 import BoSettingsIcon from '@/app/icons/bo-settings/BoSettingsIcon';
 import CartIcon from '@/app/icons/cart/CartIcon';
 import NotificationIcon from '@/app/icons/notification/NotificationIcon';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TextInput from '@/app/shared/text-input/TextInput';
 import InputControl from '@/app/shared/input-control/InputControl';
 import { toggleBottomModal } from '@/app/lib/features/header/headerSlice';
@@ -22,6 +22,7 @@ import {
 import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
 import SwitchLanguage from '../switch-language/SwitchLanguage';
+import LoadingIndicator from '@/app/shared/loading-indicator/LoadingIndicator';
 
 interface HeaderProps {
     lng: SupportedLanguages;
@@ -64,20 +65,26 @@ const Header = ({ lng }: HeaderProps) => {
                     <li className={clsx('h_nav_item h_country_icon')}>
                         <SwitchLanguage lng={lng} />
                     </li>
-                    <li className="h_nav_item h_icon h_bo_icon">
-                        <Link
-                            href="/admin"
+                    <li
+                        style={{
                             // @ts-ignore
-                            style={{ '--nav-icon-title': t('icons.hover.admin') }}
-                        >
+                            '--nav-icon-title': `"${t('icons.hover.admin')}"`,
+                        }}
+                        className="h_nav_item h_icon h_bo_icon"
+                    >
+                        <Link href="/admin">
                             <BoSettingsIcon />
                         </Link>
                     </li>
                     <li className="h_nav_item h_icon h_notif">
                         <Link
                             href="/notifications"
-                            // @ts-ignore
-                            style={{ '--nav-icon-title': t('icons.hover.notifications') }}
+                            style={{
+                                // @ts-ignore
+                                '--nav-icon-title': `"${t(
+                                    'icons.hover.notifications'
+                                )}"`,
+                            }}
                         >
                             <NotificationIcon />
                         </Link>
@@ -85,8 +92,12 @@ const Header = ({ lng }: HeaderProps) => {
                     <li className="h_nav_item h_icon h_cart_icon">
                         <Link
                             href="/cart"
-                            // @ts-ignore
-                            style={{ '--nav-icon-title': t('icons.hover.cart') }}
+                            style={{
+                                // @ts-ignore
+                                '--nav-icon-title': `"${t(
+                                    'icons.hover.cart'
+                                )}"`,
+                            }}
                         >
                             <CartIcon />
                         </Link>

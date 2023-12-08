@@ -193,8 +193,6 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                                         message: t(
                                             'sign-up.validation.full_name-short'
                                         ),
-                                        // { minLength: 4 }
-                                        // ),
                                     },
                                 })}
                                 isError={!!errors.fullName}
@@ -230,8 +228,6 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                                     message: t(
                                         'sign-in.validation.password-short'
                                     ),
-                                    // { minLength: 8 }
-                                    // ),
                                 },
                             })}
                             isError={!!errors.password}

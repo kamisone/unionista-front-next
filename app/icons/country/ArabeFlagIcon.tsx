@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const ArabeFlagIcon = () => {
     return (
@@ -7,12 +7,12 @@ const ArabeFlagIcon = () => {
             height="20"
             enableBackground="new 0 0 1773 1182"
             version="1.1"
-            viewBox="0 0 20 20"
+            viewBox="0 100 900 400"
             xmlns="http://www.w3.org/2000/svg"
         >
             <path
                 id="green"
-                d="m0 600h900v-600h-900z"
+                d="m0 800h900v-1000h-900z"
                 fill="#005430"
                 strokeWidth=".375"
             />
