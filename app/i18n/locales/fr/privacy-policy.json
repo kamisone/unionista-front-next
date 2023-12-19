@@ -1,0 +1,32 @@
+{
+    "title": "Politique de confidentialité pour {{brandTitle}}",
+    "introduction": {
+        "last-updated": "dernière mise à jour : {{lastUpdatedDate}}",
+        "text": "nous exploitons {{siteUrl}}. cette page vous informe de nos politiques concernant la collecte, l'utilisation et la divulgation des informations personnelles que nous recevons des utilisateurs du site."
+    },
+    "sub-title-1": {
+        "title": "collecte et utilisation des informations",
+        "text": "lors de l'utilisation de notre site, nous pouvons vous demander de nous fournir certaines informations personnelles identifiables qui peuvent être utilisées pour vous contacter ou vous identifier. Les informations personnelles identifiables peuvent inclure, sans s'y limiter, votre nom, votre adresse e-mail, votre adresse postale et votre numéro de téléphone (\"Informations personnelles\")."
+    },
+    "sub-title-2": {
+        "title": "enregistrement des données",
+        "text": "comme de nombreux opérateurs de sites, nous collectons les informations que votre navigateur envoie chaque fois que vous visitez notre site (\"Données de journal\"). Ces données de journal peuvent inclure des informations telles que l'adresse de protocole Internet (\"IP\") de votre ordinateur, le type de navigateur, la version du navigateur, les pages de notre site que vous visitez, l'heure et la date de votre visite, le temps passé sur ces pages. , et d'autres statistiques."
+    },
+    "sub-title-3": {
+        "title": "cookies",
+        "text": "les cookies sont des fichiers contenant une petite quantité de données, qui peuvent inclure un identifiant unique anonyme. Les cookies sont envoyés à votre navigateur depuis un site Web et stockés sur le disque dur de votre ordinateur."
+    },
+    "sub-title-4": {
+        "title": "sécurité",
+        "text": "la sécurité de vos informations personnelles est importante pour nous, mais n'oubliez pas qu'aucune méthode de transmission sur Internet, ni aucune méthode de stockage électronique, n'est sécurisée à 100 %. Bien que nous nous efforcions d'utiliser des moyens commercialement acceptables pour protéger vos informations personnelles, nous ne pouvons garantir leur sécurité absolue."
+    },
+    "sub-title-5": {
+        "title": "modifications apportées à cette politique de confidentialité",
+        "text-1": "cette politique de confidentialité est en vigueur à compter du {{effectiveDate}} et restera en vigueur, sauf en ce qui concerne toute modification de ses dispositions à l'avenir, qui entrera en vigueur immédiatement après sa publication sur cette page.",
+        "text-2": "nous nous réservons le droit de mettre à jour ou de modifier notre politique de confidentialité à tout moment, et vous devez vérifier cette politique de confidentialité périodiquement. Votre utilisation continue du Service après que nous ayons publié des modifications à la Politique de confidentialité sur cette page constituera votre reconnaissance des modifications et votre consentement à respecter et à être lié par la Politique de confidentialité modifiée."
+    },
+    "sub-title-6": {
+        "title": "Contactez-nous",
+        "text": "si vous avez des questions sur cette politique de confidentialité, veuillez nous contacter à {{contactEmail}}."
+    }
+}

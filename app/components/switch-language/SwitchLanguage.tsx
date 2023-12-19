@@ -1,6 +1,10 @@
 'use client';
 import { useTranslation } from '@/app/i18n/client';
-import { SupportedLanguages, SupportedLanguagesEnum, languages } from '@/app/i18n/settings';
+import {
+    SupportedLanguages,
+    SupportedLanguagesEnum,
+    languages,
+} from '@/app/i18n/settings';
 import Link from 'next/link';
 import React, { useRef, useState } from 'react';
 import styles from '@/app/components/switch-language/SwitchLanguage.module.css';
@@ -10,6 +14,7 @@ import SpainFlagIcon from '@/app/icons/country/SpainFlagIcon';
 import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
 import ArabeFlagIcon from '@/app/icons/country/ArabeFlagIcon';
+import { usePathname } from 'next/navigation';
 
 interface SwitchLanguageProps {
     lng: SupportedLanguages;
@@ -21,6 +26,7 @@ const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
     const [isSwitchOpened, setIsSwitchOpened] = useState(false);
     const buttonElement = useRef<HTMLButtonElement>(null);
     const { t } = useTranslation(lng, 'switch_language');
+    const pathname = usePathname();
     return (
         <button
             ref={buttonElement}
@@ -52,7 +58,7 @@ const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
                         return (
                             <li className={styles.lng_option} key={l}>
                                 <Link
-                                    href={`/${l}`}
+                                    href={`/${l}${pathname.slice(3)}`}
                                     // onClick={() => setIsSwitchOpened(false)}
                                 >
                                     <div className={styles.icon}>

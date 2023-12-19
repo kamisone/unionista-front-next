@@ -1,0 +1,32 @@
+{
+    "title": "Política de privacidad para {{brandTitle}}",
+    "introduction": {
+        "last-updated": "última actualización: {{lastUpdatedDate}}",
+        "text": "operamos {{siteUrl}}. Esta página le informa sobre nuestras políticas con respecto a la recopilación, uso y divulgación de información personal que recibimos de los usuarios del sitio."
+    },
+    "sub-title-1": {
+        "title": "recopilación y uso de información",
+        "text": "Al utilizar nuestro sitio, es posible que le solicitemos que nos proporcione cierta información de identificación personal que pueda usarse para contactarlo o identificarlo. La información de identificación personal puede incluir, entre otros, su nombre, dirección de correo electrónico, dirección postal y número de teléfono (\"Información personal\")."
+    },
+    "sub-title-2": {
+        "title": "Dato de registro",
+        "text": "Al igual que muchos operadores de sitios, recopilamos información que su navegador envía cada vez que visita nuestro Sitio (\"Datos de registro\"). Estos datos de registro pueden incluir información como la dirección del Protocolo de Internet (\"IP\") de su computadora, el tipo de navegador, la versión del navegador, las páginas de nuestro sitio que visita, la hora y fecha de su visita, el tiempo que pasa en esas páginas. y otras estadísticas."
+    },
+    "sub-title-3": {
+        "title": "cookies",
+        "text": "Las cookies son archivos con una pequeña cantidad de datos, que pueden incluir un identificador único anónimo. Las cookies se envían a su navegador desde un sitio web y se almacenan en el disco duro de su computadora."
+    },
+    "sub-title-4": {
+        "title": "seguridad",
+        "text": "La seguridad de su información personal es importante para nosotros, pero recuerde que ningún método de transmisión a través de Internet o método de almacenamiento electrónico es 100% seguro. Si bien nos esforzamos por utilizar medios comercialmente aceptables para proteger su información personal, no podemos garantizar su seguridad absoluta."
+    },
+    "sub-title-5": {
+        "title": "cambios a esta Política de Privacidad",
+        "text-1": "Esta Política de Privacidad entra en vigencia a partir del {{efectivoDate}} y permanecerá vigente excepto con respecto a cualquier cambio en sus disposiciones en el futuro, que entrará en vigencia inmediatamente después de su publicación en esta página.",
+        "text-2": "Nos reservamos el derecho de actualizar o cambiar nuestra Política de Privacidad en cualquier momento, y usted debe consultar esta Política de Privacidad periódicamente. Su uso continuado del Servicio después de que publiquemos cualquier modificación a la Política de Privacidad en esta página constituirá su reconocimiento de las modificaciones y su consentimiento para cumplir y estar sujeto a la Política de Privacidad modificada."
+    },
+    "sub-title-6": {
+        "title": "Contacta con nosotras",
+        "text": "Si tiene alguna pregunta sobre esta Política de privacidad, contáctenos en {{contactEmail}}."
+    }
+}

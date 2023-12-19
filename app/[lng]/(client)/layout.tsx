@@ -14,7 +14,6 @@ const ClientLayout = ({ children, params: { lng } }: ClientLayoutProps) => {
     return (
         <>
             <Header lng={lng} />
-            <h2>admin</h2>
             {children}
             <Footer lng={lng} />
             <CustomSnackbar lng={lng} />

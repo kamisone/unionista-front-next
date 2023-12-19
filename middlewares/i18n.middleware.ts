@@ -21,7 +21,6 @@ export function i18nMiddleware(req: NextRequest) {
             req.headers.get('accept-language')
         ) as SupportedLanguages;
     }
-    console.log('lng: here: ', lng);
     if (!lng) {
         lng = fallbackLng;
     }
