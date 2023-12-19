@@ -1,18 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { ModalContentMapping } from '@/app/utils/bottom-modal';
+'use client';
 
-const headerSlider = createSlice({
+import { ModalContentMapping } from '@/app/utils/bottom-modal';
+import { isBrowser } from '@/app/utils/is-browser';
+import { FrontQueryParams } from '@/app/utils/query-params';
+import { createSlice } from '@reduxjs/toolkit';
+
+// const urlSearch = new URLSearchParams(isBrowser() ? location.search : '');
+
+const headerSlice = createSlice({
     name: 'header',
     initialState: {
         isBottomModalOpen: false,
-        currentContent: ModalContentMapping.SIGN_IN,
+        currentContent: null,
     },
     reducers: {
         toggleBottomModal(state, action) {
-            ({
-                isBottomModalOpen: state.isBottomModalOpen,
-                currentContent: state.currentContent,
-            } = action.payload);
+            state.isBottomModalOpen = action.payload.isBottomModalOpen;
+            state.currentContent = action.payload.currentContent;
         },
         updateModalContent(state, action) {
             state.currentContent = action.payload;
@@ -20,6 +24,6 @@ const headerSlider = createSlice({
     },
 });
 
-export const { toggleBottomModal, updateModalContent } = headerSlider.actions;
+export const { toggleBottomModal, updateModalContent } = headerSlice.actions;
 
-export default headerSlider.reducer;
+export default headerSlice.reducer;

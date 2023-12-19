@@ -23,6 +23,7 @@ import {
     SupportedLanguagesEnum,
 } from '@/app/i18n/settings';
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
+import { usePathname, useRouter } from 'next/navigation';
 
 const authService = AuthService.getInstance();
 
@@ -47,6 +48,8 @@ const LoginContent = ({ lng }: LoginContentProps) => {
     const [isSwitched, setIsSwitched] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { t } = useTranslation(lng, 'login_content');
+    const router = useRouter();
+    const pathname = usePathname();
 
     const {
         register,

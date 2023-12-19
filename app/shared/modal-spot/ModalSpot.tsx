@@ -12,6 +12,7 @@ import {
     SupportedLanguages,
     SupportedLanguagesEnum,
 } from '@/app/i18n/settings';
+import { usePathname, useRouter } from 'next/navigation';
 // import ScaleBgWrapper from 'shared/scale-bg-wrapper/ScaleBgWrapper';
 
 interface ModalSpotProps {
@@ -24,10 +25,12 @@ const ModalSpot = (props: ModalSpotProps) => {
     const { t } = useTranslation();
     const { children, lng } = props;
     const [isDrawerQuitting, setIsDrawerQuitting] = useState(false);
+    // const router = useRouter();
 
     const onCloseDrawer = (duration = 300) => {
         setIsDrawerQuitting(true);
         setTimeout(() => {
+            // router.back();
             dispatch(
                 toggleBottomModal({
                     isBottomModalOpen: false,

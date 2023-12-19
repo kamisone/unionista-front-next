@@ -24,10 +24,14 @@ function RootLayout({ children, params: { lng } }: RootLayoutProps) {
     return (
         <StoreProvider>
             <html lang={lng} dir={dir(lng)}>
-                <head />
-                <body>
-                    {children}
-                </body>
+                <head>
+                    <script
+                        async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1060049744591818"
+                        crossOrigin="anonymous"
+                    ></script>
+                </head>
+                <body>{children}</body>
             </html>
         </StoreProvider>
     );

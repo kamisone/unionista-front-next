@@ -23,6 +23,10 @@ import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
 import SwitchLanguage from '../switch-language/SwitchLanguage';
 import LoadingIndicator from '@/app/shared/loading-indicator/LoadingIndicator';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useUserAuth } from '@/app/hooks/useUserAuth';
+import { useUpdateQuery } from '@/app/hooks/useUpdateQuery';
+import { FrontQueryParams } from '@/app/utils/query-params';
 
 interface HeaderProps {
     lng: SupportedLanguages;
@@ -34,6 +38,25 @@ const Header = ({ lng }: HeaderProps) => {
     const isBottomModalOpen = useAppSelector(
         (state) => state.header.isBottomModalOpen
     );
+    const searchParams = useSearchParams();
+    // useUserAuth();
+    // useUpdateQuery();
+
+    // initialize bottom modal
+    useEffect(() => {
+        dispatch(
+            toggleBottomModal({
+                isBottomModalOpen: searchParams.has(
+                    FrontQueryParams.MODAL_CONTENT
+                ),
+                currentContent: searchParams.has(FrontQueryParams.MODAL_CONTENT)
+                    ? (searchParams.get(
+                          FrontQueryParams.MODAL_CONTENT
+                      ) as ModalContentMapping)
+                    : null,
+            })
+        );
+    }, []);
 
     return (
         <div className={clsx('h_container', lng)}>
@@ -50,14 +73,14 @@ const Header = ({ lng }: HeaderProps) => {
                     )}
                 >
                     <li
-                        onClick={() =>
+                        onClick={() => {
                             dispatch(
                                 toggleBottomModal({
                                     isBottomModalOpen: !isBottomModalOpen,
                                     currentContent: ModalContentMapping.SIGN_IN,
                                 })
-                            )
-                        }
+                            );
+                        }}
                         className="h_nav_item h_text h_signin"
                     >
                         <button>{t('sign-in.title')}</button>

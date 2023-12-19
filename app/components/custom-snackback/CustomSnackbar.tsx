@@ -45,23 +45,25 @@ const CustomSnackbar = ({ lng }: CustomSnackbarProps) => {
         setSnackMessage(null);
     }
     return (
-        <Snackbar
-            open={isSnackShowed}
-            onClose={onSnackClose}
-            TransitionComponent={(props) => (
-                <Slide {...props} direction="left" />
-            )}
-            autoHideDuration={SNACKBAR_DURATION}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            ClickAwayListenerProps={{ mouseEvent: false }}
-        >
-            {SnackbarContent({
-                lng: lng,
-                severity: snackSeverity,
-                onClose: onSnackClose,
-                message: snackMessage ?? '',
-            })}
-        </Snackbar>
+        isSnackShowed && (
+            <Snackbar
+                open={isSnackShowed}
+                onClose={onSnackClose}
+                TransitionComponent={(props) => (
+                    <Slide {...props} direction="left" />
+                )}
+                autoHideDuration={SNACKBAR_DURATION}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                ClickAwayListenerProps={{ mouseEvent: false }}
+            >
+                {SnackbarContent({
+                    lng: lng,
+                    severity: snackSeverity,
+                    onClose: onSnackClose,
+                    message: snackMessage ?? '',
+                })}
+            </Snackbar>
+        )
     );
 };
 

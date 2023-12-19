@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const AdminHome = () => {
     return <h2>Admin home</h2>;

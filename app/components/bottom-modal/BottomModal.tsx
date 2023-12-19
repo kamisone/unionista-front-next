@@ -6,18 +6,25 @@ import { ModalContentMapping } from '@/app/utils/bottom-modal';
 import MenuDrawerContent from '@/app/components/modal-content/menu-drawer-content/MenuDrawerContent';
 import LoginContent from '@/app/components/modal-content/login-in-content/LoginContent';
 import { SupportedLanguages } from '@/app/i18n/settings';
+import {
+    ProductCategory,
+    ProductCategoryService,
+} from '@/app/services/product-category.service';
+import { useEffect, useState } from 'react';
 
-const menuItems = [
-    'Early Christmas Deals',
-    'Jewelry & Accessories',
-    'Clothing & shoes',
-    'Home & Living',
-    'Wedding & party',
-    'toys & entertainment',
-    'art & collectibles',
-    'craft supplies & tools',
-    'etsy registry',
-];
+const productCategoryService = ProductCategoryService.getInstance();
+
+// const menuItems = [
+//     'Early Christmas Deals',
+//     'Jewelry & Accessories',
+//     'Clothing & shoes',
+//     'Home & Living',
+//     'Wedding & party',
+//     'toys & entertainment',
+//     'art & collectibles',
+//     'craft supplies & tools',
+//     'etsy registry',
+// ];
 
 interface BottomModalProps {
     lng: SupportedLanguages;
@@ -25,15 +32,32 @@ interface BottomModalProps {
 
 const BottomModal = ({ lng }: BottomModalProps) => {
     const headerState = useAppSelector((state) => state.header);
+    const [productCategories, setProductCategories] = useState<
+        ProductCategory[]
+    >([]);
 
-    return (
-        headerState.isBottomModalOpen &&
-        _BottomModalContent(headerState.currentContent, lng)
+    useEffect(() => {
+        productCategoryService.list({ locale: lng }).then((data) => {
+            if (data) {
+                setProductCategories(data);
+            }
+        });
+    }, []);
+
+    if (!headerState.isBottomModalOpen) {
+        return null;
+    }
+
+    return _BottomModalContent(
+        headerState.currentContent,
+        productCategories,
+        lng
     );
 };
 
 function _BottomModalContent(
-    currentContent: ModalContentMapping,
+    currentContent: ModalContentMapping | null,
+    menuItems: any,
     lng: SupportedLanguages
 ) {
     switch (currentContent) {

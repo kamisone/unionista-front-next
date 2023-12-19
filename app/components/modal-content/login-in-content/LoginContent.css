@@ -41,13 +41,13 @@
 
 .sic_remember_me_container {
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     justify-content: space-between;
 }
 
 .sic_remember_me_container > .sic_remember_me_checkbox_container {
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     gap: var(--size-600);
 }
 

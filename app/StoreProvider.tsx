@@ -6,8 +6,10 @@ import { useRef } from 'react';
 import { Provider } from 'react-redux';
 
 const StoreProvider = ({ children }: { children: React.ReactNode }) => {
+    console.log('contentHeader: store provider');
     const storeRef = useRef<AppStore>();
     if (!storeRef.current) {
+        console.log('called contentHeader makestore')
         storeRef.current = makeStore({ header: headerSlice });
     }
 

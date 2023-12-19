@@ -1,6 +1,17 @@
 // import { environment } from 'environment/environment';
 import { ApiTokenService } from './api-token.service';
-import axios, { AxiosHeaders, AxiosInstance } from 'axios';
+import axios, {
+    AxiosError,
+    AxiosHeaders,
+    AxiosInstance,
+    InternalAxiosRequestConfig,
+} from 'axios';
+import { IWhere } from './product-category.service';
+import { AuthService } from './auth.service';
+import { SnackbarService, SnackbarSeverity } from './snackbar.service';
+
+// const authService = AuthService.getInstance();
+const snackbarService = SnackbarService.getInstance();
 
 export class HttpService {
     static myInstance: HttpService;
@@ -14,6 +25,67 @@ export class HttpService {
                 Authorization: 'Bearer ',
             },
         });
+
+        // interceptors:
+        this.axiosInstance.interceptors.request.use(
+            async (config) => {
+                console.log('request will go now');
+                if (config.url === AuthService.endpoints.REFRESH_TOKEN) {
+                    const refreshToken = AuthService.getRefreshToken();
+                    config.headers['Authorization'] = `bearer ${refreshToken}`;
+                } else {
+                    const accessToken = AuthService.getAccessToken();
+                    config.headers['Authorization'] = `bearer ${accessToken}`;
+                }
+
+                return config;
+            },
+
+            async (error) => {
+                snackbarService.openSnackbar({
+                    message: error.message,
+                    severity: SnackbarSeverity.ERROR,
+                });
+            }
+        );
+
+        this.axiosInstance.interceptors.response.use(
+            async (response) => {
+                const originalRequest = response.config;
+                if (
+                    [
+                        AuthService.endpoints.SIGN_IN,
+                        AuthService.endpoints.SIGN_UP,
+                    ].includes(originalRequest.url ?? '')
+                ) {
+                    const { accessToken, refreshToken } = response.data;
+                    AuthService.updateRefreshToken(refreshToken);
+                    AuthService.updateAccessToken(accessToken);
+                }
+                return response;
+            },
+            async (error: AxiosError) => {
+                const originalRequest = error.config as
+                    | InternalAxiosRequestConfig<any>
+                    | undefined;
+                if (
+                    originalRequest &&
+                    error.response?.status === 401 &&
+                    originalRequest.url != AuthService.endpoints.REFRESH_TOKEN
+                ) {
+                    console.log('refresh here: ', originalRequest.url);
+                    const data = await AuthService.refreshToken();
+                    if (!data) return;
+                    const { accessToken, refreshToken } = data;
+                    AuthService.updateRefreshToken(refreshToken);
+                    AuthService.updateAccessToken(accessToken);
+
+                    this.axiosInstance(originalRequest);
+                } else {
+                    throw error;
+                }
+            }
+        );
     }
 
     static getInstance() {
@@ -23,20 +95,22 @@ export class HttpService {
         return this.myInstance;
     }
 
-    async get({
+    async get<T>({
         path,
         queryParams,
     }: {
         path: string;
-        queryParams: Record<string, string>;
+        queryParams?: Record<string, unknown> & {
+            where?: IWhere[] | IWhere[][];
+        };
     }) {
         if (queryParams) {
             path = this._addQueryParams(path, queryParams);
         }
-        return this.axiosInstance.get(path);
+        return this.axiosInstance.get<T>(path);
     }
 
-    async post({
+    async post<T>({
         path,
         body,
         queryParams,
@@ -50,7 +124,7 @@ export class HttpService {
         if (queryParams) {
             path = this._addQueryParams(path, queryParams);
         }
-        return this.axiosInstance.post(path, body, {
+        return this.axiosInstance.post<T>(path, body, {
             headers,
         });
     }
@@ -96,7 +170,7 @@ export class HttpService {
     //     return '';
     // }
 
-    _addQueryParams(path: string, queryParamsObj: Record<string, string>) {
+    _addQueryParams(path: string, queryParamsObj: Record<string, any>) {
         // remove trailing/leading slashes
         path = path.replace(/(^\/|\/$)/g, '');
         // if (!queryParams) {
@@ -107,7 +181,12 @@ export class HttpService {
         const queryParams = new URLSearchParams();
 
         for (let key of keys) {
-            queryParams.append(key, queryParamsObj[key]);
+            queryParams.append(
+                key,
+                Array.isArray(queryParamsObj[key])
+                    ? JSON.stringify(queryParamsObj[key])
+                    : queryParamsObj[key]
+            );
         }
         return `${path}?${queryParams.toString()}`;
     }

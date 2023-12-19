@@ -2,6 +2,7 @@ import BottomModal from '@/app/components/bottom-modal/BottomModal';
 import CustomSnackbar from '@/app/components/custom-snackback/CustomSnackbar';
 import Footer from '@/app/components/footer/Footer';
 import Header from '@/app/components/header/Header';
+import { useUserAuth } from '@/app/hooks/useUserAuth';
 import { SupportedLanguages } from '@/app/i18n/settings';
 import { ReactNode } from 'react';
 

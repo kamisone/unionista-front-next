@@ -4,6 +4,7 @@ import { Trans } from 'react-i18next/TransWithoutContext';
 import Link from 'next/link';
 import { SupportedLanguages, languages } from '@/app/i18n/settings';
 import { useTranslation } from '@/app/i18n';
+import { useUserAuth } from '@/app/hooks/useUserAuth';
 
 interface FooterProps {
     lng: SupportedLanguages;
@@ -12,6 +13,7 @@ interface FooterProps {
 const Footer = async ({ lng }: FooterProps) => {
     console.log('languagessss: ', lng);
     const { t } = await useTranslation(lng);
+
     return (
         <footer style={{ marginTop: 50 }}>
             <Trans i18nKey="languageSwitcher" t={t}>
