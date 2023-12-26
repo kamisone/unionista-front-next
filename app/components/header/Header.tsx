@@ -25,8 +25,10 @@ import { useUserAuth } from '@/app/hooks/useUserAuth';
 import { useUpdateQuery } from '@/app/hooks/useUpdateQuery';
 import { FrontQueryParams } from '@/app/utils/query-params';
 import { BottomModalService } from '@/app/services/bottom-modal.service';
+import { AuthService } from '@/app/services/auth.service';
 
 const bottomModalService = BottomModalService.getInstance();
+const authService = AuthService.getInstance();
 
 interface HeaderProps {
     lng: SupportedLanguages;
@@ -34,8 +36,9 @@ interface HeaderProps {
 
 const Header = ({ lng }: HeaderProps) => {
     const { t } = useTranslation(lng, 'header');
-    const [isBottomModalOpen, setIsBottomModalOpen] = useState(
-        bottomModalService.state.isBottomModalOpen
+
+    const [isUserAuthenticated, setIsUserAuthenticated] = useState(
+        authService.state.isAuthenticated
     );
 
     useUserAuth();
@@ -43,9 +46,9 @@ const Header = ({ lng }: HeaderProps) => {
 
     // set notifiers
     useEffect(() => {
-        bottomModalService.addNotifier(
+        authService.addNotifier(
             (options) =>
-                options && setIsBottomModalOpen(options.state.isBottomModalOpen)
+                options && setIsUserAuthenticated(options.state.isAuthenticated)
         );
     }, []);
 
@@ -63,18 +66,20 @@ const Header = ({ lng }: HeaderProps) => {
                             : Graphik.className
                     )}
                 >
-                    <li
-                        onClick={() => {
-                            bottomModalService.state = {
-                                isBottomModalOpen: !isBottomModalOpen,
-                                currentBottomModalContent:
-                                    ModalContentMapping.SIGN_IN,
-                            };
-                        }}
-                        className="h_nav_item h_text h_signin"
-                    >
-                        <button>{t('sign-in.title')}</button>
-                    </li>
+                    {!isUserAuthenticated && (
+                        <li
+                            onClick={() => {
+                                bottomModalService.state = {
+                                    isBottomModalOpen: true,
+                                    currentBottomModalContent:
+                                        ModalContentMapping.SIGN_IN,
+                                };
+                            }}
+                            className="h_nav_item h_text h_signin"
+                        >
+                            <button>{t('sign-in.title')}</button>
+                        </li>
+                    )}
                     <li className={clsx('h_nav_item h_country_icon')}>
                         <SwitchLanguage lng={lng} />
                     </li>
@@ -122,7 +127,7 @@ const Header = ({ lng }: HeaderProps) => {
                 <button
                     onClick={() => {
                         bottomModalService.state = {
-                            isBottomModalOpen: !isBottomModalOpen,
+                            isBottomModalOpen: true,
                             currentBottomModalContent:
                                 ModalContentMapping.MENU_DRAWER,
                         };

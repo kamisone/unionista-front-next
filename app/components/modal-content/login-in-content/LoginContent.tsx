@@ -75,6 +75,15 @@ const LoginContent = ({ lng }: LoginContentProps) => {
         }, FADE_IN_ANIMATE_MS);
     }, []);
 
+    // set notifiers
+    useEffect(() => {
+        bottomModalService.addNotifier(
+            (options) =>
+                options &&
+                setBottomModalContent(options.state.currentBottomModalContent)
+        );
+    }, []);
+
     async function onSubmit(data: FormValues) {
         setIsSubmitting(true);
         try {

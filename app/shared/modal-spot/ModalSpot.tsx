@@ -34,18 +34,18 @@ const ModalSpot = (props: ModalSpotProps) => {
     );
 
     const onCloseDrawer = (duration = 300) => {
-        if (
-            (
-                [
-                    ModalContentMapping.SIGN_IN,
-                    ModalContentMapping.SIGN_UP,
-                ] as (ModalContentMapping | null)[]
-            ).includes(bottomModalContent)
-        ) {
-            authService.state = {
-                isUserNotifiedToSignin: true,
-            };
-        }
+        // if (
+        //     (
+        //         [
+        //             ModalContentMapping.SIGN_IN,
+        //             ModalContentMapping.SIGN_UP,
+        //         ] as (ModalContentMapping | null)[]
+        //     ).includes(bottomModalContent)
+        // ) {
+        //     authService.state = {
+        //         isUserNotifiedToSignin: true,
+        //     };
+        // }
         setIsDrawerQuitting(true);
         setTimeout(() => {
             bottomModalService.state = {

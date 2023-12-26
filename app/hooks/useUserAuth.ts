@@ -23,9 +23,8 @@ const useUserAuth = () => {
         intervalId.current = setInterval(() => {
             const refreshToken = AuthService.getRefreshToken();
             if (refreshToken) {
-                const isExpired = isTokenExpired(refreshToken);
+                const isExpired = AuthService.isTokenExpired(refreshToken);
                 if (isExpired) {
-                    // console.log('currentContent: ', modalContent);
                     if (
                         !(
                             [
@@ -35,6 +34,11 @@ const useUserAuth = () => {
                         ).includes(bottomModalContent) &&
                         !isUserAuthReminded
                     ) {
+                        AuthService.setIsUserNotifiedToSignIn();
+                        authService.state = {
+                            isAuthenticated: false,
+                            isUserNotifiedToSignin: true,
+                        };
                         bottomModalService.state = {
                             isBottomModalOpen: true,
                             currentBottomModalContent:
@@ -49,7 +53,7 @@ const useUserAuth = () => {
         return () => {
             clearInterval(intervalId.current);
         };
-    }, [bottomModalContent]);
+    }, [bottomModalContent, isUserAuthReminded, isUserAuthenticated]);
 
     // set state notifiers
     useEffect(() => {
@@ -58,19 +62,28 @@ const useUserAuth = () => {
                 setBottomModalContent(options.state.currentBottomModalContent);
         });
         authService.addNotifier((options) => {
-            options && [
-                setIsUserAuthReminded(options.state.isUserNotifiedToSignin),
-                setIsUserAuthenticated(options.state.isAuthenticated),
-            ];
+            if (options) {
+                setIsUserAuthReminded(options.state.isUserNotifiedToSignin);
+                setIsUserAuthenticated(options.state.isAuthenticated);
+            }
         });
     }, []);
 
-    function isTokenExpired(token: string) {
-        const jwtBody = token.split('.')[1];
-        if (!jwtBody) return true;
-        const expiry = JSON.parse(atob(jwtBody)).exp as number;
-        return Math.floor(Date.now() / 1000) >= expiry;
-    }
+    // set auth intialstate
+    useEffect(() => {
+        console.log(
+            'is User notified: ',
+            AuthService.getIsUserNotifiedToSignin() || false
+        );
+        const refreshToken = AuthService.getRefreshToken();
+        authService.state = {
+            isAuthenticated: refreshToken
+                ? !AuthService.isTokenExpired(refreshToken)
+                : false,
+            isUserNotifiedToSignin:
+                AuthService.getIsUserNotifiedToSignin() || false,
+        };
+    }, []);
 
     return isUserAuthenticated;
 };

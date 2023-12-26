@@ -20,13 +20,14 @@ const bottomModalService = BottomModalService.getInstance();
 export class HttpService {
     static myInstance: HttpService;
     axiosInstance: AxiosInstance;
+
     constructor(private apiTokenService: ApiTokenService) {
         console.log('hi the : ', process.env.REACT_APP_BASE_URL);
         this.axiosInstance = axios.create({
             baseURL: '/api',
             headers: {
-                // Authorization: this._getToken(),
-                Authorization: 'Bearer ',
+                Authorization: AuthService.getAccessToken(),
+                // Authorization: 'Bearer ',
             },
         });
 
@@ -91,12 +92,7 @@ export class HttpService {
                     originalRequest.url === AuthService.endpoints.REFRESH_TOKEN
                 ) {
                     console.log('refresh failed: ');
-                    // isBrowser() &&
-                    //     history.pushState(
-                    //         null,
-                    //         'UnionistaShop | Signin - SignUp',
-                    //         `${location.pathname}?modal_content=signin`
-                    //     );
+
                     bottomModalService.state = {
                         isBottomModalOpen: true,
                         currentBottomModalContent: ModalContentMapping.SIGN_IN,

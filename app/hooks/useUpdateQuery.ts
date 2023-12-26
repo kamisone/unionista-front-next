@@ -40,6 +40,7 @@ const useUpdateQuery = () => {
 
     // set notifiers
     useEffect(() => {
+        console.log('contentHeader  upd added notfier');
         bottomModalService.addNotifier(
             (options) =>
                 options &&
