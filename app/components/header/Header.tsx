@@ -7,13 +7,10 @@ import NotificationIcon from '@/app/icons/notification/NotificationIcon';
 import React, { useEffect, useState } from 'react';
 import TextInput from '@/app/shared/text-input/TextInput';
 import InputControl from '@/app/shared/input-control/InputControl';
-import { toggleBottomModal } from '@/app/lib/features/header/headerSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import Hamburger from '@/app/components/Hamburger/Hamburger';
 import SearchIcon from '@/app/icons/search-icon/SearchIcon';
 import { ModalContentMapping } from '@/app/utils/bottom-modal';
 import Link from 'next/link';
-import { useAppSelector } from '@/app/lib/store';
 import { useTranslation } from '@/app/i18n/client';
 import {
     SupportedLanguages,
@@ -27,6 +24,9 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useUserAuth } from '@/app/hooks/useUserAuth';
 import { useUpdateQuery } from '@/app/hooks/useUpdateQuery';
 import { FrontQueryParams } from '@/app/utils/query-params';
+import { BottomModalService } from '@/app/services/bottom-modal.service';
+
+const bottomModalService = BottomModalService.getInstance();
 
 interface HeaderProps {
     lng: SupportedLanguages;
@@ -34,29 +34,15 @@ interface HeaderProps {
 
 const Header = ({ lng }: HeaderProps) => {
     const { t } = useTranslation(lng, 'header');
-    const dispatch = useDispatch();
-    const isBottomModalOpen = useAppSelector(
-        (state) => state.header.isBottomModalOpen
+    const [isBottomModalOpen, setIsBottomModalOpen] = useState(
+        bottomModalService.state.isBottomModalOpen
     );
-    const searchParams = useSearchParams();
-    // useUserAuth();
-    // useUpdateQuery();
+    const [bottomModalContent, setBottomModalContent] = useState(
+        bottomModalService.state.currentBottomModalContent
+    );
 
-    // initialize bottom modal
-    useEffect(() => {
-        dispatch(
-            toggleBottomModal({
-                isBottomModalOpen: searchParams.has(
-                    FrontQueryParams.MODAL_CONTENT
-                ),
-                currentContent: searchParams.has(FrontQueryParams.MODAL_CONTENT)
-                    ? (searchParams.get(
-                          FrontQueryParams.MODAL_CONTENT
-                      ) as ModalContentMapping)
-                    : null,
-            })
-        );
-    }, []);
+    useUserAuth();
+    useUpdateQuery();
 
     return (
         <div className={clsx('h_container', lng)}>
@@ -74,12 +60,11 @@ const Header = ({ lng }: HeaderProps) => {
                 >
                     <li
                         onClick={() => {
-                            dispatch(
-                                toggleBottomModal({
-                                    isBottomModalOpen: !isBottomModalOpen,
-                                    currentContent: ModalContentMapping.SIGN_IN,
-                                })
-                            );
+                            bottomModalService.state = {
+                                isBottomModalOpen: !isBottomModalOpen,
+                                currentBottomModalContent:
+                                    ModalContentMapping.SIGN_IN,
+                            };
                         }}
                         className="h_nav_item h_text h_signin"
                     >
@@ -131,12 +116,11 @@ const Header = ({ lng }: HeaderProps) => {
             <div className="h_sub_part">
                 <button
                     onClick={() => {
-                        dispatch(
-                            toggleBottomModal({
-                                isBottomModalOpen: !isBottomModalOpen,
-                                currentContent: ModalContentMapping.MENU_DRAWER,
-                            })
-                        );
+                        bottomModalService.state = {
+                            isBottomModalOpen: !isBottomModalOpen,
+                            currentBottomModalContent:
+                                ModalContentMapping.MENU_DRAWER,
+                        };
                     }}
                 >
                     <Hamburger />

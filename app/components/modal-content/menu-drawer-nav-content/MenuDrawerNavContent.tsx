@@ -1,7 +1,7 @@
 import DropListArrowIcon from '@/app/icons/drop-list-arrow/DropListArrowIcon';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
-import '@/app/components/modal-content/menu-drawer-content/MenuDrawerContent.css';
+import '@/app/components/modal-content/menu-drawer-nav-content/MenuDrawerNavContent.css';
 import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
 import {
@@ -9,14 +9,30 @@ import {
     SupportedLanguagesEnum,
 } from '@/app/i18n/settings';
 import Link from 'next/link';
+import {
+    ProductCategory,
+    ProductCategoryService,
+} from '@/app/services/product-category.service';
+import { ModalContentMapping } from '@/app/utils/bottom-modal';
 
-interface MenuDrawerContentProps {
-    lng: SupportedLanguages;
-    menuItems: any[];
+const productCategoryService = ProductCategoryService.getInstance();
+
+interface MenuDrawerNavItem {
+    id: string;
+    hasChildren: boolean;
+    translations: {
+        name: string;
+    };
 }
 
-const MenuDrawerContent = (props: MenuDrawerContentProps) => {
-    const { menuItems, lng } = props;
+interface MenuDrawerNavContentProps {
+    lng: SupportedLanguages;
+    menuItems: MenuDrawerNavItem[];
+}
+
+const MenuDrawerNavContent = (props: MenuDrawerNavContentProps) => {
+    const { lng, menuItems } = props;
+
     return (
         <ul
             className={clsx(
@@ -30,7 +46,7 @@ const MenuDrawerContent = (props: MenuDrawerContentProps) => {
             {menuItems.map((menuItem) => {
                 return (
                     <li key={menuItem.id}>
-                        {menuItem.hasChilds ? (
+                        {menuItem.hasChildren ? (
                             <Link href={`/${lng}/${menuItem.id}`}>
                                 {menuItem.translations.name}
                             </Link>
@@ -45,4 +61,4 @@ const MenuDrawerContent = (props: MenuDrawerContentProps) => {
     );
 };
 
-export default MenuDrawerContent;
+export default MenuDrawerNavContent;

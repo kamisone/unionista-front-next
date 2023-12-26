@@ -1,29 +1,31 @@
-import { useEffect, useRef } from 'react';
-import { useAppSelector } from '@/app/lib/store';
+import { useEffect, useRef, useState } from 'react';
 import {
     ReadonlyURLSearchParams,
     usePathname,
     useRouter,
     useSearchParams,
 } from 'next/navigation';
-import { ModalContentMapping } from '@/app/utils/bottom-modal';
-import { useSelector } from 'react-redux';
 import { FrontQueryParams } from '../utils/query-params';
+import { BottomModalService } from '../services/bottom-modal.service';
+
+const bottomModalService = BottomModalService.getInstance();
 
 const useUpdateQuery = () => {
-    const modalContent = useAppSelector((state) => state.header.currentContent);
+    const [bottomModalContent, setBottomModalContent] = useState(
+        bottomModalService.state.currentBottomModalContent
+    );
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        console.log('contentHeader updatequery: ', modalContent);
-        if (modalContent) {
+        console.log('contentHeader updatequery: ', bottomModalContent);
+        if (bottomModalContent) {
             router.replace(
                 `${pathname}?${addQueryParamToUrl(
                     searchParams,
                     FrontQueryParams.MODAL_CONTENT,
-                    modalContent
+                    bottomModalContent
                 )}`
             );
         } else {
@@ -34,7 +36,7 @@ const useUpdateQuery = () => {
                 )}`
             );
         }
-    }, [modalContent]);
+    }, [bottomModalContent]);
 
     function stripQueryParamFromUrl(
         searchParams: ReadonlyURLSearchParams,

@@ -1,5 +1,3 @@
-'use client';
-
 import i18next, { Namespace } from 'i18next';
 import {
     initReactI18next,

@@ -1,22 +1,40 @@
 // import { FormValues } from '@/app/components/modal-content/login-in-content/LoginContent';
 import { isBrowser } from '../utils/is-browser';
+import { ComponentsStateNotify } from './components-state-notify.service';
 import { HttpService } from './http.service';
 import { SnackbarService, SnackbarSeverity } from './snackbar.service';
 import { AxiosError } from 'axios';
-import React from 'react';
 
-const httpService = HttpService.getInstance();
 const snackbarService = SnackbarService.getInstance();
 
 export const EMAIL_REGEX =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export class AuthService {
+export interface AuthState {
+    isAuthenticated: boolean;
+    isUserNotifiedToSignin: boolean;
+}
+
+interface INotifyOptions {
+    state: AuthState;
+}
+
+export class AuthService extends ComponentsStateNotify<
+    AuthState,
+    INotifyOptions
+> {
+    constructor(initialState: AuthState) {
+        super(initialState);
+    }
     static myInstance: AuthService;
+    httpService: HttpService = HttpService.getInstance();
 
     static getInstance() {
         if (!AuthService.myInstance) {
-            AuthService.myInstance = new AuthService();
+            AuthService.myInstance = new AuthService({
+                isAuthenticated: false,
+                isUserNotifiedToSignin: false,
+            });
         }
         return this.myInstance;
     }
@@ -48,7 +66,7 @@ export class AuthService {
 
     async signinUser(data: Record<string, unknown>) {
         try {
-            const response = await httpService.post<UserWithTokens>({
+            const response = await this.httpService.post<UserWithTokens>({
                 path: AuthService.endpoints.SIGN_IN,
                 body: data,
             });
@@ -68,7 +86,7 @@ export class AuthService {
     }
     async signupUser(data: Record<string, unknown>) {
         try {
-            const response = await httpService.post<UserWithTokens>({
+            const response = await this.httpService.post<UserWithTokens>({
                 path: AuthService.endpoints.SIGN_UP,
                 body: data,
             });
@@ -91,6 +109,7 @@ export class AuthService {
     }
 
     static async refreshToken() {
+        const httpService = HttpService.getInstance();
         try {
             const response = await httpService.get<AuthTokens>({
                 path: AuthService.endpoints.REFRESH_TOKEN,

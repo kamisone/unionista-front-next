@@ -9,6 +9,9 @@ import axios, {
 import { IWhere } from './product-category.service';
 import { AuthService } from './auth.service';
 import { SnackbarService, SnackbarSeverity } from './snackbar.service';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { isBrowser } from '../utils/is-browser';
 
 // const authService = AuthService.getInstance();
 const snackbarService = SnackbarService.getInstance();
@@ -81,6 +84,18 @@ export class HttpService {
                     AuthService.updateAccessToken(accessToken);
 
                     this.axiosInstance(originalRequest);
+                } else if (
+                    originalRequest &&
+                    error.response?.status === 401 &&
+                    originalRequest.url === AuthService.endpoints.REFRESH_TOKEN
+                ) {
+                    console.log('refresh failed: ');
+                    isBrowser() &&
+                        history.pushState(
+                            null,
+                            'UnionistaShop | Signin - SignUp',
+                            `${location.pathname}?modal_content=signin`
+                        );
                 } else {
                     throw error;
                 }

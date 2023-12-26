@@ -1,6 +1,7 @@
 .h_container {
     position: relative;
     z-index: 1;
+    border: 1px solid red;
 }
 
 .h_container .h_top_part {
@@ -62,9 +63,10 @@
 .h_nav_item a::after,
 .h_nav_item a::before {
     position: absolute;
-    transform: translateX(-50%) translateY(5px);
+
     color: var(--clg-color-sem-text-on-surface-strong, 'white');
-    left: 50%;
+    /* left: 50%; */
+
     pointer-events: none;
     transition: all 0.25s ease-out;
     z-index: 1;
@@ -73,6 +75,8 @@
 .h_nav_item.h_icon a::before {
     /* content: revert; */
     content: var(--nav-icon-title);
+    transform: translateY(5px);
+    right: 0;
     top: calc(100% + var(--tooltip-gap));
     width: fit-content;
     padding: 5px 8px;
@@ -83,6 +87,8 @@
 }
 .h_nav_item.h_icon a::after {
     content: '';
+    transform: translateX(-50%) translateY(5px);
+    left: 50%;
     bottom: calc(var(--tooltip-gap) * -1);
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
@@ -91,7 +97,10 @@
     opacity: 0;
 }
 
-.h_nav_item:hover a::before,
+.h_nav_item:hover a::before {
+    opacity: 1;
+    transform: translateY(0);
+}
 .h_nav_item:hover a::after {
     opacity: 1;
     transform: translateX(-50%) translateY(0);

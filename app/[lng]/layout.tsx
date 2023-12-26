@@ -3,11 +3,6 @@ import { dir } from 'i18next';
 import './globals.css';
 import { ReactNode } from 'react';
 import { SupportedLanguages, languages } from '@/app/i18n/settings';
-import StoreProvider from '@/app/StoreProvider';
-import Header from '@/app/components/header/Header';
-import Footer from '@/app/components/footer/Footer';
-import CustomSnackbar from '../components/custom-snackback/CustomSnackbar';
-import BottomModal from '../components/bottom-modal/BottomModal';
 
 interface RootLayoutProps {
     children: ReactNode;
@@ -22,19 +17,17 @@ export async function generateStaticParams() {
 
 function RootLayout({ children, params: { lng } }: RootLayoutProps) {
     return (
-        <StoreProvider>
-            <html lang={lng} dir={dir(lng)}>
-                <head>
-                    <title>Unionistashop | Ventes</title>
-                    <script
-                        async
-                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1060049744591818"
-                        crossOrigin="anonymous"
-                    ></script>
-                </head>
-                <body>{children}</body>
-            </html>
-        </StoreProvider>
+        <html lang={lng} dir={dir(lng)}>
+            <head>
+                <title>Unionistashop | Ventes</title>
+                <script
+                    async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1060049744591818"
+                    crossOrigin="anonymous"
+                ></script>
+            </head>
+            <body>{children}</body>
+        </html>
     );
 }
 

@@ -1,70 +1,99 @@
 'use client';
-
-import { useAppSelector } from '@/app/lib/store';
 import ModalSpot from '@/app/shared/modal-spot/ModalSpot';
 import { ModalContentMapping } from '@/app/utils/bottom-modal';
-import MenuDrawerContent from '@/app/components/modal-content/menu-drawer-content/MenuDrawerContent';
+import MenuDrawerNavContent from '@/app/components/modal-content/menu-drawer-nav-content/MenuDrawerNavContent';
 import LoginContent from '@/app/components/modal-content/login-in-content/LoginContent';
 import { SupportedLanguages } from '@/app/i18n/settings';
 import {
     ProductCategory,
     ProductCategoryService,
 } from '@/app/services/product-category.service';
-import { useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { FrontQueryParams } from '@/app/utils/query-params';
+import LoadingIndicator from '@/app/shared/loading-indicator/LoadingIndicator';
+import { BottomModalService } from '@/app/services/bottom-modal.service';
 
 const productCategoryService = ProductCategoryService.getInstance();
-
-// const menuItems = [
-//     'Early Christmas Deals',
-//     'Jewelry & Accessories',
-//     'Clothing & shoes',
-//     'Home & Living',
-//     'Wedding & party',
-//     'toys & entertainment',
-//     'art & collectibles',
-//     'craft supplies & tools',
-//     'etsy registry',
-// ];
+const bottomModalService = BottomModalService.getInstance();
 
 interface BottomModalProps {
     lng: SupportedLanguages;
 }
 
 const BottomModal = ({ lng }: BottomModalProps) => {
-    const headerState = useAppSelector((state) => state.header);
-    const [productCategories, setProductCategories] = useState<
-        ProductCategory[]
-    >([]);
+    const [productCategories, setProductCategories] = useState(
+        productCategoryService.state.list
+    );
+
+    const [currentBottomModalContent, setBottomModalContent] = useState(
+        bottomModalService.state.currentBottomModalContent
+    );
+    const [isBottomModalOpen, setIsBottomModalOpen] = useState(
+        bottomModalService.state.isBottomModalOpen
+    );
+    const searchParams = useSearchParams();
 
     useEffect(() => {
-        productCategoryService.list({ locale: lng }).then((data) => {
-            if (data) {
-                setProductCategories(data);
+        if (
+            !productCategories &&
+            currentBottomModalContent === ModalContentMapping.MENU_DRAWER
+        ) {
+            productCategoryService.list({ locale: lng }).then((data) => {
+                if (data) {
+                    productCategoryService.state = {
+                        list: data,
+                    };
+                }
+            });
+        }
+    }, [currentBottomModalContent]);
+
+    //initialize bottom modal state
+    useEffect(() => {
+        const searchParamsUrl = new URLSearchParams(
+            Array.from(searchParams.entries())
+        );
+        if (searchParamsUrl.has(FrontQueryParams.MODAL_CONTENT)) {
+            bottomModalService.state = {
+                isBottomModalOpen: true,
+                currentBottomModalContent: searchParams.get(
+                    FrontQueryParams.MODAL_CONTENT
+                ) as ModalContentMapping,
+            };
+        }
+    }, []);
+
+    // set Notifiers
+    useEffect(() => {
+        productCategoryService.addNotifier(
+            (options) => options && setProductCategories(options.state.list)
+        );
+
+        bottomModalService.addNotifier((options) => {
+            if (options) {
+                setIsBottomModalOpen(options.state.isBottomModalOpen);
+                setBottomModalContent(options.state.currentBottomModalContent);
             }
         });
     }, []);
 
-    if (!headerState.isBottomModalOpen) {
+    if (!isBottomModalOpen) {
         return null;
     }
 
-    return _BottomModalContent(
-        headerState.currentContent,
-        productCategories,
-        lng
-    );
-};
-
-function _BottomModalContent(
-    currentContent: ModalContentMapping | null,
-    menuItems: any,
-    lng: SupportedLanguages
-) {
-    switch (currentContent) {
+    switch (currentBottomModalContent) {
         case ModalContentMapping.MENU_DRAWER:
             return (
                 <ModalSpot lng={lng}>
-                    <MenuDrawerContent menuItems={menuItems} lng={lng} />
+                    {productCategories ? (
+                        <MenuDrawerNavContent
+                            menuItems={productCategories}
+                            lng={lng}
+                        />
+                    ) : (
+                        <LoadingIndicator />
+                    )}
                 </ModalSpot>
             );
         case ModalContentMapping.SIGN_IN:
@@ -82,6 +111,6 @@ function _BottomModalContent(
                 </ModalSpot>
             );
     }
-}
+};
 
 export default BottomModal;

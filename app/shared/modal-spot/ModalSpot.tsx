@@ -1,8 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import PropTypes from 'prop-types';
 import './ModalSpot.css';
-import { useDispatch } from 'react-redux';
-import { toggleBottomModal } from '@/app/lib/features/header/headerSlice';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import ScaleBgWrapper from '@/app/shared/scale-bg-wrapper/ScaleBgWrapper';
@@ -13,7 +11,13 @@ import {
     SupportedLanguagesEnum,
 } from '@/app/i18n/settings';
 import { usePathname, useRouter } from 'next/navigation';
+import { ModalContentMapping } from '@/app/utils/bottom-modal';
+import { BottomModalService } from '@/app/services/bottom-modal.service';
+import { AuthService } from '@/app/services/auth.service';
 // import ScaleBgWrapper from 'shared/scale-bg-wrapper/ScaleBgWrapper';
+
+const bottomModalService = BottomModalService.getInstance();
+const authService = AuthService.getInstance();
 
 interface ModalSpotProps {
     children: ReactNode[] | ReactNode | string;
@@ -21,22 +25,33 @@ interface ModalSpotProps {
 }
 
 const ModalSpot = (props: ModalSpotProps) => {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
     const { children, lng } = props;
     const [isDrawerQuitting, setIsDrawerQuitting] = useState(false);
     // const router = useRouter();
+    const [bottomModalContent, setBottomModalContent] = useState(
+        bottomModalService.state.currentBottomModalContent
+    );
 
     const onCloseDrawer = (duration = 300) => {
+        if (
+            (
+                [
+                    ModalContentMapping.SIGN_IN,
+                    ModalContentMapping.SIGN_UP,
+                ] as (ModalContentMapping | null)[]
+            ).includes(bottomModalContent)
+        ) {
+            authService.state = {
+                isUserNotifiedToSignin: true,
+            };
+        }
         setIsDrawerQuitting(true);
         setTimeout(() => {
-            // router.back();
-            dispatch(
-                toggleBottomModal({
-                    isBottomModalOpen: false,
-                    currentContent: null,
-                })
-            );
+            bottomModalService.state = {
+                isBottomModalOpen: false,
+                currentBottomModalContent: null,
+            };
         }, duration);
     };
 

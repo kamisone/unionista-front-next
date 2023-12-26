@@ -11,11 +11,8 @@ import GoogleIcon from '@/app/icons/google/GoogleIcon';
 import { useForm } from 'react-hook-form';
 import { AuthService } from '@/app/services/auth.service';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { ModalContentMapping } from '@/app/utils/bottom-modal';
-import { updateModalContent } from '@/app/lib/features/header/headerSlice';
 import clsx from 'clsx';
-import { useAppSelector } from '@/app/lib/store';
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
 import {
@@ -24,8 +21,10 @@ import {
 } from '@/app/i18n/settings';
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
 import { usePathname, useRouter } from 'next/navigation';
+import { BottomModalService } from '@/app/services/bottom-modal.service';
 
 const authService = AuthService.getInstance();
+const bottomModalService = BottomModalService.getInstance();
 
 const FADE_IN_ANIMATE_MS = 700; // 700ms;
 
@@ -42,14 +41,19 @@ interface LoginContentProps {
 
 const LoginContent = ({ lng }: LoginContentProps) => {
     const [isPassDiscovered, setIsPassDiscovered] = useState(false);
-    const dispatch = useDispatch();
-    const headerState = useAppSelector((state) => state.header);
-    const isSignin = headerState.currentContent == ModalContentMapping.SIGN_IN;
+
     const [isSwitched, setIsSwitched] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { t } = useTranslation(lng, 'login_content');
     const router = useRouter();
     const pathname = usePathname();
+    const [bottomModalContent, setBottomModalContent] = useState(
+        bottomModalService.state.currentBottomModalContent
+    );
+    const [isBottomModalOpen, setIsBottomModalOpen] = useState(
+        bottomModalService.state.isBottomModalOpen
+    );
+    const isSignin = bottomModalContent == ModalContentMapping.SIGN_IN;
 
     const {
         register,
@@ -115,15 +119,12 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         setTimeout(() => {
                             setIsSwitched(false);
                         }, FADE_IN_ANIMATE_MS);
-                        dispatch(
-                            isSignin
-                                ? updateModalContent(
-                                      ModalContentMapping.SIGN_UP
-                                  )
-                                : updateModalContent(
-                                      ModalContentMapping.SIGN_IN
-                                  )
-                        );
+
+                        bottomModalService.state = {
+                            currentBottomModalContent: isSignin
+                                ? ModalContentMapping.SIGN_UP
+                                : ModalContentMapping.SIGN_IN,
+                        };
                     }}
                     variant="secondary"
                     radius="pilled"

@@ -1,65 +1,45 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AuthService } from '../services/auth.service';
-import { useDispatch } from 'react-redux';
-import { toggleBottomModal } from '../lib/features/header/headerSlice';
 import { ModalContentMapping } from '../utils/bottom-modal';
-import { useAppDispatch, useAppSelector } from '../lib/store';
+import { BottomModalService } from '@/app/services/bottom-modal.service';
+
+const bottomModalService = BottomModalService.getInstance();
+const authService = AuthService.getInstance();
 
 const useUserAuth = () => {
-    const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
-    const [refreshToken] = useState(AuthService.getRefreshToken());
-    const headerState = useAppSelector((state) => state.header);
-    const dispatch = useAppDispatch();
+    const [isUserAuthenticated, setIsUserAuthenticated] = useState(
+        authService.state.isAuthenticated
+    );
+    const [isUserAuthReminded, setIsUserAuthReminded] = useState(
+        authService.state.isUserNotifiedToSignin
+    );
+    const intervalId = useRef<NodeJS.Timeout | undefined>();
+    const [bottomModalContent, setBottomModalContent] = useState(
+        bottomModalService.state.currentBottomModalContent
+    );
 
     useEffect(() => {
-        if (refreshToken) {
-            const isExpired = isTokenExpired(refreshToken);
-            if (isExpired) {
-                if (
-                    !(
-                        [
-                            ModalContentMapping.SIGN_IN,
-                            ModalContentMapping.SIGN_UP,
-                        ] as (ModalContentMapping | null)[]
-                    ).includes(headerState.currentContent)
-                ) {
-                    dispatch(
-                        toggleBottomModal({
-                            isBottomModalOpen: true,
-                            currentContent: ModalContentMapping.SIGN_IN,
-                        })
-                    );
-                }
-
-                setIsUserAuthenticated(isExpired);
-            }
-        }
-
-        const intervalId = setInterval(function () {
+        clearInterval(intervalId.current);
+        intervalId.current = setInterval(() => {
             const refreshToken = AuthService.getRefreshToken();
             if (refreshToken) {
                 const isExpired = isTokenExpired(refreshToken);
                 if (isExpired) {
-                    console.log(
-                        'current contentHeader: ',
-                        headerState.currentContent,
-                        headerState.isBottomModalOpen
-                    );
+                    // console.log('currentContent: ', modalContent);
                     if (
                         !(
                             [
                                 ModalContentMapping.SIGN_IN,
                                 ModalContentMapping.SIGN_UP,
                             ] as (ModalContentMapping | null)[]
-                        ).includes(headerState.currentContent)
+                        ).includes(bottomModalContent) &&
+                        !isUserAuthReminded
                     ) {
-                        console.log('yes expired contentHeader');
-                        dispatch(
-                            toggleBottomModal({
-                                isBottomModalOpen: true,
-                                currentContent: ModalContentMapping.SIGN_IN,
-                            })
-                        );
+                        bottomModalService.state = {
+                            isBottomModalOpen: true,
+                            currentBottomModalContent:
+                                ModalContentMapping.SIGN_IN,
+                        };
                     }
                 }
                 setIsUserAuthenticated(!isExpired);
@@ -67,8 +47,22 @@ const useUserAuth = () => {
         }, 5000);
 
         return () => {
-            clearInterval(intervalId);
+            clearInterval(intervalId.current);
         };
+    }, [bottomModalContent]);
+
+    // set state notifiers
+    useEffect(() => {
+        bottomModalService.addNotifier((options) => {
+            options &&
+                setBottomModalContent(options.state.currentBottomModalContent);
+        });
+        authService.addNotifier((options) => {
+            options && [
+                setIsUserAuthReminded(options.state.isUserNotifiedToSignin),
+                setIsUserAuthenticated(options.state.isAuthenticated),
+            ];
+        });
     }, []);
 
     function isTokenExpired(token: string) {

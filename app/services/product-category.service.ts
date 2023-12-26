@@ -2,9 +2,19 @@ import { AxiosError } from 'axios';
 import { SupportedLanguages } from '../i18n/settings';
 import { HttpService } from './http.service';
 import { SnackbarService, SnackbarSeverity } from './snackbar.service';
+import { ComponentsStateNotify } from './components-state-notify.service';
 
 const httpService = HttpService.getInstance();
 const snackbarService = SnackbarService.getInstance();
+
+interface ProductCategoryState {
+    list?: ProductCategory[];
+}
+
+interface INotifyOptions {
+    state: ProductCategoryState;
+}
+
 export interface ProductCategory {
     id: string;
     imagePath: string | null;
@@ -14,16 +24,23 @@ export interface ProductCategory {
         name: string;
         description: string | null;
     };
+    hasChildren: boolean;
 }
 
-export class ProductCategoryService {
+export class ProductCategoryService extends ComponentsStateNotify<
+    ProductCategoryState,
+    INotifyOptions
+> {
+    constructor(initialState: ProductCategoryState) {
+        super(initialState);
+    }
     static myInstance: ProductCategoryService;
-
-    constructor() {}
 
     static getInstance() {
         if (!ProductCategoryService.myInstance) {
-            ProductCategoryService.myInstance = new ProductCategoryService();
+            ProductCategoryService.myInstance = new ProductCategoryService({
+                list: undefined,
+            });
         }
         return this.myInstance;
     }
@@ -42,7 +59,7 @@ export class ProductCategoryService {
         locale,
     }: {
         locale: SupportedLanguages;
-    }): Promise<ProductCategory[] | undefined> {
+    }): Promise<ProductCategory[]> {
         try {
             const response = await httpService.get<ProductCategory[]>({
                 path: ProductCategoryService.endpoints.ALL_PRODUCT_CATEGORIES,
@@ -70,6 +87,7 @@ export class ProductCategoryService {
                     throw new Error(error.response.data?.message);
                 }
             }
+            return [];
         }
     }
 }

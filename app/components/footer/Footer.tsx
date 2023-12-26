@@ -8,12 +8,14 @@ import { SupportedLanguages, languages } from '@/app/i18n/settings';
 import { useTranslation } from '@/app/i18n';
 import { useUserAuth } from '@/app/hooks/useUserAuth';
 import { usePathname, useRouter } from 'next/navigation';
+import { useUpdateQuery } from '@/app/hooks/useUpdateQuery';
 
 interface FooterProps {
     lng: SupportedLanguages;
 }
 
 const Footer = ({ lng }: FooterProps) => {
+    // useUpdateQuery();
     console.log('languagessss: ', lng);
     // const { t } = await useTranslation(lng);
     const pathname = usePathname();
