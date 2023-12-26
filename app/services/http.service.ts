@@ -9,12 +9,13 @@ import axios, {
 import { IWhere } from './product-category.service';
 import { AuthService } from './auth.service';
 import { SnackbarService, SnackbarSeverity } from './snackbar.service';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { isBrowser } from '../utils/is-browser';
+
+import { BottomModalService } from './bottom-modal.service';
+import { ModalContentMapping } from '@/app/utils/bottom-modal';
 
 // const authService = AuthService.getInstance();
 const snackbarService = SnackbarService.getInstance();
+const bottomModalService = BottomModalService.getInstance();
 
 export class HttpService {
     static myInstance: HttpService;
@@ -90,12 +91,16 @@ export class HttpService {
                     originalRequest.url === AuthService.endpoints.REFRESH_TOKEN
                 ) {
                     console.log('refresh failed: ');
-                    isBrowser() &&
-                        history.pushState(
-                            null,
-                            'UnionistaShop | Signin - SignUp',
-                            `${location.pathname}?modal_content=signin`
-                        );
+                    // isBrowser() &&
+                    //     history.pushState(
+                    //         null,
+                    //         'UnionistaShop | Signin - SignUp',
+                    //         `${location.pathname}?modal_content=signin`
+                    //     );
+                    bottomModalService.state = {
+                        isBottomModalOpen: true,
+                        currentBottomModalContent: ModalContentMapping.SIGN_IN,
+                    };
                 } else {
                     throw error;
                 }

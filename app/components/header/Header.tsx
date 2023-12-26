@@ -37,12 +37,17 @@ const Header = ({ lng }: HeaderProps) => {
     const [isBottomModalOpen, setIsBottomModalOpen] = useState(
         bottomModalService.state.isBottomModalOpen
     );
-    const [bottomModalContent, setBottomModalContent] = useState(
-        bottomModalService.state.currentBottomModalContent
-    );
 
     useUserAuth();
     useUpdateQuery();
+
+    // set notifiers
+    useEffect(() => {
+        bottomModalService.addNotifier(
+            (options) =>
+                options && setIsBottomModalOpen(options.state.isBottomModalOpen)
+        );
+    }, []);
 
     return (
         <div className={clsx('h_container', lng)}>

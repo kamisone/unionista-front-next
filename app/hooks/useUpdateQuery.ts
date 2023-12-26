@@ -5,8 +5,8 @@ import {
     useRouter,
     useSearchParams,
 } from 'next/navigation';
-import { FrontQueryParams } from '../utils/query-params';
-import { BottomModalService } from '../services/bottom-modal.service';
+import { FrontQueryParams } from '@/app/utils/query-params';
+import { BottomModalService } from '@/app/services/bottom-modal.service';
 
 const bottomModalService = BottomModalService.getInstance();
 
@@ -37,6 +37,15 @@ const useUpdateQuery = () => {
             );
         }
     }, [bottomModalContent]);
+
+    // set notifiers
+    useEffect(() => {
+        bottomModalService.addNotifier(
+            (options) =>
+                options &&
+                setBottomModalContent(options.state.currentBottomModalContent)
+        );
+    }, []);
 
     function stripQueryParamFromUrl(
         searchParams: ReadonlyURLSearchParams,

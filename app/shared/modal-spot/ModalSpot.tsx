@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './ModalSpot.css';
 import { useTranslation } from 'react-i18next';
@@ -54,6 +54,15 @@ const ModalSpot = (props: ModalSpotProps) => {
             };
         }, duration);
     };
+
+    // set notifiers
+    useEffect(() => {
+        bottomModalService.addNotifier(
+            (options) =>
+                options &&
+                setBottomModalContent(options.state.currentBottomModalContent)
+        );
+    }, []);
 
     return (
         <div
