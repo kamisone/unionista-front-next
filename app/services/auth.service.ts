@@ -15,7 +15,7 @@ export const EMAIL_REGEX =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export interface AuthState {
-    isAuthenticated: boolean;
+    isUserAuthenticated: boolean;
     isUserNotifiedToSignin: boolean;
 }
 
@@ -41,7 +41,7 @@ export class AuthService extends ComponentsStateNotify<
     static getInstance() {
         if (!AuthService.myInstance) {
             AuthService.myInstance = new AuthService({
-                isAuthenticated: true,
+                isUserAuthenticated: true,
                 isUserNotifiedToSignin: false,
             });
         }
@@ -78,7 +78,7 @@ export class AuthService extends ComponentsStateNotify<
                 body: data,
             });
             this.state = {
-                isAuthenticated: true,
+                isUserAuthenticated: true,
             };
             bottomModalService.state = {
                 isBottomModalOpen: false,
@@ -104,7 +104,7 @@ export class AuthService extends ComponentsStateNotify<
                 body: data,
             });
             this.state = {
-                isAuthenticated: true,
+                isUserAuthenticated: true,
             };
             bottomModalService.state = {
                 isBottomModalOpen: false,

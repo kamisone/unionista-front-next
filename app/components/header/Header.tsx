@@ -37,20 +37,21 @@ interface HeaderProps {
 const Header = ({ lng }: HeaderProps) => {
     const { t } = useTranslation(lng, 'header');
 
-    const [isUserAuthenticated, setIsUserAuthenticated] = useState(
-        authService.state.isAuthenticated
-    );
+    // const [isUserAuthenticated, setIsUserAuthenticated] = useState(
+    //     authService.state.isUserAuthenticated
+    // );
 
-    useUserAuth();
+    const isUserAuthenticated = useUserAuth();
     useUpdateQuery();
 
     // set notifiers
-    useEffect(() => {
-        authService.addNotifier(
-            (options) =>
-                options && setIsUserAuthenticated(options.state.isAuthenticated)
-        );
-    }, []);
+    // useEffect(() => {
+    //     authService.addNotifier(
+    //         (options) =>
+    //             options &&
+    //             setIsUserAuthenticated(options.state.isUserAuthenticated)
+    //     );
+    // }, []);
 
     return (
         <div className={clsx('h_container', lng)}>

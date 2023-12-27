@@ -8,7 +8,7 @@ const authService = AuthService.getInstance();
 
 const useUserAuth = () => {
     const [isUserAuthenticated, setIsUserAuthenticated] = useState(
-        authService.state.isAuthenticated
+        authService.state.isUserAuthenticated
     );
     const [isUserAuthReminded, setIsUserAuthReminded] = useState(
         authService.state.isUserNotifiedToSignin
@@ -36,7 +36,7 @@ const useUserAuth = () => {
                     ) {
                         AuthService.setIsUserNotifiedToSignIn();
                         authService.state = {
-                            isAuthenticated: false,
+                            isUserAuthenticated: false,
                             isUserNotifiedToSignin: true,
                         };
                         bottomModalService.state = {
@@ -64,7 +64,7 @@ const useUserAuth = () => {
         authService.addNotifier((options) => {
             if (options) {
                 setIsUserAuthReminded(options.state.isUserNotifiedToSignin);
-                setIsUserAuthenticated(options.state.isAuthenticated);
+                setIsUserAuthenticated(options.state.isUserAuthenticated);
             }
         });
 
@@ -76,7 +76,7 @@ const useUserAuth = () => {
         );
 
         authService.state = {
-            isAuthenticated: refreshToken
+            isUserAuthenticated: refreshToken
                 ? !AuthService.isTokenExpired(refreshToken)
                 : false,
             isUserNotifiedToSignin:
