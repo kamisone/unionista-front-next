@@ -71,11 +71,12 @@ const useUserAuth = () => {
 
     // set auth intialstate
     useEffect(() => {
-        console.log(
-            'is User notified: ',
-            AuthService.getIsUserNotifiedToSignin() || false
-        );
         const refreshToken = AuthService.getRefreshToken();
+        console.log(
+            'is User auth: ',
+            refreshToken ? !AuthService.isTokenExpired(refreshToken) : false
+        );
+
         authService.state = {
             isAuthenticated: refreshToken
                 ? !AuthService.isTokenExpired(refreshToken)
