@@ -67,10 +67,8 @@ const useUserAuth = () => {
                 setIsUserAuthenticated(options.state.isAuthenticated);
             }
         });
-    }, []);
 
-    // set auth intialstate
-    useEffect(() => {
+        // set auth intialstate
         const refreshToken = AuthService.getRefreshToken();
         console.log(
             'is User auth: ',
