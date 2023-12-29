@@ -36,7 +36,6 @@
     font-size: var(--fs-300);
     color: var(--clr-error);
     height: var(--error-placeholder-size);
-    text-wrap: nowrap;
 }
 
 .ic_error::first-letter {
