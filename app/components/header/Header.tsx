@@ -113,6 +113,7 @@ const Header = ({ lng }: HeaderProps) => {
             {/* sub part */}
             <div className="h_sub_part">
                 <button
+                    title={t("hamburger-title")}
                     onClick={() => {
                         bottomModalService.state = {
                             isBottomModalOpen: true,

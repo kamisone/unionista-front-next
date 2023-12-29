@@ -9,5 +9,6 @@
     "sign-in": {
         "title": "تسجيل الدخول"
     },
-    "search-input-placeholder": "ابحث عن أي شيء"
+    "search-input-placeholder": "ابحث عن أي شيء",
+    "hamburger-title": "إكتشف"
 }

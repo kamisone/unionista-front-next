@@ -9,5 +9,6 @@
     "sign-in": {
         "title": "Iniciar sesión"
     },
-    "search-input-placeholder": "Buscar cualquier cosa"
+    "search-input-placeholder": "Buscar cualquier cosa",
+    "hamburger-title": "Explorar"
 }

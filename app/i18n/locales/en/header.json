@@ -9,5 +9,6 @@
     "sign-in": {
         "title": "Sign in"
     },
-    "search-input-placeholder": "Search for anything"
+    "search-input-placeholder": "Search for anything",
+    "hamburger-title": "Explore"
 }
