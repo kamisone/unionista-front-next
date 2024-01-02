@@ -1,5 +1,9 @@
 #!/bin/bash
 docker compose --file /srv/front/current/docker-compose.yml down
+# remove existing volumes
+VOLUMES=$(docker volume ls | awk 'NR>1{print $2}' | awk 'BEGIN { ORS = " " } { print }');
+docker volume rm $VOLUMES;
+# create network if it doesn't exist
 NETWORK_NAME=unionistashop_network
 if [ -z $(docker network ls --filter name=^${NETWORK_NAME}$ --format="{{ .Name }}") ] ; then 
      docker network create --driver bridge ${NETWORK_NAME} ; 
