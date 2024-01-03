@@ -112,6 +112,3 @@
     align-items: center;
     gap: clamp(0rem, 2vw, 1rem);
 }
-.h_container .h_sub_part > button {
-    padding-bottom: var(--error-placeholder-size);
-}

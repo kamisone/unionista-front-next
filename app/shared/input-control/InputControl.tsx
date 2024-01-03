@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import './InputControl.css';
 import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
-import { SupportedLanguages, SupportedLanguagesEnum } from '@/app/i18n/settings';
+import {
+    SupportedLanguages,
+    SupportedLanguagesEnum,
+} from '@/app/i18n/settings';
 
 interface InputControlProps {
     children: ReactNode[] | ReactNode | string;
@@ -13,6 +16,7 @@ interface InputControlProps {
     insetShadow?: boolean;
     fieldError?: any;
     isDirty?: boolean;
+    isFormChild?: boolean;
 }
 
 const InputControl = (props: InputControlProps) => {
@@ -24,6 +28,7 @@ const InputControl = (props: InputControlProps) => {
         children,
         fieldError,
         isDirty,
+        isFormChild = true,
     } = props;
 
     useEffect(() => {
@@ -32,8 +37,9 @@ const InputControl = (props: InputControlProps) => {
 
     return (
         <div
-            className={clsx('ic_container',lng, {
+            className={clsx('ic_container', lng, {
                 error: !!fieldError,
+                form_child: isFormChild,
             })}
         >
             <div

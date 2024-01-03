@@ -1,15 +1,15 @@
-.ic_container {
+.form_child.ic_container {
     padding-bottom: var(--error-placeholder-size);
 }
 
-.ic_container.error {
+.form_child.ic_container.error {
     padding-bottom: 0;
 }
 
 .ic_input_container {
     isolation: isolate;
     border: 1px solid var(--clr-secondary);
-    margin-bottom: 0.45rem;
+    /* margin-bottom: 0.45rem; */
     overflow: hidden;
 }
 .ic_input_container.border_light {
@@ -32,10 +32,12 @@
 }
 
 .ic_error {
+    --mt: 0.45rem;
     font-weight: 300;
     font-size: var(--fs-300);
     color: var(--clr-error);
-    height: var(--error-placeholder-size);
+    height: calc(var(--error-placeholder-size) - var(--mt));
+    margin-top: var(--mt);
 }
 
 .ic_error::first-letter {

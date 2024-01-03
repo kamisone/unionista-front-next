@@ -4,7 +4,7 @@ import '@/app/components/header/Header.css';
 import BoSettingsIcon from '@/app/icons/bo-settings/BoSettingsIcon';
 import CartIcon from '@/app/icons/cart/CartIcon';
 import NotificationIcon from '@/app/icons/notification/NotificationIcon';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import TextInput from '@/app/shared/text-input/TextInput';
 import InputControl from '@/app/shared/input-control/InputControl';
 import Hamburger from '@/app/components/Hamburger/Hamburger';
@@ -113,7 +113,7 @@ const Header = ({ lng }: HeaderProps) => {
             {/* sub part */}
             <div className="h_sub_part">
                 <button
-                    title={t("hamburger-title")}
+                    title={t('hamburger-title')}
                     onClick={() => {
                         bottomModalService.state = {
                             isBottomModalOpen: true,
@@ -124,7 +124,7 @@ const Header = ({ lng }: HeaderProps) => {
                 >
                     <Hamburger />
                 </button>
-                <InputControl lng={lng} radius="pilled">
+                <InputControl lng={lng} radius="pilled" isFormChild={false}>
                     <TextInput
                         lng={lng}
                         iconGap="large"
