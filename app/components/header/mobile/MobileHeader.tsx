@@ -1,6 +1,6 @@
 'use client';
 
-import '@/app/components/header/Header.css';
+import '@/app/components/header/mobile/MobileHeader.css';
 import BoSettingsIcon from '@/app/icons/bo-settings/BoSettingsIcon';
 import CartIcon from '@/app/icons/cart/CartIcon';
 import NotificationIcon from '@/app/icons/notification/NotificationIcon';
@@ -18,7 +18,7 @@ import {
 } from '@/app/i18n/settings';
 import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
-import SwitchLanguage from '../switch-language/SwitchLanguage';
+import SwitchLanguage from '../../switch-language/SwitchLanguage';
 import LoadingIndicator from '@/app/shared/loading-indicator/LoadingIndicator';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useUserAuth } from '@/app/hooks/useUserAuth';
@@ -34,7 +34,7 @@ interface HeaderProps {
     lng: SupportedLanguages;
 }
 
-const Header = ({ lng }: HeaderProps) => {
+const MobileHeader = ({ lng }: HeaderProps) => {
     const { t } = useTranslation(lng, 'header');
 
     const isUserAuthenticated = useUserAuth();
@@ -139,4 +139,4 @@ const Header = ({ lng }: HeaderProps) => {
     );
 };
 
-export default Header;
+export default MobileHeader;
