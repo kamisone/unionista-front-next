@@ -1,41 +1,56 @@
-import BottomModal from '@/app/components/bottom-modal/BottomModal';
-import CustomSnackbar from '@/app/components/custom-snackback/CustomSnackbar';
-import Footer from '@/app/components/footer/Footer';
-import MobileHeader from '@/app/components/header/mobile/MobileHeader';
-import { useUserAuth } from '@/app/hooks/useUserAuth';
-import { SupportedLanguages } from '@/app/i18n/settings';
-import { ReactNode } from 'react';
-import { useUpdateQuery } from '@/app/hooks/useUpdateQuery';
-import { isBrowser, isMobile } from '@/app/utils/is-browser';
-import ModalSpot from '@/app/shared/modal-spot/ModalSpot';
+import {
+    SupportedLanguages,
+    SupportedLanguagesEnum,
+} from '@/app/i18n/settings';
+import React, { ReactNode } from 'react';
 import { ProductCategoryService } from '@/app/services/product-category.service';
 import { headers } from 'next/headers';
-import { userAgent } from 'next/server';
-import DesktopHeader from '@/app/components/header/desktop/DesktopHeader';
+import clsx from 'clsx';
+import { UthmanicFont } from '@/app/fonts/fonts';
+import { isMobile } from '@/app/utils/is-browser';
+import UserHeader from '@/app/components/header/UserHeader';
+import UserFooter from '@/app/components/footer/UserFooter';
+import CustomSnackbar from '@/app/components/custom-snackback/CustomSnackbar';
+import BottomModal from '@/app/components/bottom-modal/BottomModal';
+import styles from '@/app/[lng]/(client)/layout.module.css';
 
 interface ClientLayoutProps {
     children: ReactNode;
+    analytics: ReactNode;
     params: { lng: SupportedLanguages };
 }
 
 const productCategoryService = ProductCategoryService.getInstance();
 const ClientLayout = async ({
     children,
+    analytics,
     params: { lng },
 }: ClientLayoutProps) => {
     const headersList = headers();
     return (
-        <>
+        <main
+            className={clsx(lng, styles.app_container, {
+                [UthmanicFont.className]: lng === SupportedLanguagesEnum.AR,
+            })}
+        >
             {isMobile(headersList.get('user-agent')) ? (
-                <MobileHeader lng={lng} />
+                <div className="mobile_container">
+                    <UserHeader isMobile lng={lng} />
+                    {children}
+                    <UserFooter isMobile lng={lng} />
+                    <CustomSnackbar lng={lng} />
+                    <BottomModal lng={lng} />
+                </div>
             ) : (
-                <DesktopHeader />
+                <div className="desktop_container">
+                    <UserHeader lng={lng} />
+                    {children}
+                    <UserFooter lng={lng} />
+                    <CustomSnackbar lng={lng} />
+                </div>
             )}
-            {children}
-            <Footer lng={lng} />
-            <CustomSnackbar lng={lng} />
-            <BottomModal lng={lng} />
-        </>
+            {analytics}
+        </main>
     );
 };
 

@@ -8,9 +8,14 @@
 
 .ic_input_container {
     isolation: isolate;
-    border: 1px solid var(--clr-secondary);
     /* margin-bottom: 0.45rem; */
     overflow: hidden;
+}
+.ic_input_container.bordered {
+    border: 1px solid var(--clr-secondary);
+}
+.ic_input_container.dotted {
+    border: 1px dotted var(--clr-secondary);
 }
 .ic_input_container.border_light {
     border-color: var(--clr-black-light);

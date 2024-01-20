@@ -10,5 +10,8 @@
         "title": "Iniciar sesión"
     },
     "search-input-placeholder": "Buscar cualquier cosa",
-    "hamburger-title": "Explorar"
+    "hamburger": {
+        "title": "Explorar",
+        "label": "categorias"
+    }
 }

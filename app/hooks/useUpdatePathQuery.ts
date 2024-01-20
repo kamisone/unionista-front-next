@@ -10,7 +10,7 @@ import { BottomModalService } from '@/app/services/bottom-modal.service';
 
 const bottomModalService = BottomModalService.getInstance();
 
-const useUpdateQuery = () => {
+const useUpdatePathQuery = () => {
     const [bottomModalContent, setBottomModalContent] = useState(
         bottomModalService.state.currentBottomModalContent
     );
@@ -19,7 +19,7 @@ const useUpdateQuery = () => {
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        console.log('contentHeader updatequery: ', bottomModalContent);
+        // console.log('excetiddddd')
         if (bottomModalContent) {
             router.replace(
                 `${pathname}?${addQueryParamToUrl(
@@ -40,7 +40,6 @@ const useUpdateQuery = () => {
 
     // set notifiers
     useEffect(() => {
-        console.log('contentHeader  upd added notfier');
         bottomModalService.addNotifier(
             (options) =>
                 options &&
@@ -77,4 +76,4 @@ const useUpdateQuery = () => {
     }
 };
 
-export { useUpdateQuery };
+export { useUpdatePathQuery };

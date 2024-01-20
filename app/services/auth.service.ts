@@ -1,4 +1,5 @@
 // import { FormValues } from '@/app/components/modal-content/login-in-content/LoginContent';
+import { ModalContentMapping } from '../utils/bottom-modal';
 import { isBrowser } from '../utils/is-browser';
 import { BottomModalService } from './bottom-modal.service';
 import { ComponentsStateNotify } from './components-state-notify.service';
@@ -9,7 +10,9 @@ import { AxiosError } from 'axios';
 const snackbarService = SnackbarService.getInstance();
 const bottomModalService = BottomModalService.getInstance();
 
+// constants
 const ONE_DAY_MS = 8.64e7;
+const AUTH_CHECK_INTERVAL_TIME = 5000;
 
 export const EMAIL_REGEX =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -35,7 +38,8 @@ export class AuthService extends ComponentsStateNotify<
     constructor(initialState: AuthState) {
         super(initialState);
     }
-    static myInstance: AuthService;
+    private static myInstance: AuthService;
+    static userIntervalCheckAuth: NodeJS.Timeout | undefined = undefined;
     httpService: HttpService = HttpService.getInstance();
 
     static getInstance() {
@@ -44,6 +48,46 @@ export class AuthService extends ComponentsStateNotify<
                 isUserAuthenticated: true,
                 isUserNotifiedToSignin: false,
             });
+            if (isBrowser()) {
+                clearInterval(AuthService.userIntervalCheckAuth);
+                AuthService.userIntervalCheckAuth = setInterval(() => {
+                    const refreshToken = AuthService.getRefreshToken();
+                    if (refreshToken) {
+                        const isExpired =
+                            AuthService.isTokenExpired(refreshToken);
+                        if (isExpired) {
+                            if (
+                                !(
+                                    [
+                                        ModalContentMapping.SIGN_IN,
+                                        ModalContentMapping.SIGN_UP,
+                                    ] as (ModalContentMapping | null)[]
+                                ).includes(
+                                    bottomModalService.state
+                                        .currentBottomModalContent
+                                ) &&
+                                !AuthService.myInstance.state
+                                    .isUserNotifiedToSignin
+                            ) {
+                                AuthService.myInstance.state = {
+                                    isUserAuthenticated: false,
+                                    isUserNotifiedToSignin: true,
+                                };
+                                console.log(
+                                    'instance: ',
+                                    AuthService.myInstance.state
+                                );
+                                bottomModalService.state = {
+                                    isBottomModalOpen: true,
+                                    currentBottomModalContent:
+                                        ModalContentMapping.SIGN_IN,
+                                };
+                                AuthService.setPersistedIsUserNotifiedToAuth();
+                            }
+                        }
+                    }
+                }, AUTH_CHECK_INTERVAL_TIME);
+            }
         }
         return this.myInstance;
     }
@@ -79,7 +123,9 @@ export class AuthService extends ComponentsStateNotify<
             });
             this.state = {
                 isUserAuthenticated: true,
+                isUserNotifiedToSignin: false,
             };
+            AuthService.setPersistedIsUserNotifiedToAuth(false);
             bottomModalService.state = {
                 isBottomModalOpen: false,
                 currentBottomModalContent: null,
@@ -97,15 +143,21 @@ export class AuthService extends ComponentsStateNotify<
             throw new Error(error.response.data?.message);
         }
     }
-    async signupUser(data: Record<string, unknown>) {
+    async signupUser(data: Record<string, any>) {
+        const formData = new FormData();
+        for (let key in data) {
+            formData.append(key, data[key]);
+        }
         try {
             const response = await this.httpService.post<UserWithTokens>({
                 path: AuthService.endpoints.SIGN_UP,
-                body: data,
+                body: formData,
             });
             this.state = {
                 isUserAuthenticated: true,
+                isUserNotifiedToSignin: false,
             };
+            AuthService.setPersistedIsUserNotifiedToAuth(false);
             bottomModalService.state = {
                 isBottomModalOpen: false,
                 currentBottomModalContent: null,
@@ -176,12 +228,12 @@ export class AuthService extends ComponentsStateNotify<
             : null;
     }
 
-    static getIsUserNotifiedToSignin() {
-        if (!isBrowser()) return null;
+    static getIsUserNotifiedToSignin(): boolean {
+        if (!isBrowser()) return false;
         const userNotifToSignIn = localStorage.getItem(
             this.localStorageKeys.USER_NOTIFIED_TO_SIGN_IN_ID
         );
-        if (!userNotifToSignIn) return null;
+        if (!userNotifToSignIn) return false;
         const userNotifToSignInObj = JSON.parse(
             userNotifToSignIn
         ) as UserNotificationToSignIn;
@@ -191,15 +243,18 @@ export class AuthService extends ComponentsStateNotify<
         );
     }
 
-    static setIsUserNotifiedToSignIn(isNotified: boolean = true) {
+    static setPersistedIsUserNotifiedToAuth(isNotified: boolean = true) {
         if (!isBrowser()) return null;
-        localStorage.setItem(
-            this.localStorageKeys.USER_NOTIFIED_TO_SIGN_IN_ID,
-            JSON.stringify({
-                isNotified,
-                time: Date.now(),
-            })
-        );
+        isNotified
+            ? localStorage.setItem(
+                  this.localStorageKeys.USER_NOTIFIED_TO_SIGN_IN_ID,
+                  JSON.stringify({
+                      time: Date.now(),
+                  })
+              )
+            : localStorage.removeItem(
+                  this.localStorageKeys.USER_NOTIFIED_TO_SIGN_IN_ID
+              );
     }
 
     static isTokenExpired(token: string) {

@@ -4,7 +4,7 @@ import '@/app/components/header/mobile/MobileHeader.css';
 import BoSettingsIcon from '@/app/icons/bo-settings/BoSettingsIcon';
 import CartIcon from '@/app/icons/cart/CartIcon';
 import NotificationIcon from '@/app/icons/notification/NotificationIcon';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TextInput from '@/app/shared/text-input/TextInput';
 import InputControl from '@/app/shared/input-control/InputControl';
 import Hamburger from '@/app/components/Hamburger/Hamburger';
@@ -22,7 +22,7 @@ import SwitchLanguage from '../../switch-language/SwitchLanguage';
 import LoadingIndicator from '@/app/shared/loading-indicator/LoadingIndicator';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useUserAuth } from '@/app/hooks/useUserAuth';
-import { useUpdateQuery } from '@/app/hooks/useUpdateQuery';
+import { useUpdatePathQuery } from '@/app/hooks/useUpdatePathQuery';
 import { FrontQueryParams } from '@/app/utils/query-params';
 import { BottomModalService } from '@/app/services/bottom-modal.service';
 import { AuthService } from '@/app/services/auth.service';
@@ -32,13 +32,11 @@ const authService = AuthService.getInstance();
 
 interface HeaderProps {
     lng: SupportedLanguages;
+    isUserAuthenticated: boolean;
 }
 
-const MobileHeader = ({ lng }: HeaderProps) => {
+const MobileHeader = ({ lng, isUserAuthenticated }: HeaderProps) => {
     const { t } = useTranslation(lng, 'header');
-
-    const isUserAuthenticated = useUserAuth();
-    useUpdateQuery();
 
     return (
         <div className={clsx('h_container', lng)}>
@@ -113,7 +111,7 @@ const MobileHeader = ({ lng }: HeaderProps) => {
             {/* sub part */}
             <div className="h_sub_part">
                 <button
-                    title={t('hamburger-title')}
+                    title={t('hamburger.title')}
                     onClick={() => {
                         bottomModalService.state = {
                             isBottomModalOpen: true,

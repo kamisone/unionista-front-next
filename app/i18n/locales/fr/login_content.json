@@ -11,7 +11,8 @@
         },
         "receive-newsletter": {
             "title": "Oui ! Envoyez-moi des offres exclusives, des idées de cadeaux uniques et des astuces personnalisées pour acheter sur Unionistashop"
-        }
+        },
+        "avatar-label": "téléchargez votre avatar"
     },
     "sign-in": {
         "title": "Se connecter",

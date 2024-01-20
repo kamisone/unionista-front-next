@@ -49,7 +49,7 @@ const BottomModal = ({ lng }: BottomModalProps) => {
         }
     }, [currentBottomModalContent]);
 
-    //initialize bottom modal state
+    // initialize bottom modal state
     useEffect(() => {
         const searchParamsUrl = new URLSearchParams(
             Array.from(searchParams.entries())

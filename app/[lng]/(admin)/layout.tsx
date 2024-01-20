@@ -8,14 +8,7 @@ interface AdminLayoutProps {
     params: { lng: SupportedLanguages };
 }
 const AdminLayout = ({ children, params: { lng } }: AdminLayoutProps) => {
-    return (
-        <>
-            <AdminHeader />
-            <h2>admin</h2>
-            {children}
-            <AdminFooter />
-        </>
-    );
+    return <main>{children}</main>;
 };
 
 export default AdminLayout;

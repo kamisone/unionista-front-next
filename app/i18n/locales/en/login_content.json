@@ -11,7 +11,9 @@
         },
         "receive-newsletter": {
             "title": "Yes ! Send me exclusive deals, unique gift ideas, and personalized tips for buying on Unionistashop"
-        }
+        },
+
+        "avatar-label": "upload your avatar"
     },
     "sign-in": {
         "title": "Sign in",

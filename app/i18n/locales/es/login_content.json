@@ -12,7 +12,8 @@
         },
         "receive-newsletter": {
             "title": "Sí ! Envíame ofertas exclusivas, ideas de regalos únicas y consejos personalizados para comprar en Unionstashop."
-        }
+        },
+        "avatar-label": "sube tu avatar"
     },
     "sign-in": {
         "title": "Iniciar sesión",

@@ -20,7 +20,6 @@ interface SwitchLanguageProps {
     lng: SupportedLanguages;
 }
 
-// const languages: SupportedLanguages[] = ['fr', 'en', 'es'];
 
 const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
     const [isSwitchOpened, setIsSwitchOpened] = useState(false);
@@ -59,7 +58,6 @@ const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
                             <li className={styles.lng_option} key={l}>
                                 <Link
                                     href={`/${l}${pathname.slice(3)}`}
-                                    // onClick={() => setIsSwitchOpened(false)}
                                 >
                                     <div className={styles.icon}>
                                         {LanguageIconsMapping[l]}

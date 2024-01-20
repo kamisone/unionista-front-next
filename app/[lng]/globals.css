@@ -9,7 +9,9 @@
     --clr-black-light: #0e0e0e2e;
     --clr-grey: grey;
     --clr-grey-light: #595959;
-    --clr-grey-very-light: #dedede;
+    --clr-grey-very-light: #dedede90;
+    
+
 
     --clr-error: #f9746b;
     --bg-clr-error: #f9e3e2;
@@ -26,6 +28,11 @@
     --size-200: 0.2rem;
     --size-400: 0.4rem;
     --size-600: 0.6rem;
+    --size-800: 0.8rem;
+    --size-1000: 1rem;
+    --size-1200: 1.5rem;
+    --size-1400: 2rem;
+    --size-1600: 2.5rem;
 
     /* font sizes */
     --fs-200: 0.6rem;
@@ -808,6 +815,11 @@
     --clg-color-app-input-text: var(--clg-color-sem-text-primary);
 }
 
+.desktop_container {
+    max-width: 1350px;
+    margin-inline: auto;
+}
+
 *,
 *::before,
 *::after {
@@ -878,6 +890,19 @@ input.error:-webkit-autofill:active,
 input.error:-webkit-autofill:focus,
 input.error:-webkit-autofill {
     -webkit-box-shadow: inset 0 0 0 100vmax var(--bg-clr-error);
+}
+.onhover_bg_grey::before {
+    content: '';
+    position: absolute;
+    inset: 0 -0.25rem;
+    background: var(--clr-grey-very-light);
+    border-radius: 100vmax;
+    z-index: -1;
+    transform: scale(0);
+    transition: transform 0.1s ease;
+}
+.onhover_bg_grey:hover::before {
+    transform: scale(1);
 }
 
 /* animations */

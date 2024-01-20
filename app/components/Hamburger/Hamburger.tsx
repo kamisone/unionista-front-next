@@ -2,10 +2,14 @@ import HambugerIcon from '@/app/icons/hamburger/Hamburger';
 import React from 'react';
 import '@/app/components/Hamburger/Hamburger.css';
 
-const Hamburger = function () {
+interface HamburgerProps {
+    hoverAnimated?: boolean;
+}
+
+const Hamburger = function ({ hoverAnimated = true }: HamburgerProps) {
     return (
         <div className="ham_container">
-            <span></span>
+            {hoverAnimated && <span></span>}
             <HambugerIcon />
         </div>
     );

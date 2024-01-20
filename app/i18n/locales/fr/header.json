@@ -10,5 +10,8 @@
         "title": "Se connecter"
     },
     "search-input-placeholder": "Recherche",
-    "hamburger-title": "Explorer"
+    "hamburger": {
+        "title": "Explorer",
+        "label": "catégories"
+    }
 }

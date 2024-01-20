@@ -1,6 +1,11 @@
 import { useTranslation } from '@/app/i18n';
 import { SupportedLanguages } from '@/app/i18n/settings';
+import { Metadata } from 'next';
 import React from 'react';
+
+export const metadata: Metadata = {
+    title: 'UnionistaShop | Privacy-Policy',
+};
 
 interface PrivacyPolicyProps {
     params: {

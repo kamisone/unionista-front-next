@@ -10,5 +10,9 @@
         "title": "Sign in"
     },
     "search-input-placeholder": "Search for anything",
-    "hamburger-title": "Explore"
+    "hamburger": {
+        "title": "Explore",
+        "label": "categories"
+    }
+    
 }

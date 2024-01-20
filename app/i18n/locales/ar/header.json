@@ -10,5 +10,8 @@
         "title": "تسجيل الدخول"
     },
     "search-input-placeholder": "ابحث عن أي شيء",
-    "hamburger-title": "إكتشف"
+    "hamburger": {
+        "title": "إكتشف",
+        "label": "الفئات"
+    }
 }

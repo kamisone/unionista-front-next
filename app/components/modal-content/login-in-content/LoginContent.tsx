@@ -22,6 +22,7 @@ import {
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
 import { usePathname, useRouter } from 'next/navigation';
 import { BottomModalService } from '@/app/services/bottom-modal.service';
+import FileUploader from '@/app/shared/file-uploader/FileUploader';
 
 const authService = AuthService.getInstance();
 const bottomModalService = BottomModalService.getInstance();
@@ -33,6 +34,7 @@ export type FormValues = {
     password: string;
     fullName: string;
     stayConnected: boolean;
+    avatarFile: FileList | null;
 };
 
 interface LoginContentProps {
@@ -45,14 +47,11 @@ const LoginContent = ({ lng }: LoginContentProps) => {
     const [isSwitched, setIsSwitched] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { t } = useTranslation(lng, 'login_content');
-    const router = useRouter();
-    const pathname = usePathname();
+
     const [bottomModalContent, setBottomModalContent] = useState(
         bottomModalService.state.currentBottomModalContent
     );
-    const [isBottomModalOpen, setIsBottomModalOpen] = useState(
-        bottomModalService.state.isBottomModalOpen
-    );
+
     const isSignin = bottomModalContent == ModalContentMapping.SIGN_IN;
 
     const {
@@ -64,10 +63,11 @@ const LoginContent = ({ lng }: LoginContentProps) => {
         formState: { errors, dirtyFields, isValid },
     } = useForm<FormValues>({
         mode: 'all',
-        defaultValues: { stayConnected: false },
+        defaultValues: { stayConnected: false, avatarFile: null },
     });
 
     const stayedConnected = watch('stayConnected');
+    const uploadedUserAvatar = watch('avatarFile');
 
     useEffect(() => {
         setTimeout(() => {
@@ -85,11 +85,18 @@ const LoginContent = ({ lng }: LoginContentProps) => {
     }, []);
 
     async function onSubmit(data: FormValues) {
+        
+
+        const signupData = {
+            ...data,
+            avatarFile: data.avatarFile ? data.avatarFile[0] : null,
+        };
+        console.log('data: ', signupData);
         setIsSubmitting(true);
         try {
             const response = isSignin
                 ? await authService.signinUser(data)
-                : await authService.signupUser(data);
+                : await authService.signupUser(signupData);
             console.log('reponse: ', response);
             setIsSubmitting(false);
         } catch (_) {
@@ -260,6 +267,24 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         </TextInput>
                     </InputControl>
                 </div>
+                {!isSignin && (
+                    <div className="sic_input_container">
+                        <label htmlFor="avatar-uploader-id">
+                            {t('sign-up.avatar-label')}
+                        </label>
+                        <FileUploader
+                            uploadedFile={
+                                uploadedUserAvatar?.[0]
+                                    ? uploadedUserAvatar[0]
+                                    : null
+                            }
+                            fileInputId="avatar-uploader-id"
+                            variant="avatar"
+                            lng={lng}
+                            register={register('avatarFile', {})}
+                        />
+                    </div>
+                )}
                 <div className="sic_remember_me_container">
                     <div className="sic_remember_me_checkbox_container">
                         <CheckboxInput

@@ -6,6 +6,8 @@ import { BottomModalService } from '@/app/services/bottom-modal.service';
 const bottomModalService = BottomModalService.getInstance();
 const authService = AuthService.getInstance();
 
+const AUTH_CHECK_INTERVAL_TIME = 5000;
+
 const useUserAuth = () => {
     const [isUserAuthenticated, setIsUserAuthenticated] = useState(
         authService.state.isUserAuthenticated
@@ -34,21 +36,21 @@ const useUserAuth = () => {
                         ).includes(bottomModalContent) &&
                         !isUserAuthReminded
                     ) {
-                        AuthService.setIsUserNotifiedToSignIn();
-                        authService.state = {
-                            isUserAuthenticated: false,
-                            isUserNotifiedToSignin: true,
-                        };
+                        AuthService.setPersistedIsUserNotifiedToAuth();
                         bottomModalService.state = {
                             isBottomModalOpen: true,
                             currentBottomModalContent:
                                 ModalContentMapping.SIGN_IN,
                         };
+                        authService.state = {
+                            isUserAuthenticated: false,
+                            isUserNotifiedToSignin: true,
+                        };
                     }
                 }
                 setIsUserAuthenticated(!isExpired);
             }
-        }, 5000);
+        }, AUTH_CHECK_INTERVAL_TIME);
 
         return () => {
             clearInterval(intervalId.current);
@@ -70,11 +72,6 @@ const useUserAuth = () => {
 
         // set auth intialstate
         const refreshToken = AuthService.getRefreshToken();
-        console.log(
-            'is User auth: ',
-            refreshToken ? !AuthService.isTokenExpired(refreshToken) : false
-        );
-
         authService.state = {
             isUserAuthenticated: refreshToken
                 ? !AuthService.isTokenExpired(refreshToken)

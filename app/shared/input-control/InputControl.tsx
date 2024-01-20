@@ -12,6 +12,7 @@ interface InputControlProps {
     children: ReactNode[] | ReactNode | string;
     lng: SupportedLanguages;
     radius?: 'rounded' | 'rounded_1' | 'rounded_2' | 'pilled';
+    border?: 'transparent' | 'bordered' | 'dotted';
     borderVariant?: 'border_light' | 'border_dark';
     insetShadow?: boolean;
     fieldError?: any;
@@ -23,6 +24,7 @@ const InputControl = (props: InputControlProps) => {
     const {
         lng,
         radius,
+        border = 'bordered',
         borderVariant,
         insetShadow = false,
         children,
@@ -43,7 +45,7 @@ const InputControl = (props: InputControlProps) => {
             })}
         >
             <div
-                className={clsx('ic_input_container', radius, borderVariant, {
+                className={clsx('ic_input_container', border, radius, borderVariant, {
                     error: !!fieldError,
                     valid: isDirty && !fieldError,
                     inset_shadow: insetShadow,

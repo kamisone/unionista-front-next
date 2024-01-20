@@ -133,7 +133,7 @@ export class HttpService {
         headers,
     }: {
         path: string;
-        body: Record<string, unknown>;
+        body: Record<string, unknown> | FormData;
         queryParams?: Record<string, string>;
         headers?: AxiosHeaders;
     }) {

@@ -1,23 +1,21 @@
 'use client';
 
 import React from 'react';
-import styles from '@/app/components/footer/Footer.module.css';
+import styles from '@/app/components/footer/mobile/MobileFooter.module.css';
 import { Trans } from 'react-i18next/TransWithoutContext';
 import Link from 'next/link';
 import { SupportedLanguages, languages } from '@/app/i18n/settings';
-import { useTranslation } from '@/app/i18n';
-import { useUserAuth } from '@/app/hooks/useUserAuth';
-import { usePathname, useRouter } from 'next/navigation';
-import { useUpdateQuery } from '@/app/hooks/useUpdateQuery';
+
+import { usePathname } from 'next/navigation';
+
 
 interface FooterProps {
     lng: SupportedLanguages;
+    isUserAuthenticated: boolean;
 }
 
-const Footer = ({ lng }: FooterProps) => {
-    // useUpdateQuery();
+const MobileFooter = ({ lng, isUserAuthenticated }: FooterProps) => {
     console.log('languagessss: ', lng);
-    // const { t } = await useTranslation(lng);
     const pathname = usePathname();
 
     return (
@@ -36,4 +34,4 @@ const Footer = ({ lng }: FooterProps) => {
     );
 };
 
-export default Footer;
+export default MobileFooter;
