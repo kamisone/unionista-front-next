@@ -17,14 +17,14 @@ import BoSettingsIcon from '@/app/icons/bo-settings/BoSettingsIcon';
 import SwitchLanguage from '../../switch-language/SwitchLanguage';
 import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
-import { BottomModalService } from '@/app/services/bottom-modal.service';
-import { ModalContentMapping } from '@/app/utils/bottom-modal';
 import { useUserAuth } from '@/app/hooks/useUserAuth';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import Image from 'next/image';
 import AvatarSlot from '@/app/shared/avatar-slot/AvatarSlot';
+import { ModalService } from '@/app/services/modal.service';
+import { ModalContentMapping } from '@/app/utils/modal';
 
-const bottomModalService = BottomModalService.getInstance();
+const modalService = ModalService.getInstance();
 
 interface DesktopHeaderProps {
     lng: SupportedLanguages;
@@ -85,9 +85,9 @@ const DesktopHeader = ({ lng, isUserAuthenticated }: DesktopHeaderProps) => {
                                 'onhover_bg_grey'
                             )}
                             onClick={() => {
-                                bottomModalService.state = {
-                                    isBottomModalOpen: true,
-                                    currentBottomModalContent:
+                                modalService.state = {
+                                    isModalOpen: true,
+                                    currentModalContent:
                                         ModalContentMapping.SIGN_IN,
                                 };
                             }}

@@ -1,16 +1,20 @@
 import React from 'react';
 import { CircularProgress } from '@mui/material';
-import PropTypes from 'prop-types';
+import styles from '@/app/shared/loading-indicator/LoadingIndicator.module.css';
+import clsx from 'clsx';
 
-const LoadingIndicator = ({ size = '1.45rem' }) => {
+interface LoadingIndicatorProps  {
+    size?: string;
+    isExtended?: boolean;
+}
+
+const LoadingIndicator = ({ size = '1.45rem', isExtended = false }: LoadingIndicatorProps) => {
     return (
-        <div style={{ display: 'grid', placeItems: 'center' }}>
+        <div style={{ display: 'grid', placeItems: 'center' }} className={clsx(styles.container, {  [styles.is_extended]: isExtended })}>
             <CircularProgress size={size} />
         </div>
     );
 };
 
-LoadingIndicator.propTypes = {
-    size: PropTypes.string,
-};
+
 export default LoadingIndicator;

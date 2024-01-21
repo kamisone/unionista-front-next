@@ -9,7 +9,6 @@ import TextInput from '@/app/shared/text-input/TextInput';
 import InputControl from '@/app/shared/input-control/InputControl';
 import Hamburger from '@/app/components/Hamburger/Hamburger';
 import SearchIcon from '@/app/icons/search-icon/SearchIcon';
-import { ModalContentMapping } from '@/app/utils/bottom-modal';
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
 import {
@@ -24,10 +23,11 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useUserAuth } from '@/app/hooks/useUserAuth';
 import { useUpdatePathQuery } from '@/app/hooks/useUpdatePathQuery';
 import { FrontQueryParams } from '@/app/utils/query-params';
-import { BottomModalService } from '@/app/services/bottom-modal.service';
 import { AuthService } from '@/app/services/auth.service';
+import { ModalService } from '@/app/services/modal.service';
+import { ModalContentMapping } from '@/app/utils/modal';
 
-const bottomModalService = BottomModalService.getInstance();
+const modalService = ModalService.getInstance();
 const authService = AuthService.getInstance();
 
 interface HeaderProps {
@@ -55,10 +55,10 @@ const MobileHeader = ({ lng, isUserAuthenticated }: HeaderProps) => {
                     {!isUserAuthenticated && (
                         <li
                             onClick={() => {
-                                bottomModalService.state = {
-                                    isBottomModalOpen: true,
-                                    currentBottomModalContent:
-                                        ModalContentMapping.SIGN_IN,
+                                modalService.state = {
+                                    isModalOpen: true,
+                                    currentModalContent:
+                                    ModalContentMapping.SIGN_IN,
                                 };
                             }}
                             className="h_nav_item h_text h_signin"
@@ -113,10 +113,10 @@ const MobileHeader = ({ lng, isUserAuthenticated }: HeaderProps) => {
                 <button
                     title={t('hamburger.title')}
                     onClick={() => {
-                        bottomModalService.state = {
-                            isBottomModalOpen: true,
-                            currentBottomModalContent:
-                                ModalContentMapping.MENU_DRAWER,
+                        modalService.state = {
+                            isModalOpen: true,
+                            currentModalContent:
+                            ModalContentMapping.MENU_DRAWER,
                         };
                     }}
                 >

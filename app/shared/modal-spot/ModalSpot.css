@@ -15,13 +15,16 @@
 }
 
 @keyframes ms_container_in_animate {
+    from {
+        background-color: transparent;
+    }
     to {
-        background-color: rgba(0 0 0 / 0.5);
+        background-color: var(--clr-black-semi-transparent);
     }
 }
 @keyframes ms_container_out_animate {
     from {
-        background-color: rgba(0 0 0 / 0.5);
+        background-color: var(--clr-black-semi-transparent);
     }
     to {
         background-color: transparent;
@@ -37,22 +40,40 @@
     inset: auto 0 0 0;
     width: 100%;
     height: 85%;
-    border: solid green;
+    /* border: solid green; */
     background-color: white;
     color: var(--clr-secondary);
     border-radius: 20px 20px 0 0;
     opacity: 0;
     transform: translateY(100px);
-    animation: ms_content_animation_in 0.25s forwards
+    
+    animation: 0.25s forwards
         cubic-bezier(0.74, 2.01, 0.69, 0.86);
 }
+.ms_container.animate_to_top .ms_content {
+    animation-name: content_top_animation_in;
+}
+.ms_container.animate_to_center .ms_content {
+    animation-name: content_center_animation_in;
+}
+.ms_container.is_desktop .ms_content { 
+    width: clamp(25rem, 40%, 30rem);
+    inset: 0;
+    margin: auto;
+    transform: revert;
+    border-radius: 20px;
+}
+
 
 .ms_container input:checked + .ms_content,
 .ms_container.ms_quitting .ms_content {
-    animation-name: ms_content_out_animate;
-    animation-duration: 0.1s;
-    animation-fill-mode: backwards;
-    animation-timing-function: linear;
+    animation: 0.1s linear;
+}
+.ms_container.ms_quitting.animate_to_top .ms_content {
+    animation-name: content_top_animation_out;
+}
+.ms_containe.animate_to_centerr.ms_quitting .ms_content {
+    animation-name: content_center_animation_out;
 }
 
 .ms_container .ms_title_container {
@@ -72,8 +93,20 @@
     opacity: 0;
     animation: fade_in_animate 0.75s forwards 0.45s;
 }
+.ms_container .ms_close_icon.floating {
+    position: absolute;
+    right: 0;
+    transform-origin: 0 100%;
+    transform: translateY(-100%);
+    color: white;
+}
+@media screen and (min-width: 900px){
+    .ms_container .ms_close_icon.floating {
+        transform: translateY(-100%) translateX(100%) rotateZ(90deg);
+    }
+}
 
-@keyframes ms_content_animation_in {
+@keyframes content_top_animation_in {
     0% {
         opacity: 0;
         transform: translateY(100px);
@@ -84,7 +117,7 @@
         transform: translateY(0);
     }
 }
-@keyframes ms_content_out_animate {
+@keyframes content_top_animation_out {
     from {
         opacity: 1;
         transform: translateY(0);
@@ -92,5 +125,24 @@
     to {
         opacity: 0;
         transform: translateY(100px);
+    }
+}
+
+@keyframes content_center_animation_in {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+@keyframes content_center_animation_out {
+    
+    to {
+        opacity: 0;
+        transform: scale(0);
     }
 }

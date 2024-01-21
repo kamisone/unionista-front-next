@@ -13,7 +13,7 @@ import {
     ProductCategory,
     ProductCategoryService,
 } from '@/app/services/product-category.service';
-import { ModalContentMapping } from '@/app/utils/bottom-modal';
+import { ModalContentMapping } from '@/app/utils/modal';
 
 const productCategoryService = ProductCategoryService.getInstance();
 

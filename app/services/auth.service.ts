@@ -1,14 +1,14 @@
 // import { FormValues } from '@/app/components/modal-content/login-in-content/LoginContent';
-import { ModalContentMapping } from '../utils/bottom-modal';
 import { isBrowser } from '../utils/is-browser';
-import { BottomModalService } from './bottom-modal.service';
+import { ModalService } from './modal.service';
 import { ComponentsStateNotify } from './components-state-notify.service';
 import { HttpService } from './http.service';
 import { SnackbarService, SnackbarSeverity } from './snackbar.service';
 import { AxiosError } from 'axios';
+import { ModalContentMapping } from '../utils/modal';
 
 const snackbarService = SnackbarService.getInstance();
-const bottomModalService = BottomModalService.getInstance();
+const modalService = ModalService.getInstance();
 
 // constants
 const ONE_DAY_MS = 8.64e7;
@@ -63,8 +63,7 @@ export class AuthService extends ComponentsStateNotify<
                                         ModalContentMapping.SIGN_UP,
                                     ] as (ModalContentMapping | null)[]
                                 ).includes(
-                                    bottomModalService.state
-                                        .currentBottomModalContent
+                                    modalService.state.currentModalContent
                                 ) &&
                                 !AuthService.myInstance.state
                                     .isUserNotifiedToSignin
@@ -77,9 +76,9 @@ export class AuthService extends ComponentsStateNotify<
                                     'instance: ',
                                     AuthService.myInstance.state
                                 );
-                                bottomModalService.state = {
-                                    isBottomModalOpen: true,
-                                    currentBottomModalContent:
+                                modalService.state = {
+                                    isModalOpen: true,
+                                    currentModalContent:
                                         ModalContentMapping.SIGN_IN,
                                 };
                                 AuthService.setPersistedIsUserNotifiedToAuth();
@@ -126,9 +125,9 @@ export class AuthService extends ComponentsStateNotify<
                 isUserNotifiedToSignin: false,
             };
             AuthService.setPersistedIsUserNotifiedToAuth(false);
-            bottomModalService.state = {
-                isBottomModalOpen: false,
-                currentBottomModalContent: null,
+            modalService.state = {
+                isModalOpen: false,
+                currentModalContent: null,
             };
             return response.data;
         } catch (error: any) {
@@ -158,9 +157,9 @@ export class AuthService extends ComponentsStateNotify<
                 isUserNotifiedToSignin: false,
             };
             AuthService.setPersistedIsUserNotifiedToAuth(false);
-            bottomModalService.state = {
-                isBottomModalOpen: false,
-                currentBottomModalContent: null,
+            modalService.state = {
+                isModalOpen: false,
+                currentModalContent: null,
             };
             return response.data;
         } catch (error: unknown) {

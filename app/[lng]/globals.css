@@ -7,9 +7,11 @@
     --clr-shadow-light: rgba(0, 0, 0, 0.2);
     --clr-shadow-medium: rgba(0, 0, 0, 0.5);
     --clr-black-light: #0e0e0e2e;
+    --clr-black-semi-transparent: rgba(0, 0, 0, 0.5);
     --clr-grey: grey;
     --clr-grey-light: #595959;
     --clr-grey-very-light: #dedede90;
+
     
 
 

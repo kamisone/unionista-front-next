@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { AuthService } from '../services/auth.service';
-import { ModalContentMapping } from '../utils/bottom-modal';
-import { BottomModalService } from '@/app/services/bottom-modal.service';
+import { ModalService } from '../services/modal.service';
+import { ModalContentMapping } from '../utils/modal';
 
-const bottomModalService = BottomModalService.getInstance();
+const modalService = ModalService.getInstance();
 const authService = AuthService.getInstance();
 
 const AUTH_CHECK_INTERVAL_TIME = 5000;
@@ -17,7 +17,7 @@ const useUserAuth = () => {
     );
     const intervalId = useRef<NodeJS.Timeout | undefined>();
     const [bottomModalContent, setBottomModalContent] = useState(
-        bottomModalService.state.currentBottomModalContent
+        modalService.state.currentModalContent
     );
 
     useEffect(() => {
@@ -37,10 +37,9 @@ const useUserAuth = () => {
                         !isUserAuthReminded
                     ) {
                         AuthService.setPersistedIsUserNotifiedToAuth();
-                        bottomModalService.state = {
-                            isBottomModalOpen: true,
-                            currentBottomModalContent:
-                                ModalContentMapping.SIGN_IN,
+                        modalService.state = {
+                            isModalOpen: true,
+                            currentModalContent: ModalContentMapping.SIGN_IN,
                         };
                         authService.state = {
                             isUserAuthenticated: false,
@@ -59,9 +58,8 @@ const useUserAuth = () => {
 
     // set state notifiers
     useEffect(() => {
-        bottomModalService.addNotifier((options) => {
-            options &&
-                setBottomModalContent(options.state.currentBottomModalContent);
+        modalService.addNotifier((options) => {
+            options && setBottomModalContent(options.state.currentModalContent);
         });
         authService.addNotifier((options) => {
             if (options) {

@@ -6,13 +6,13 @@ import {
     useSearchParams,
 } from 'next/navigation';
 import { FrontQueryParams } from '@/app/utils/query-params';
-import { BottomModalService } from '@/app/services/bottom-modal.service';
+import { ModalService } from '../services/modal.service';
 
-const bottomModalService = BottomModalService.getInstance();
+const modalService = ModalService.getInstance();
 
 const useUpdatePathQuery = () => {
     const [bottomModalContent, setBottomModalContent] = useState(
-        bottomModalService.state.currentBottomModalContent
+        modalService.state.currentModalContent
     );
     const router = useRouter();
     const pathname = usePathname();
@@ -40,10 +40,10 @@ const useUpdatePathQuery = () => {
 
     // set notifiers
     useEffect(() => {
-        bottomModalService.addNotifier(
+        modalService.addNotifier(
             (options) =>
                 options &&
-                setBottomModalContent(options.state.currentBottomModalContent)
+                setBottomModalContent(options.state.currentModalContent)
         );
     }, []);
 

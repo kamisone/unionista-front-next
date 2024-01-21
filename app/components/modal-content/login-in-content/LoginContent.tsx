@@ -11,7 +11,6 @@ import GoogleIcon from '@/app/icons/google/GoogleIcon';
 import { useForm } from 'react-hook-form';
 import { AuthService } from '@/app/services/auth.service';
 
-import { ModalContentMapping } from '@/app/utils/bottom-modal';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useTranslation } from '@/app/i18n/client';
@@ -21,11 +20,12 @@ import {
 } from '@/app/i18n/settings';
 import { Graphik, UthmanicFont } from '@/app/fonts/fonts';
 import { usePathname, useRouter } from 'next/navigation';
-import { BottomModalService } from '@/app/services/bottom-modal.service';
+import { ModalService } from '@/app/services/modal.service';
 import FileUploader from '@/app/shared/file-uploader/FileUploader';
+import { ModalContentMapping } from '@/app/utils/modal';
 
 const authService = AuthService.getInstance();
-const bottomModalService = BottomModalService.getInstance();
+const modalService = ModalService.getInstance();
 
 const FADE_IN_ANIMATE_MS = 700; // 700ms;
 
@@ -49,7 +49,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
     const { t } = useTranslation(lng, 'login_content');
 
     const [bottomModalContent, setBottomModalContent] = useState(
-        bottomModalService.state.currentBottomModalContent
+        modalService.state.currentModalContent
     );
 
     const isSignin = bottomModalContent == ModalContentMapping.SIGN_IN;
@@ -77,10 +77,10 @@ const LoginContent = ({ lng }: LoginContentProps) => {
 
     // set notifiers
     useEffect(() => {
-        bottomModalService.addNotifier(
+        modalService.addNotifier(
             (options) =>
                 options &&
-                setBottomModalContent(options.state.currentBottomModalContent)
+                setBottomModalContent(options.state.currentModalContent)
         );
     }, []);
 
@@ -136,8 +136,8 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                             setIsSwitched(false);
                         }, FADE_IN_ANIMATE_MS);
 
-                        bottomModalService.state = {
-                            currentBottomModalContent: isSignin
+                        modalService.state = {
+                            currentModalContent: isSignin
                                 ? ModalContentMapping.SIGN_UP
                                 : ModalContentMapping.SIGN_IN,
                         };

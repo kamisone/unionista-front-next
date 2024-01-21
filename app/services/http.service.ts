@@ -9,13 +9,12 @@ import axios, {
 import { IWhere } from './product-category.service';
 import { AuthService } from './auth.service';
 import { SnackbarService, SnackbarSeverity } from './snackbar.service';
-
-import { BottomModalService } from './bottom-modal.service';
-import { ModalContentMapping } from '@/app/utils/bottom-modal';
+import { ModalService } from './modal.service';
+import { ModalContentMapping } from '../utils/modal';
 
 // const authService = AuthService.getInstance();
 const snackbarService = SnackbarService.getInstance();
-const bottomModalService = BottomModalService.getInstance();
+const modalService = ModalService.getInstance();
 
 export class HttpService {
     static myInstance: HttpService;
@@ -93,9 +92,9 @@ export class HttpService {
                 ) {
                     console.log('refresh failed: ');
 
-                    bottomModalService.state = {
-                        isBottomModalOpen: true,
-                        currentBottomModalContent: ModalContentMapping.SIGN_IN,
+                    modalService.state = {
+                        isModalOpen: true,
+                        currentModalContent: ModalContentMapping.SIGN_IN,
                     };
                 } else {
                     throw error;

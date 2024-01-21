@@ -11,26 +11,38 @@ import {
     SupportedLanguagesEnum,
 } from '@/app/i18n/settings';
 import { usePathname, useRouter } from 'next/navigation';
-import { ModalContentMapping } from '@/app/utils/bottom-modal';
-import { BottomModalService } from '@/app/services/bottom-modal.service';
 import { AuthService } from '@/app/services/auth.service';
+import { ComponentsStateNotify } from '@/app/services/components-state-notify.service';
+import { ModalService } from '@/app/services/modal.service';
 // import ScaleBgWrapper from 'shared/scale-bg-wrapper/ScaleBgWrapper';
 
-const bottomModalService = BottomModalService.getInstance();
 const authService = AuthService.getInstance();
+const modalService = ModalService.getInstance();
+
+// interface ModalService extends ComponentsStateNotify<any, any> {}
 
 interface ModalSpotProps {
     children: ReactNode[] | ReactNode | string;
     lng: SupportedLanguages;
+    animationDirection?:
+        | 'animate_to_top'
+        | 'animate_to_bottom'
+        | 'animate_to_center';
+    headingTitle?: string;
+    isDesktop?: boolean;
 }
 
-const ModalSpot = (props: ModalSpotProps) => {
+const ModalSpot = ({
+    children,
+    headingTitle,
+    lng,
+    animationDirection = 'animate_to_top',
+    isDesktop = false
+}: ModalSpotProps) => {
     const { t } = useTranslation();
-    const { children, lng } = props;
     const [isDrawerQuitting, setIsDrawerQuitting] = useState(false);
-    // const router = useRouter();
-    const [bottomModalContent, setBottomModalContent] = useState(
-        bottomModalService.state.currentBottomModalContent
+    const [ModalContent, setModalContent] = useState(
+        modalService.state.currentModalContent
     );
 
     const onCloseDrawer = (duration = 300) => {
@@ -48,26 +60,26 @@ const ModalSpot = (props: ModalSpotProps) => {
         // }
         setIsDrawerQuitting(true);
         setTimeout(() => {
-            bottomModalService.state = {
-                isBottomModalOpen: false,
-                currentBottomModalContent: null,
+            modalService.state = {
+                isModalOpen: false,
+                currentModalContent: null,
             };
         }, duration);
     };
 
     // set notifiers
     useEffect(() => {
-        bottomModalService.addNotifier(
+        modalService.addNotifier(
             (options) =>
-                options &&
-                setBottomModalContent(options.state.currentBottomModalContent)
+                options && setModalContent(options.state.currentModalContent)
         );
     }, []);
 
     return (
         <div
-            className={clsx('ms_container', {
+            className={clsx('ms_container', animationDirection, {
                 ms_quitting: isDrawerQuitting,
+                is_desktop: isDesktop
             })}
             onClick={() => onCloseDrawer()}
         >
@@ -75,18 +87,27 @@ const ModalSpot = (props: ModalSpotProps) => {
                 className={clsx('ms_content')}
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="ms_title_container">
-                    <span>{/*placeholder*/}</span>
-                    <h2
-                        className={clsx(
-                            lng === SupportedLanguagesEnum.AR
-                                ? UthmanicFont.className
-                                : Graphik.className
-                        )}
+                <div className={clsx({ ms_title_container: !!headingTitle })}>
+                    {headingTitle && (
+                        <>
+                            <span>{/*placeholder*/}</span>
+                            <h2
+                                className={clsx(
+                                    lng === SupportedLanguagesEnum.AR
+                                        ? UthmanicFont.className
+                                        : Graphik.className
+                                )}
+                            >
+                                {/* {t('drawer.title')} */}
+                                {headingTitle}
+                            </h2>
+                        </>
+                    )}
+                    <div
+                        className={clsx('ms_close_icon', {
+                            floating: !headingTitle,
+                        })}
                     >
-                        {t('drawer.title')}
-                    </h2>
-                    <div className="ms_close_icon">
                         <ScaleBgWrapper
                             Icon={<CloseIcon />}
                             onClick={() => onCloseDrawer()}

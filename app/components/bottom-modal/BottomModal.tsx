@@ -1,6 +1,6 @@
 'use client';
 import ModalSpot from '@/app/shared/modal-spot/ModalSpot';
-import { ModalContentMapping } from '@/app/utils/bottom-modal';
+import { ModalContentMapping } from '@/app/utils/modal';
 import MenuDrawerNavContent from '@/app/components/modal-content/menu-drawer-nav-content/MenuDrawerNavContent';
 import LoginContent from '@/app/components/modal-content/login-in-content/LoginContent';
 import { SupportedLanguages } from '@/app/i18n/settings';
@@ -12,32 +12,32 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { FrontQueryParams } from '@/app/utils/query-params';
 import LoadingIndicator from '@/app/shared/loading-indicator/LoadingIndicator';
-import { BottomModalService } from '@/app/services/bottom-modal.service';
+import { ModalService } from '@/app/services/modal.service';
 
 const productCategoryService = ProductCategoryService.getInstance();
-const bottomModalService = BottomModalService.getInstance();
+const modalService = ModalService.getInstance();
 
-interface BottomModalProps {
+interface ModalProps {
     lng: SupportedLanguages;
 }
 
-const BottomModal = ({ lng }: BottomModalProps) => {
+const Modal = ({ lng }: ModalProps) => {
     const [productCategories, setProductCategories] = useState(
         productCategoryService.state.list
     );
 
-    const [currentBottomModalContent, setBottomModalContent] = useState(
-        bottomModalService.state.currentBottomModalContent
+    const [currentModalContent, setModalContent] = useState(
+        modalService.state.currentModalContent
     );
-    const [isBottomModalOpen, setIsBottomModalOpen] = useState(
-        bottomModalService.state.isBottomModalOpen
+    const [isModalOpen, setIsModalOpen] = useState(
+        modalService.state.isModalOpen
     );
     const searchParams = useSearchParams();
 
     useEffect(() => {
         if (
             !productCategories &&
-            currentBottomModalContent === ModalContentMapping.MENU_DRAWER
+            currentModalContent === ModalContentMapping.MENU_DRAWER
         ) {
             productCategoryService.list({ locale: lng }).then((data) => {
                 if (data) {
@@ -47,7 +47,7 @@ const BottomModal = ({ lng }: BottomModalProps) => {
                 }
             });
         }
-    }, [currentBottomModalContent]);
+    }, [currentModalContent]);
 
     // initialize bottom modal state
     useEffect(() => {
@@ -55,9 +55,9 @@ const BottomModal = ({ lng }: BottomModalProps) => {
             Array.from(searchParams.entries())
         );
         if (searchParamsUrl.has(FrontQueryParams.MODAL_CONTENT)) {
-            bottomModalService.state = {
-                isBottomModalOpen: true,
-                currentBottomModalContent: searchParams.get(
+            modalService.state = {
+                isModalOpen: true,
+                currentModalContent: searchParams.get(
                     FrontQueryParams.MODAL_CONTENT
                 ) as ModalContentMapping,
             };
@@ -70,22 +70,22 @@ const BottomModal = ({ lng }: BottomModalProps) => {
             (options) => options && setProductCategories(options.state.list)
         );
 
-        bottomModalService.addNotifier((options) => {
+        modalService.addNotifier((options) => {
             if (options) {
-                setIsBottomModalOpen(options.state.isBottomModalOpen);
-                setBottomModalContent(options.state.currentBottomModalContent);
+                setIsModalOpen(options.state.isModalOpen);
+                setModalContent(options.state.currentModalContent);
             }
         });
     }, []);
 
-    if (!isBottomModalOpen) {
+    if (!isModalOpen) {
         return null;
     }
 
-    switch (currentBottomModalContent) {
+    switch (currentModalContent) {
         case ModalContentMapping.MENU_DRAWER:
             return (
-                <ModalSpot lng={lng}>
+                <ModalSpot lng={lng} headingTitle='Categories'>
                     {productCategories ? (
                         <MenuDrawerNavContent
                             menuItems={productCategories}
@@ -99,18 +99,18 @@ const BottomModal = ({ lng }: BottomModalProps) => {
         case ModalContentMapping.SIGN_IN:
         case ModalContentMapping.SIGN_UP:
             return (
-                <ModalSpot lng={lng}>
+                <ModalSpot lng={lng} headingTitle='SignIn/SignUp'>
                     <LoginContent lng={lng} />
                 </ModalSpot>
             );
 
         default:
             return (
-                <ModalSpot lng={lng}>
+                <ModalSpot lng={lng} headingTitle='Not found'>
                     <h2>no content found</h2>{' '}
                 </ModalSpot>
             );
     }
 };
 
-export default BottomModal;
+export default Modal;

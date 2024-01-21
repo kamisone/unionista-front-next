@@ -1,3 +1,11 @@
 .app_container {
+    /* contain: layout; */
+}
+
+.desktop_container {
     padding-inline: var(--size-1200)
+}
+
+.mobile_container {
+    
 }
