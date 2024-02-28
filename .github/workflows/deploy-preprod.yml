@@ -19,7 +19,7 @@ jobs:
               run: npm run build
 
             - name: build docker image
-              run: docker build -t front:latest -f ./docker/Dockerfile ./
+              run: docker build -t mo29172/unionista_front -f ./docker/Dockerfile ./
             
             - name: send image to docker hub
               run: |
