@@ -19,7 +19,7 @@ jobs:
               run: npm run build
 
             - name: build docker image
-              run: docker build -t front:latest .
+              run: docker build -t front:latest ./docker
             
             - name: send image to docker hub
               run: |
