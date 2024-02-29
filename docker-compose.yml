@@ -5,15 +5,15 @@ services:
         container_name: front_ssr
         build:
             context: './'
-            dockerfile: './docker/Dockerfile'
+            dockerfile: './docker/Dockerfile.dev'
         volumes:
             - '.:/srv/front:rw,cached'
             - '/srv/front/node_modules'
         # ports:
         #     - 3000:3000
-        command: bash -c "npm run ${NEXT_START_CMD}"
-        networks:
-            - unionistashop_network
+        # command: bash -c "npm run ${NEXT_START_CMD}"
+        # networks:
+        #     - unionistashop_network
 
 # networks:
 #     unionistashop_network:
