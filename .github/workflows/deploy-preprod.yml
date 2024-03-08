@@ -18,27 +18,51 @@ jobs:
             - name: Build project
               run: npm run build
 
-            - name: build docker image
-              run: docker build -t mo29172/unionista_front -f ./docker/Dockerfile ./
-
             - name: Log in to Docker Hub
               uses: docker/login-action@v3
               with:
                 username: ${{ secrets.DOCKER_HUB_USERNAME }}
                 password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+            - name: build docker image
+              run: docker build -t mo29172/unionista_front:v${{ github.run_number }} -f ./docker/Dockerfile ./
+
             
-            - name: send image to docker hub
+            - name: push image to docker hub
               run: |
-                docker push mo29172/unionista_front:latest
+                docker push mo29172/unionista_front:v${{ github.run_number }}
             
-            # - name: copy .next directory with SSH
-            #   uses: easingthemes/ssh-deploy@v2.1.4
-            #   env:
-            #       SSH_PRIVATE_KEY: ${{ secrets.REMOTE_SSH_KEY }}
-            #       REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-            #       REMOTE_USER: ${{ secrets.REMOTE_USER }}
-            #       SOURCE: '.next'
-            #       TARGET: '/srv/front/source'
+            - name: update front deployment file version
+              run: |
+                sed -i -e"s/:latest/:v${{ github.run_number }}/" docker/k8s/front-deployment.yaml
+
+            - name: copy k8s files via ssh
+              uses: appleboy/scp-action@master
+              with:
+                host: ${{ secrets.REMOTE_HOST }}
+                username: ${{ secrets.REMOTE_USER }}
+                key: ${{ secrets.REMOTE_SSH_KEY }}
+                source: 'docker/k8s/front-deployment.yaml,docker/k8s/front-cluster-ip-service.yaml'
+                target: '/srv/k8s'
+                strip_components: 2
+
+            - name: apply k8s files
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.REMOTE_HOST }}
+                username: ${{ secrets.SSH_SECOND_USER }}
+                password: ${{ secrets.REMOTE_PASSWORD }}
+                script: |
+                  kubectl apply -f /srv/k8s
+    
+    # - name: copy .next directory with SSH
+    #   uses: easingthemes/ssh-deploy@v2.1.4
+    #   env:
+    #       SSH_PRIVATE_KEY: ${{ secrets.REMOTE_SSH_KEY }}
+    #       REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+    #       REMOTE_USER: ${{ secrets.REMOTE_USER }}
+    #       SOURCE: '.next'
+    #       TARGET: '/srv/front/source'
 
     # deploy:
     #     runs-on: ubuntu-latest
