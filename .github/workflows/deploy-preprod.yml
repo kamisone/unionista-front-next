@@ -42,8 +42,8 @@ jobs:
                 host: ${{ secrets.REMOTE_HOST }}
                 username: ${{ secrets.REMOTE_USER }}
                 key: ${{ secrets.REMOTE_SSH_KEY }}
-                source: 'docker/k8s/front-deployment.yaml,docker/k8s/front-cluster-ip-service.yaml'
-                target: '/srv/k8s'
+                source: 'docker/k8s/front-deployment.yaml,docker/k8s/front-cluster-ip-service.yaml,docker/k8s/front-ingress-service.yaml'
+                target: '/srv/k8s/front'
                 strip_components: 2
 
             - name: apply k8s files
@@ -53,7 +53,7 @@ jobs:
                 username: ${{ secrets.SSH_SECOND_USER }}
                 password: ${{ secrets.REMOTE_PASSWORD }}
                 script: |
-                  kubectl apply -f /srv/k8s
+                  kubectl apply -f /srv/k8s/front
     
     # - name: copy .next directory with SSH
     #   uses: easingthemes/ssh-deploy@v2.1.4
