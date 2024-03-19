@@ -6,6 +6,5 @@ export const config = {
 };
 
 export function middleware(req: NextRequest) {
-    console.log('private publi api: ', process.env.API_BASE_URL, process.env);
     return i18nMiddleware(req);
 }
