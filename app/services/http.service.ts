@@ -21,9 +21,8 @@ export class HttpService {
     axiosInstance: AxiosInstance;
 
     constructor(private apiTokenService: ApiTokenService) {
-        console.log('hi the : ', process.env.REACT_APP_BASE_URL);
         this.axiosInstance = axios.create({
-            baseURL: '/api',
+            baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
             headers: {
                 Authorization: AuthService.getAccessToken(),
                 // Authorization: 'Bearer ',
@@ -104,10 +103,12 @@ export class HttpService {
     }
 
     static getInstance() {
-        if (!this.myInstance) {
-            this.myInstance = new HttpService(ApiTokenService.getInstance());
+        if (!HttpService.myInstance) {
+            HttpService.myInstance = new HttpService(
+                ApiTokenService.getInstance()
+            );
         }
-        return this.myInstance;
+        return HttpService.myInstance;
     }
 
     async get<T>({

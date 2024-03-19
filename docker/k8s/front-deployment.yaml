@@ -21,4 +21,10 @@ spec:
               cpu: 500m
             requests:
               cpu: 200m
+          env:
+            - name: NEXT_PUBLIC_API_BASE_URL
+              valueFrom: 
+                secretKeyRef:
+                  name: front-envs
+                  key: NEXT_PUBLIC_API_BASE_URL
             
