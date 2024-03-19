@@ -11,9 +11,6 @@ import { AuthService } from './auth.service';
 import { SnackbarService, SnackbarSeverity } from './snackbar.service';
 import { ModalService } from './modal.service';
 import { ModalContentMapping } from '../utils/modal';
-import { config } from 'dotenv';
-
-config();
 
 // const authService = AuthService.getInstance();
 const snackbarService = SnackbarService.getInstance();
@@ -24,7 +21,6 @@ export class HttpService {
     axiosInstance: AxiosInstance;
 
     constructor(private apiTokenService: ApiTokenService) {
-        console.log('private publi api: ', process.env.API_BASE_URL);
         this.axiosInstance = axios.create({
             baseURL: process.env.API_BASE_URL,
             headers: {

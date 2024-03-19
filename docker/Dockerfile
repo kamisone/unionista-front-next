@@ -1,11 +1,11 @@
 FROM node:18
 
-RUN mkdir /srv/front
-WORKDIR /srv/front
+RUN mkdir /app
+WORKDIR /app
 
 RUN chown -R node:node /usr/local/lib/node_modules \
     && chown -R node:node /usr/local/bin \
-    && chown -R node:node /srv/front
+    && chown -R node:node /app
 
 USER node:node
 
