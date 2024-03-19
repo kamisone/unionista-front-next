@@ -21,6 +21,10 @@ export class HttpService {
     axiosInstance: AxiosInstance;
 
     constructor(private apiTokenService: ApiTokenService) {
+        console.log(
+            'private publi api: ',
+            process.env.NEXT_PUBLIC_API_BASE_URL
+        );
         this.axiosInstance = axios.create({
             baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
             headers: {
