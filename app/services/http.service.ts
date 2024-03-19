@@ -11,6 +11,9 @@ import { AuthService } from './auth.service';
 import { SnackbarService, SnackbarSeverity } from './snackbar.service';
 import { ModalService } from './modal.service';
 import { ModalContentMapping } from '../utils/modal';
+import { config } from 'dotenv';
+
+config();
 
 // const authService = AuthService.getInstance();
 const snackbarService = SnackbarService.getInstance();
