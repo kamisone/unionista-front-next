@@ -31,14 +31,17 @@ export function i18nMiddleware(req: NextRequest) {
         !req.nextUrl.pathname.startsWith('/_next')
     ) {
         return NextResponse.redirect(
-            new URL(`/${lng}/${req.nextUrl.pathname}`, req.url)
+            new URL(
+                `/${lng}${req.nextUrl.pathname === '/' ? '' : req.nextUrl.pathname}`,
+                req.url
+            )
         );
     }
 
     if (req.headers.has('referer')) {
         const refererUrl = new URL(req.headers.get('referer') ?? '');
-        const lngInReferer = languages.find((l) =>
-            refererUrl.pathname.startsWith(`/${l}`)
+        const lngInReferer = languages.find((loc) =>
+            refererUrl.pathname.startsWith(`/${loc}`)
         );
         const response = NextResponse.next();
         if (lngInReferer) {

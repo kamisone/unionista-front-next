@@ -19,7 +19,6 @@ const useUpdatePathQuery = () => {
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        // console.log('excetiddddd')
         if (bottomModalContent) {
             router.replace(
                 `${pathname}?${addQueryParamToUrl(
