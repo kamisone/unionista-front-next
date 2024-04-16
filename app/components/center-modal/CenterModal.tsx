@@ -22,8 +22,17 @@ const CenterModal = ({lng}: CenterModalProps) => {
 
     const searchParams = useSearchParams();
 
-    // initialize center modal state
+    
     useEffect(() => {
+        // set notifiers
+        modalService.addNotifier((options) => {
+            if(options) {
+                setIsModalOpen(options.state.isModalOpen);
+                setCurrentModalContent(options.state.currentModalContent);
+            }
+        });
+
+        // initialize center modal state
         const searchParamsUrl = new URLSearchParams(
             Array.from(searchParams.entries())
         );
@@ -35,16 +44,6 @@ const CenterModal = ({lng}: CenterModalProps) => {
                 ) as ModalContentMapping,
             };
         }
-    }, []);
-
-    // set notifiers
-    useEffect(() => {
-        modalService.addNotifier((options) => {
-            if(options) {
-                setIsModalOpen(options.state.isModalOpen);
-                setCurrentModalContent(options.state.currentModalContent);
-            }
-        })
     }, []);
 
     if(!isModalOpen) {
