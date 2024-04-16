@@ -49,26 +49,10 @@ const Modal = ({ lng }: ModalProps) => {
         }
     }, [currentModalContent]);
 
-    // initialize bottom modal state
+    
+    
     useEffect(() => {
-        const searchParamsUrl = new URLSearchParams(
-            Array.from(searchParams.entries())
-        );
-        // @ts-ignore
-        window.searchParams = searchParams;
-        console.log('searchparams:', Array.from(searchParams.entries()))
-        if (searchParamsUrl.has(FrontQueryParams.MODAL_CONTENT)) {
-            modalService.state = {
-                isModalOpen: true,
-                currentModalContent: searchParams.get(
-                    FrontQueryParams.MODAL_CONTENT
-                ) as ModalContentMapping,
-            };
-        }
-    }, []);
-
-    // set Notifiers
-    useEffect(() => {
+        // set Notifiers
         productCategoryService.addNotifier(
             (options) => options && setProductCategories(options.state.list)
         );
@@ -79,6 +63,20 @@ const Modal = ({ lng }: ModalProps) => {
                 setModalContent(options.state.currentModalContent);
             }
         });
+
+        // initialize bottom modal state
+        const searchParamsUrl = new URLSearchParams(
+            Array.from(searchParams.entries())
+        );
+            
+        if (searchParamsUrl.has(FrontQueryParams.MODAL_CONTENT)) {
+            modalService.state = {
+                isModalOpen: true,
+                currentModalContent: searchParams.get(
+                    FrontQueryParams.MODAL_CONTENT
+                ) as ModalContentMapping,
+            };
+        }
     }, []);
 
     if (!isModalOpen) {
