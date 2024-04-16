@@ -16,8 +16,10 @@ import styles from '@/app/[lng]/(client)/layout.module.css';
 import dynamic from 'next/dynamic';
 import LoadingIndicator from '@/app/shared/loading-indicator/LoadingIndicator';
 // import CenterModal from '@/app/components/center-modal/CenterModal';
+import '@/app/fb-pixel/pixel-script';
 
-// const BottomModal = dynamic(() => import('../../components/bottom-modal/BottomModal'))
+
+// const BottomModal = dynamic(() => import('../../components/bottom-modal/BottomModal'));
 
 const BottomModal = React.lazy(() => import('@/app/components/bottom-modal/BottomModal'));
 const CenterModal = React.lazy(() => import('@/app/components/center-modal/CenterModal'));
