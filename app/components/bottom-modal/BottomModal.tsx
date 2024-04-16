@@ -54,6 +54,9 @@ const Modal = ({ lng }: ModalProps) => {
         const searchParamsUrl = new URLSearchParams(
             Array.from(searchParams.entries())
         );
+        // @ts-ignore
+        window.searchParams = searchParams;
+        console.log('searchparams:', Array.from(searchParams.entries()))
         if (searchParamsUrl.has(FrontQueryParams.MODAL_CONTENT)) {
             modalService.state = {
                 isModalOpen: true,
