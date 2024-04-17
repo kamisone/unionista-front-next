@@ -85,19 +85,15 @@ const LoginContent = ({ lng }: LoginContentProps) => {
     }, []);
 
     async function onSubmit(data: FormValues) {
-        
-
         const signupData = {
             ...data,
             avatarFile: data.avatarFile ? data.avatarFile[0] : null,
         };
-        console.log('data: ', signupData);
         setIsSubmitting(true);
         try {
             const response = isSignin
                 ? await authService.signinUser(data)
                 : await authService.signupUser(signupData);
-            console.log('reponse: ', response);
             setIsSubmitting(false);
         } catch (_) {
             setError(

@@ -55,6 +55,7 @@ export class HttpService {
         this.axiosInstance.interceptors.response.use(
             async (response) => {
                 const originalRequest = response.config;
+                console.log('original request path: ', originalRequest.url);
                 if (
                     [
                         AuthService.endpoints.SIGN_IN,

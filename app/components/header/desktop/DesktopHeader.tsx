@@ -139,7 +139,7 @@ const DesktopHeader = ({ lng, isUserAuthenticated }: DesktopHeaderProps) => {
                         <li>
                             <AvatarSlot
                                 content={
-                                    <img src="/assets/icons/unionista-logo2.png" />
+                                    <img src="/assets/icons/unionista-logo2.png" alt="unionistashop logo" />
                                 }
                             />
                         </li>
