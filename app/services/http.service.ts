@@ -55,7 +55,6 @@ export class HttpService {
         this.axiosInstance.interceptors.response.use(
             async (response) => {
                 const originalRequest = response.config;
-                console.log('original request path: ', originalRequest.url);
                 if (
                     [
                         AuthService.endpoints.SIGN_IN,
@@ -72,31 +71,28 @@ export class HttpService {
                 const originalRequest = error.config as
                     | InternalAxiosRequestConfig<any>
                     | undefined;
-                if (
-                    originalRequest &&
-                    error.response?.status === 401 &&
-                    originalRequest.url != AuthService.endpoints.REFRESH_TOKEN
-                ) {
-                    console.log('refresh here: ', originalRequest.url);
-                    const data = await AuthService.refreshToken();
-                    if (!data) return;
-                    const { accessToken, refreshToken } = data;
-                    AuthService.updateRefreshToken(refreshToken);
-                    AuthService.updateAccessToken(accessToken);
+                if (!originalRequest || error.response?.status !== 401)
+                    throw error;
+                try {
+                    if (
+                        originalRequest.url !=
+                        AuthService.endpoints.REFRESH_TOKEN
+                    ) {
+                        const refreshAuthTokens =
+                            await AuthService.refreshToken();
+                        const { accessToken, refreshToken } = refreshAuthTokens;
+                        AuthService.updateRefreshToken(refreshToken);
+                        AuthService.updateAccessToken(accessToken);
 
-                    this.axiosInstance(originalRequest);
-                } else if (
-                    originalRequest &&
-                    error.response?.status === 401 &&
-                    originalRequest.url === AuthService.endpoints.REFRESH_TOKEN
-                ) {
-                    console.log('refresh failed: ');
-
-                    modalService.state = {
-                        isModalOpen: true,
-                        currentModalContent: ModalContentMapping.SIGN_IN,
-                    };
-                } else {
+                        await this.axiosInstance(originalRequest);
+                    } else {
+                        modalService.state = {
+                            isModalOpen: true,
+                            currentModalContent: ModalContentMapping.SIGN_IN,
+                        };
+                        throw error;
+                    }
+                } catch (_) {
                     throw error;
                 }
             }

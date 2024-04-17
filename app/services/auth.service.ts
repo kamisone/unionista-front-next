@@ -181,22 +181,10 @@ export class AuthService extends ComponentsStateNotify<
 
     static async refreshToken() {
         const httpService = HttpService.getInstance();
-        try {
-            const response = await httpService.get<AuthTokens>({
-                path: AuthService.endpoints.REFRESH_TOKEN,
-            });
-            return response.data;
-        } catch (error: unknown) {
-            console.log('refresh error occurred');
-            if (error instanceof AxiosError && error.response) {
-                snackbarService.openSnackbar({
-                    message: `Error: ${
-                        error.response.data?.message ?? error.message
-                    }`,
-                    severity: SnackbarSeverity.ERROR,
-                });
-            }
-        }
+        const response = await httpService.get<AuthTokens>({
+            path: AuthService.endpoints.REFRESH_TOKEN,
+        });
+        return response.data;
     }
 
     static updateAccessToken(accessToken: string) {
