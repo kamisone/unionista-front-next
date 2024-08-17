@@ -19,12 +19,12 @@
         background-color: transparent;
     }
     to {
-        background-color: var(--clr-black-semi-transparent);
+        background-color: var(--clr-medium-black-overlay);
     }
 }
 @keyframes ms_container_out_animate {
     from {
-        background-color: var(--clr-black-semi-transparent);
+        background-color: var(--clr-medium-black-overlay);
     }
     to {
         background-color: transparent;

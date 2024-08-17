@@ -2,5 +2,5 @@
     position: fixed;
     inset: 0;
     z-index: 2;
-    background-color: var(--clr-black-semi-transparent);
+    background-color: var(--clr-medium-black-overlay);
 }

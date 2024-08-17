@@ -18,7 +18,7 @@
     border: 1px dotted var(--clr-secondary);
 }
 .ic_input_container.border_light {
-    border-color: var(--clr-black-light);
+    border-color: var(--clr-dark-gray-overlay);
 }
 .ic_input_container.inset_shadow {
     box-shadow: var(--inset-shadow-200);
@@ -29,18 +29,18 @@
 }
 
 .ic_input_container.error {
-    border-color: var(--clr-error);
-    background-color: var(--bg-clr-error);
+    border-color: var(--clr-soft-coral);
+    background-color: var(--clr-blush-pink);
 }
 .ic_input_container.valid {
-    border-color: var(--clr-valid);
+    border-color: var(--clr-neon-green);
 }
 
 .ic_error {
     --mt: 0.45rem;
     font-weight: 300;
     font-size: var(--fs-300);
-    color: var(--clr-error);
+    color: var(--clr-soft-coral);
     height: calc(var(--error-placeholder-size) - var(--mt));
     margin-top: var(--mt);
 }
@@ -55,5 +55,5 @@
 }
 
 .ic_input_container.error:focus-within {
-    /* outline-color: var(--clr-error); */
+    /* outline-color: var(--clr-soft-coral); */
 }

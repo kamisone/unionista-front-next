@@ -52,7 +52,7 @@
     background-color: var(--clg-color-pal-blue-150);
 }
 .nav_item.text:hover {
-    background-color: var(--clr-grey-very-light);
+    background-color: var(--clr-light-grey-overlay);
 }
 
 .nav_item.text {

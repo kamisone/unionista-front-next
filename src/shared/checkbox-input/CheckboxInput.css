@@ -1,7 +1,7 @@
 .cbi_container {
     width: 1.5rem;
     aspect-ratio: 1;
-    border: solid var(--clr-grey);
+    border: solid var(--clr-neutral-grey);
     display: inline-block;
     transition: all 0.25s ease;
     position: relative;

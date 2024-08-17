@@ -8,7 +8,7 @@
 
     color: white;
     /* background-color: var(--clg-color-sem-text-primary); */
-    background-color: var(--clr-grey-light);
+    background-color: var(--clr-charcoal-grey);
     border-radius: 5px;
 }
 
@@ -16,11 +16,11 @@
     background-color: var(--clr-success);
 }
 .sbc_container.info {
-    background-color: var(--clr-info);
+    background-color: var(--clr-translucent-black);
 }
 .sbc_container.warning {
-    background-color: var(--clr-warning);
+    background-color: var(--clr-primary-orange);
 }
 .sbc_container.error {
-    background-color: var(--clr-error);
+    background-color: var(--clr-soft-coral);
 }

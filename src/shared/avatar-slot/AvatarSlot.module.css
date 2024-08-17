@@ -36,7 +36,7 @@
     list-style: none;
     z-index: 1;
     background-color: var(--clr-white);
-    box-shadow: 0 0 5px var(--clr-shadow-light);
+    box-shadow: 0 0 5px var(--clr-light-black-overlay);
     transition: opacity 0.25s ease;
 }
 .lng_choices::before {
