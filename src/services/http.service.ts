@@ -29,15 +29,10 @@ export class HttpService {
         // interceptors:
         this.axiosInstance.interceptors.request.use(
             async (config) => {
-                console.log('request will go now');
-                if (config.url === AuthService.endpoints.REFRESH_TOKEN) {
-                    const refreshToken = AuthService.getRefreshToken();
-                    config.headers['Authorization'] = `bearer ${refreshToken}`;
-                } else {
+                if (config.url !== AuthService.endpoints.REFRESH_TOKEN) {
                     const accessToken = AuthService.getAccessToken();
                     config.headers['Authorization'] = `bearer ${accessToken}`;
                 }
-
                 return config;
             },
 
@@ -68,17 +63,16 @@ export class HttpService {
                 const originalRequest = error.config as
                     | InternalAxiosRequestConfig<any>
                     | undefined;
-                if (!originalRequest || error.response?.status !== 401)
+                if (!originalRequest || error.response?.status !== 401) {
                     throw error;
+                }
                 try {
                     if (
-                        originalRequest.url !=
+                        originalRequest.url !==
                         AuthService.endpoints.REFRESH_TOKEN
                     ) {
-                        const refreshAuthTokens =
+                        const { accessToken } =
                             await AuthService.refreshToken();
-                        const { accessToken, refreshToken } = refreshAuthTokens;
-                        AuthService.updateRefreshToken(refreshToken);
                         AuthService.updateAccessToken(accessToken);
 
                         await this.axiosInstance(originalRequest);

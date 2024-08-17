@@ -177,8 +177,12 @@ export class AuthService extends ComponentsStateNotify<
 
     static async refreshToken() {
         const httpService = HttpService.instance;
-        const response = await httpService.get<AuthTokens>({
+        const refreshToken = AuthService.getRefreshToken();
+        const response = await httpService.post<AuthTokens>({
             path: AuthService.endpoints.REFRESH_TOKEN,
+            body: {
+                refresh_token: `${refreshToken}`,
+            },
         });
         return response.data;
     }
