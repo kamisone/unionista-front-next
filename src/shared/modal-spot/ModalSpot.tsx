@@ -13,8 +13,8 @@ import { ComponentsStateNotify } from '@/services/components-state-notify.servic
 import { ModalService } from '@/services/modal.service';
 // import ScaleBgWrapper from 'shared/scale-bg-wrapper/ScaleBgWrapper';
 
-const authService = AuthService.getInstance();
-const modalService = ModalService.getInstance();
+const authService = AuthService.instance;
+const modalService = ModalService.instance;
 
 // interface ModalService extends ComponentsStateNotify<any, any> {}
 

@@ -8,7 +8,7 @@ import LoginContent from '../modal-content/login-in-content/LoginContent';
 import { ModalService } from '@/services/modal.service';
 import { ModalContentMapping } from '@/utils/modal';
 
-const modalService = ModalService.getInstance();
+const modalService = ModalService.instance;
 
 interface CenterModalProps {
     lng: SupportedLanguages;

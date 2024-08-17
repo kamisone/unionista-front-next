@@ -4,8 +4,8 @@ import { HttpService } from '@/services/http.service';
 import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
 
-const httpService = HttpService.getInstance();
-const snackbarService = SnackbarService.getInstance();
+const httpService = HttpService.instance;
+const snackbarService = SnackbarService.instance;
 
 interface ProductCategoryState {
     list?: ProductCategory[];
@@ -34,15 +34,16 @@ export class ProductCategoryService extends ComponentsStateNotify<
     constructor(initialState: ProductCategoryState) {
         super(initialState);
     }
-    static myInstance: ProductCategoryService;
+    private static _instance: ProductCategoryService;
 
-    static getInstance() {
-        if (!ProductCategoryService.myInstance) {
-            ProductCategoryService.myInstance = new ProductCategoryService({
+    static get instance() {
+        if (!this._instance) {
+            this._instance = new ProductCategoryService({
                 list: undefined,
             });
         }
-        return this.myInstance;
+
+        return this._instance;
     }
 
     static get endpoints() {

@@ -16,12 +16,13 @@ export enum SnackbarSeverity {
 export const SNACKBAR_DURATION = 5000;
 
 export class SnackbarService {
-    static myInstance: SnackbarService;
-    static getInstance() {
-        if (!SnackbarService.myInstance) {
-            SnackbarService.myInstance = new SnackbarService();
+    private static _instance: SnackbarService;
+
+    static get instance() {
+        if (!this._instance) {
+            this._instance = new SnackbarService();
         }
-        return this.myInstance;
+        return this._instance;
     }
 
     toNotifiy: ToNotifiyFunc[] = [];

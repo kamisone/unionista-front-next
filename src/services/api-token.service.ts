@@ -1,12 +1,12 @@
 export class ApiTokenService {
-    static myInstance: ApiTokenService;
+    static _instance: ApiTokenService;
     token = null;
 
-    static getInstance() {
-        if (!ApiTokenService.myInstance) {
-            ApiTokenService.myInstance = new ApiTokenService();
+    static get instance() {
+        if (!this._instance) {
+            this._instance = new ApiTokenService();
         }
-        return this.myInstance;
+        return this._instance;
     }
 
     getToken() {

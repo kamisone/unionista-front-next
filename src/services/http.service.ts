@@ -11,11 +11,11 @@ import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
 import { ModalService } from '@/services/modal.service';
 import { ModalContentMapping } from '@/utils/modal';
 
-const snackbarService = SnackbarService.getInstance();
-const modalService = ModalService.getInstance();
+const snackbarService = SnackbarService.instance;
+const modalService = ModalService.instance;
 
 export class HttpService {
-    static myInstance: HttpService;
+    private static _instance: HttpService;
     axiosInstance: AxiosInstance;
 
     constructor(private apiTokenService: ApiTokenService) {
@@ -97,13 +97,11 @@ export class HttpService {
         );
     }
 
-    static getInstance() {
-        if (!HttpService.myInstance) {
-            HttpService.myInstance = new HttpService(
-                ApiTokenService.getInstance()
-            );
+    static get instance() {
+        if (!this._instance) {
+            this._instance = new HttpService(ApiTokenService.instance);
         }
-        return HttpService.myInstance;
+        return this._instance;
     }
 
     async get<T>({

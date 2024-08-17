@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { AuthService } from '../services/auth.service';
-import { ModalService } from '../services/modal.service';
-import { ModalContentMapping } from '../utils/modal';
+import { AuthService } from '@/services/auth.service';
+import { ModalService } from '@/services/modal.service';
+import { ModalContentMapping } from '@/utils/modal';
 
-const modalService = ModalService.getInstance();
-const authService = AuthService.getInstance();
+const modalService = ModalService.instance;
+const authService = AuthService.instance;
 
 const AUTH_CHECK_INTERVAL_TIME = 5000;
 

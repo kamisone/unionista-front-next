@@ -21,8 +21,8 @@ import { ModalService } from '@/services/modal.service';
 import FileUploader from '@/shared/file-uploader/FileUploader';
 import { ModalContentMapping } from '@/utils/modal';
 
-const authService = AuthService.getInstance();
-const modalService = ModalService.getInstance();
+const authService = AuthService.instance;
+const modalService = ModalService.instance;
 
 const FADE_IN_ANIMATE_MS = 700; // 700ms;
 

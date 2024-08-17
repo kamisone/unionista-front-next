@@ -20,7 +20,7 @@ import AvatarSlot from '@/shared/avatar-slot/AvatarSlot';
 import { ModalService } from '@/services/modal.service';
 import { ModalContentMapping } from '@/utils/modal';
 
-const modalService = ModalService.getInstance();
+const modalService = ModalService.instance;
 
 interface DesktopHeaderProps {
     lng: SupportedLanguages;

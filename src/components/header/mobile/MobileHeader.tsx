@@ -19,8 +19,8 @@ import { AuthService } from '@/services/auth.service';
 import { ModalService } from '@/services/modal.service';
 import { ModalContentMapping } from '@/utils/modal';
 
-const modalService = ModalService.getInstance();
-const authService = AuthService.getInstance();
+const modalService = ModalService.instance;
+const authService = AuthService.instance;
 
 interface HeaderProps {
     lng: SupportedLanguages;

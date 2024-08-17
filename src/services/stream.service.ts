@@ -1,12 +1,11 @@
 export class StreamService {
-    static myInstance: StreamService;
+    private static _instance: StreamService;
     constructor() {}
 
-    static getInstance() {
-        if (!StreamService.myInstance) {
-            StreamService.myInstance = new StreamService();
+    static get instance() {
+        if (!this._instance) {
+            this._instance = new StreamService();
         }
-
-        return this.myInstance;
+        return this._instance;
     }
 }

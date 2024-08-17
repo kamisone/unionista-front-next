@@ -10,7 +10,7 @@ import SnackbarContent from '@/shared/snackbar-content/SnackbarContent';
 import { Slide, Snackbar } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-const snackbarService = SnackbarService.getInstance();
+const snackbarService = SnackbarService.instance;
 
 interface CustomSnackbarProps {
     lng: SupportedLanguages;

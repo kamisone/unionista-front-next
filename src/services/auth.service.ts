@@ -7,8 +7,8 @@ import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
 import { AxiosError } from 'axios';
 import { ModalContentMapping } from '@/utils/modal';
 
-const snackbarService = SnackbarService.getInstance();
-const modalService = ModalService.getInstance();
+const snackbarService = SnackbarService.instance;
+const modalService = ModalService.instance;
 
 // constants
 const ONE_DAY_MS = 8.64e7;
@@ -38,23 +38,22 @@ export class AuthService extends ComponentsStateNotify<
     constructor(initialState: AuthState) {
         super(initialState);
     }
-    private static myInstance: AuthService;
+    private static _instance: AuthService;
     static userIntervalCheckAuth: NodeJS.Timeout | undefined = undefined;
-    httpService: HttpService = HttpService.getInstance();
+    httpService: HttpService = HttpService.instance;
 
-    static getInstance() {
-        if (!AuthService.myInstance) {
-            AuthService.myInstance = new AuthService({
+    static get instance() {
+        if (!this._instance) {
+            this._instance = new AuthService({
                 isUserAuthenticated: true,
                 isUserNotifiedToSignin: false,
             });
             if (isBrowser()) {
-                clearInterval(AuthService.userIntervalCheckAuth);
-                AuthService.userIntervalCheckAuth = setInterval(() => {
-                    const refreshToken = AuthService.getRefreshToken();
+                clearInterval(this.userIntervalCheckAuth);
+                this.userIntervalCheckAuth = setInterval(() => {
+                    const refreshToken = this.getRefreshToken();
                     if (refreshToken) {
-                        const isExpired =
-                            AuthService.isTokenExpired(refreshToken);
+                        const isExpired = this.isTokenExpired(refreshToken);
                         if (isExpired) {
                             if (
                                 !(
@@ -65,30 +64,27 @@ export class AuthService extends ComponentsStateNotify<
                                 ).includes(
                                     modalService.state.currentModalContent
                                 ) &&
-                                !AuthService.myInstance.state
-                                    .isUserNotifiedToSignin
+                                !this._instance.state.isUserNotifiedToSignin
                             ) {
-                                AuthService.myInstance.state = {
+                                this._instance.state = {
                                     isUserAuthenticated: false,
                                     isUserNotifiedToSignin: true,
                                 };
-                                console.log(
-                                    'instance: ',
-                                    AuthService.myInstance.state
-                                );
+                                console.log('instance: ', this._instance.state);
                                 modalService.state = {
                                     isModalOpen: true,
                                     currentModalContent:
                                         ModalContentMapping.SIGN_IN,
                                 };
-                                AuthService.setPersistedIsUserNotifiedToAuth();
+                                this.setPersistedIsUserNotifiedToAuth();
                             }
                         }
                     }
                 }, AUTH_CHECK_INTERVAL_TIME);
             }
         }
-        return this.myInstance;
+
+        return this._instance;
     }
 
     static get endpoints() {
@@ -180,7 +176,7 @@ export class AuthService extends ComponentsStateNotify<
     }
 
     static async refreshToken() {
-        const httpService = HttpService.getInstance();
+        const httpService = HttpService.instance;
         const response = await httpService.get<AuthTokens>({
             path: AuthService.endpoints.REFRESH_TOKEN,
         });

@@ -30,7 +30,7 @@ interface ClientLayoutProps {
     params: { lng: SupportedLanguages };
 }
 
-const productCategoryService = ProductCategoryService.getInstance();
+const productCategoryService = ProductCategoryService.instance;
 const ClientLayout = async ({
     children,
     params: { lng },

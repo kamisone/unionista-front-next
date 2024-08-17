@@ -8,7 +8,7 @@ import { useUpdatePathQuery } from '@/hooks/useUpdatePathQuery';
 import MobileFooter from '@/components/footer/mobile/MobileFooter';
 import DesktopFooter from '@/components/footer/desktop/DesktopFooter';
 
-const authService = AuthService.getInstance();
+const authService = AuthService.instance;
 
 interface UserFooterProps {
     lng: SupportedLanguages;

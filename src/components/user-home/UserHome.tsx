@@ -1,15 +1,12 @@
 'use client';
 
-import { isMobile } from '@/utils/is-browser';
-import MobileBody from '@/components/user-home/mobile/MobileHome';
-import DesktopBody from '@/components/user-home/desktop/DesktopHome';
 import { SupportedLanguages } from '@/i18n/settings';
 import { useEffect, useState } from 'react';
 import { AuthService } from '@/services/auth.service';
 import MobileHome from '@/components/user-home/mobile/MobileHome';
 import DesktopHome from '@/components/user-home/desktop/DesktopHome';
 
-const authService = AuthService.getInstance();
+const authService = AuthService.instance;
 
 interface UserHomeProps {
     lng: SupportedLanguages;

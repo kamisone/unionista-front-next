@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { SupportedLanguages } from '@/i18n/settings';
 import { useUpdatePathQuery } from '@/hooks/useUpdatePathQuery';
 
-const authService = AuthService.getInstance();
+const authService = AuthService.instance;
 
 interface UserHeaderProps {
     lng: SupportedLanguages;

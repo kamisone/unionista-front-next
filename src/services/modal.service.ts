@@ -18,15 +18,15 @@ export class ModalService extends ComponentsStateNotify<
         super(initialState);
     }
 
-    static myInstance: ModalService;
+    static _instance: ModalService;
 
-    static getInstance() {
-        if (!ModalService.myInstance) {
-            ModalService.myInstance = new ModalService({
+    static get instance() {
+        if (!this._instance) {
+            this._instance = new ModalService({
                 isModalOpen: false,
                 currentModalContent: null,
             });
         }
-        return this.myInstance;
+        return this._instance;
     }
 }

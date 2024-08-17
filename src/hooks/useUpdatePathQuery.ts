@@ -8,7 +8,7 @@ import {
 import { FrontQueryParams } from '@/utils/query-params';
 import { ModalService } from '@/services/modal.service';
 
-const modalService = ModalService.getInstance();
+const modalService = ModalService.instance;
 
 const useUpdatePathQuery = () => {
     const [bottomModalContent, setBottomModalContent] = useState(

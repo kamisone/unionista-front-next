@@ -12,7 +12,7 @@ import {
 } from '@/services/product-category.service';
 import { ModalContentMapping } from '@/utils/modal';
 
-const productCategoryService = ProductCategoryService.getInstance();
+const productCategoryService = ProductCategoryService.instance;
 
 interface MenuDrawerNavItem {
     id: string;

@@ -14,8 +14,8 @@ import { FrontQueryParams } from '@/utils/query-params';
 import LoadingIndicator from '@/shared/loading-indicator/LoadingIndicator';
 import { ModalService } from '@/services/modal.service';
 
-const productCategoryService = ProductCategoryService.getInstance();
-const modalService = ModalService.getInstance();
+const productCategoryService = ProductCategoryService.instance;
+const modalService = ModalService.instance;
 
 interface ModalProps {
     lng: SupportedLanguages;
