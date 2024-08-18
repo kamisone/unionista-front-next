@@ -3,7 +3,7 @@ import React from 'react';
 import './NotFound.css';
 import ActionButton from '@/shared/action-button/ActionButton';
 import clsx from 'clsx';
-import { Montserrat, UthmanicFont } from '@/fonts/fonts';
+import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 
 interface NotFoundProps {
@@ -19,7 +19,7 @@ const NotFound = ({ lng }: NotFoundProps) => {
                 'nf_container',
                 lng === SupportedLanguagesEnum.AR
                     ? UthmanicFont.className
-                    : Montserrat.className
+                    : Graphik.className
             )}
         >
             <h2>Oops!</h2>

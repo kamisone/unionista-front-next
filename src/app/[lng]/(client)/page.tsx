@@ -18,10 +18,12 @@ interface HomeProps {
 
 function Home({ params: { lng } }: HomeProps) {
     const headersList = headers();
-    return isMobile(headersList.get('user-agent')) ? (
-        <UserHome isMobile lng={lng} />
-    ) : (
-        <UserHome lng={lng} />
+
+    return (
+        <UserHome
+            isMobile={isMobile(headersList.get('user-agent'))}
+            lng={lng}
+        />
     );
 }
 

@@ -36,34 +36,26 @@ const ClientLayout = async ({
     params: { lng },
 }: ClientLayoutProps) => {
     const headersList = headers();
-
+    const isMobileDevice = isMobile(headersList.get('user-agent'));
     return (
         <main
             className={clsx(lng, styles.app_container, {
                 [UthmanicFont.className]: lng === SupportedLanguagesEnum.AR,
             })}
         >
-            {isMobile(headersList.get('user-agent')) ? (
-                <div className={styles.mobile_container}>
-                    <UserHeader isMobile lng={lng} />
-                    {children}
-                    <UserFooter isMobile lng={lng} />
-                    <CustomSnackbar lng={lng} />
-                    <Suspense fallback={<LoadingIndicator isExtended />}>
+            <div className={styles.mobile_container}>
+                <UserHeader isMobile={isMobileDevice} lng={lng} />
+                {children}
+                <UserFooter isMobile={isMobileDevice} lng={lng} />
+                <CustomSnackbar lng={lng} />
+                <Suspense fallback={<LoadingIndicator isExtended />}>
+                    {isMobileDevice ? (
                         <BottomModal lng={lng} />
-                    </Suspense>
-                </div>
-            ) : (
-                <div className={styles.desktop_container}>
-                    <UserHeader lng={lng} />
-                    {children}
-                    <UserFooter lng={lng} />
-                    <CustomSnackbar lng={lng} />
-                    <Suspense fallback={<LoadingIndicator isExtended />}>
+                    ) : (
                         <CenterModal lng={lng} />
-                    </Suspense>
-                </div>
-            )}
+                    )}
+                </Suspense>
+            </div>
         </main>
     );
 };

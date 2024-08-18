@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import CloseIcon from '@/icons/close-icon/CloseIcon';
 import clsx from 'clsx';
 import ScaleBgWrapper from '@/shared/scale-bg-wrapper/ScaleBgWrapper';
-import { Roboto, UthmanicFont } from '@/fonts/fonts';
+import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 
 interface SnackbarContentProps {
@@ -26,7 +26,7 @@ const SnackbarContent = ({
                 'sbc_container',
                 lng === SupportedLanguagesEnum.AR
                     ? UthmanicFont.className
-                    : Roboto.className,
+                    : Graphik.className,
                 severity
             )}
         >

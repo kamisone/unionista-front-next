@@ -1,33 +1,33 @@
 import localFont from 'next/font/local';
 
-export const Roboto = localFont({
-    src: [
-        {
-            path: './Roboto/Roboto-Regular.ttf',
-            weight: '500',
-        },
-        {
-            path: './Roboto/Roboto-Bold.ttf',
-            weight: '900',
-        },
-        {
-            path: './Roboto/Roboto-Italic.ttf',
-            style: 'italic',
-        },
-    ],
-});
+// export const Roboto = localFont({
+//     src: [
+//         {
+//             path: './Roboto/Roboto-Regular.ttf',
+//             weight: '500',
+//         },
+//         {
+//             path: './Roboto/Roboto-Bold.ttf',
+//             weight: '900',
+//         },
+//         {
+//             path: './Roboto/Roboto-Italic.ttf',
+//             style: 'italic',
+//         },
+//     ],
+// });
 
-export const Montserrat = localFont({
-    src: [
-        {
-            path: './Montserrat/Montserrat-VariableFont_wght.ttf',
-        },
-        {
-            path: './Montserrat/Montserrat-Italic-VariableFont_wght.ttf',
-            style: 'italic',
-        },
-    ],
-});
+// export const Montserrat = localFont({
+//     src: [
+//         {
+//             path: './Montserrat/Montserrat-VariableFont_wght.ttf',
+//         },
+//         {
+//             path: './Montserrat/Montserrat-Italic-VariableFont_wght.ttf',
+//             style: 'italic',
+//         },
+//     ],
+// });
 
 export const UthmanicFont = localFont({
     src: [
