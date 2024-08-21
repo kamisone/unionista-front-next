@@ -10,6 +10,8 @@ import { ModalContentMapping } from '@/utils/modal';
 const snackbarService = SnackbarService.instance;
 const modalService = ModalService.instance;
 
+type CBType = typeof Function;
+
 // constants
 const ONE_DAY_MS = 8.64e7;
 const AUTH_CHECK_INTERVAL_TIME = 5000;
@@ -38,6 +40,7 @@ export class AuthService extends ComponentsStateNotify<
     constructor(initialState: AuthState) {
         super(initialState);
     }
+
     private static _instance: AuthService;
     static userIntervalCheckAuth: NodeJS.Timeout | undefined = undefined;
     httpService: HttpService = HttpService.instance;
@@ -48,40 +51,6 @@ export class AuthService extends ComponentsStateNotify<
                 isUserAuthenticated: true,
                 isUserNotifiedToSignin: false,
             });
-            if (isBrowser()) {
-                clearInterval(this.userIntervalCheckAuth);
-                this.userIntervalCheckAuth = setInterval(() => {
-                    const refreshToken = this.getRefreshToken();
-                    if (refreshToken) {
-                        const isExpired = this.isTokenExpired(refreshToken);
-                        if (isExpired) {
-                            if (
-                                !(
-                                    [
-                                        ModalContentMapping.SIGN_IN,
-                                        ModalContentMapping.SIGN_UP,
-                                    ] as (ModalContentMapping | null)[]
-                                ).includes(
-                                    modalService.state.currentModalContent
-                                ) &&
-                                !this._instance.state.isUserNotifiedToSignin
-                            ) {
-                                this._instance.state = {
-                                    isUserAuthenticated: false,
-                                    isUserNotifiedToSignin: true,
-                                };
-                                console.log('instance: ', this._instance.state);
-                                modalService.state = {
-                                    isModalOpen: true,
-                                    currentModalContent:
-                                        ModalContentMapping.SIGN_IN,
-                                };
-                                this.setPersistedIsUserNotifiedToAuth();
-                            }
-                        }
-                    }
-                }, AUTH_CHECK_INTERVAL_TIME);
-            }
         }
 
         return this._instance;
@@ -175,16 +144,23 @@ export class AuthService extends ComponentsStateNotify<
         }
     }
 
-    static async refreshToken() {
+    static async refreshToken(thenCB?: () => unknown) {
         const httpService = HttpService.instance;
         const refreshToken = AuthService.getRefreshToken();
-        const response = await httpService.post<AuthTokens>({
-            path: AuthService.endpoints.REFRESH_TOKEN,
-            body: {
-                refresh_token: `${refreshToken}`,
-            },
-        });
-        return response.data;
+        return httpService
+            .post<AuthTokens>({
+                path: AuthService.endpoints.REFRESH_TOKEN,
+                body: {
+                    refresh_token: refreshToken,
+                },
+            })
+            .then((response) => response.data)
+            .then(function () {
+                return thenCB && thenCB.apply(null);
+            })
+            .catch((_) => {
+                // catch error throwed if refresh fails
+            });
     }
 
     static updateAccessToken(accessToken: string) {
@@ -244,11 +220,15 @@ export class AuthService extends ComponentsStateNotify<
               );
     }
 
-    static isTokenExpired(token: string) {
-        const jwtBody = token.split('.')[1];
-        if (!jwtBody) return true;
-        const expiry = JSON.parse(atob(jwtBody)).exp as number;
-        return Math.floor(Date.now() / 1000) >= expiry;
+    static isTokenInvalid(token: string) {
+        try {
+            const jwtBody = token.split('.')[1];
+            if (!jwtBody) return true;
+            const expiry = JSON.parse(atob(jwtBody)).exp as number;
+            return Math.floor(Date.now() / 1000) >= expiry;
+        } catch (_) {
+            return true;
+        }
     }
 }
 

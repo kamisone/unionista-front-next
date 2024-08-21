@@ -1,11 +1,10 @@
 'use client';
-import React from 'react';
-import { AuthService } from '@/services/auth.service';
 import DesktopHeader from '@/components/header/desktop/DesktopHeader';
 import MobileHeader from '@/components/header/mobile/MobileHeader';
-import { useEffect, useState } from 'react';
-import { SupportedLanguages } from '@/i18n/settings';
 import { useUpdatePathQuery } from '@/hooks/useUpdatePathQuery';
+import { SupportedLanguages } from '@/i18n/settings';
+import { AuthService } from '@/services/auth.service';
+import { useEffect, useState } from 'react';
 
 const authService = AuthService.instance;
 
@@ -18,7 +17,7 @@ const UserHeader = ({ lng, isMobile = false }: UserHeaderProps) => {
     const [isUserAuthenticated, setIsUserAuthenticated] = useState(
         authService.state.isUserAuthenticated
     );
-    useUpdatePathQuery();
+
     useEffect(() => {
         // add notifiers
         authService.addNotifier(
@@ -26,16 +25,30 @@ const UserHeader = ({ lng, isMobile = false }: UserHeaderProps) => {
                 options &&
                 setIsUserAuthenticated(options.state.isUserAuthenticated)
         );
+    }, []);
 
+    useUpdatePathQuery();
+
+    useEffect(() => {
         // set auth intialstate
+        const accessToken = AuthService.getAccessToken();
         const refreshToken = AuthService.getRefreshToken();
+
         authService.state = {
-            isUserAuthenticated: refreshToken
-                ? !AuthService.isTokenExpired(refreshToken)
+            isUserAuthenticated: accessToken
+                ? !AuthService.isTokenInvalid(accessToken)
                 : false,
             isUserNotifiedToSignin: AuthService.getIsUserNotifiedToSignin(),
         };
+        if (
+            !authService.state.isUserAuthenticated &&
+            refreshToken &&
+            !AuthService.isTokenInvalid(refreshToken)
+        ) {
+            AuthService.refreshToken();
+        }
     }, []);
+
     return isMobile ? (
         <MobileHeader isUserAuthenticated={isUserAuthenticated} lng={lng} />
     ) : (

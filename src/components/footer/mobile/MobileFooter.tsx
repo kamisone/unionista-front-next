@@ -14,7 +14,6 @@ interface FooterProps {
 }
 
 const MobileFooter = ({ lng, isUserAuthenticated }: FooterProps) => {
-    console.log('languagessss: ', lng);
     const pathname = usePathname();
 
     return (

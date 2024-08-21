@@ -25,7 +25,7 @@ const useUserAuth = () => {
         intervalId.current = setInterval(() => {
             const refreshToken = AuthService.getRefreshToken();
             if (refreshToken) {
-                const isExpired = AuthService.isTokenExpired(refreshToken);
+                const isExpired = AuthService.isTokenInvalid(refreshToken);
                 if (isExpired) {
                     if (
                         !(
@@ -72,7 +72,7 @@ const useUserAuth = () => {
         const refreshToken = AuthService.getRefreshToken();
         authService.state = {
             isUserAuthenticated: refreshToken
-                ? !AuthService.isTokenExpired(refreshToken)
+                ? !AuthService.isTokenInvalid(refreshToken)
                 : false,
             isUserNotifiedToSignin:
                 AuthService.getIsUserNotifiedToSignin() || false,

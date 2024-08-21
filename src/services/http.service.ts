@@ -10,24 +10,23 @@ import { AuthService } from '@/services/auth.service';
 import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
 import { ModalService } from '@/services/modal.service';
 import { ModalContentMapping } from '@/utils/modal';
+import { isBrowser } from '@/utils/is-browser';
 
 const snackbarService = SnackbarService.instance;
 const modalService = ModalService.instance;
 
 export class HttpService {
     private static _instance: HttpService;
-    axiosInstance: AxiosInstance;
+    private _axiosInstance: AxiosInstance;
+    private _lastFailedPath: string | null = null;
 
     constructor(private apiTokenService: ApiTokenService) {
-        this.axiosInstance = axios.create({
+        this._axiosInstance = axios.create({
             baseURL: process.env.API_BASE_URL,
-            headers: {
-                Authorization: AuthService.getAccessToken(),
-            },
         });
 
         // interceptors:
-        this.axiosInstance.interceptors.request.use(
+        this._axiosInstance.interceptors.request.use(
             async (config) => {
                 if (config.url !== AuthService.endpoints.REFRESH_TOKEN) {
                     const accessToken = AuthService.getAccessToken();
@@ -44,7 +43,7 @@ export class HttpService {
             }
         );
 
-        this.axiosInstance.interceptors.response.use(
+        this._axiosInstance.interceptors.response.use(
             async (response) => {
                 const originalRequest = response.config;
                 if (
@@ -56,6 +55,20 @@ export class HttpService {
                     const { accessToken, refreshToken } = response.data;
                     AuthService.updateRefreshToken(refreshToken);
                     AuthService.updateAccessToken(accessToken);
+                } else if (
+                    originalRequest.url === AuthService.endpoints.REFRESH_TOKEN
+                ) {
+                    const authService = AuthService.instance;
+                    const { accessToken } = response.data;
+                    AuthService.updateAccessToken(accessToken);
+                    authService.state = {
+                        isUserAuthenticated:
+                            !AuthService.isTokenInvalid(accessToken),
+                    };
+                }
+                if (this._lastFailedPath && isBrowser()) {
+                    window.location.href = this._lastFailedPath;
+                    this._lastFailedPath = null;
                 }
                 return response;
             },
@@ -66,25 +79,32 @@ export class HttpService {
                 if (!originalRequest || error.response?.status !== 401) {
                     throw error;
                 }
-                try {
-                    if (
-                        originalRequest.url !==
-                        AuthService.endpoints.REFRESH_TOKEN
-                    ) {
-                        const { accessToken } =
-                            await AuthService.refreshToken();
-                        AuthService.updateAccessToken(accessToken);
 
-                        await this.axiosInstance(originalRequest);
-                    } else {
-                        modalService.state = {
-                            isModalOpen: true,
-                            currentModalContent: ModalContentMapping.SIGN_IN,
-                        };
-                        throw error;
+                if (
+                    originalRequest.url !== AuthService.endpoints.REFRESH_TOKEN
+                ) {
+                    if (isBrowser()) {
+                        this._lastFailedPath =
+                            window.location.pathname + window.location.search;
                     }
-                } catch (_) {
-                    // throw original error (not refresh-request error)
+                    return await AuthService.refreshToken(() => {
+                        // retry the same original request after refreshing the token
+                        return this._axiosInstance(originalRequest);
+                    });
+                } else {
+                    modalService.state = {
+                        isModalOpen: true,
+                        currentModalContent: ModalContentMapping.SIGN_IN,
+                    };
+
+                    AuthService.setPersistedIsUserNotifiedToAuth(true);
+
+                    const authService = AuthService.instance;
+                    authService.state = {
+                        isUserAuthenticated: false,
+                        isUserNotifiedToSignin: true,
+                    };
+
                     throw error;
                 }
             }
@@ -110,7 +130,7 @@ export class HttpService {
         if (queryParams) {
             path = this._addQueryParams(path, queryParams);
         }
-        return this.axiosInstance.get<T>(path);
+        return this._axiosInstance.get<T>(path);
     }
 
     async post<T>({
@@ -127,7 +147,7 @@ export class HttpService {
         if (queryParams) {
             path = this._addQueryParams(path, queryParams);
         }
-        return this.axiosInstance.post<T>(path, body, {
+        return this._axiosInstance.post<T>(path, body, {
             headers,
         });
     }
@@ -146,7 +166,7 @@ export class HttpService {
         if (queryParams) {
             path = this._addQueryParams(path, queryParams);
         }
-        return this.axiosInstance.put(path, body, {
+        return this._axiosInstance.put(path, body, {
             headers,
         });
     }
@@ -163,7 +183,7 @@ export class HttpService {
         if (queryParams) {
             path = this._addQueryParams(path, queryParams);
         }
-        return this.axiosInstance.delete(path, { headers });
+        return this._axiosInstance.delete(path, { headers });
     }
 
     // _getToken() {

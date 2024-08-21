@@ -24,4 +24,3 @@
 );
 fbq('init', '1220020649383883');
 fbq('track', 'PageView');
-console.log('fb exectuted');

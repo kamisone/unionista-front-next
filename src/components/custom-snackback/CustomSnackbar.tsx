@@ -27,8 +27,6 @@ const CustomSnackbar = ({ lng }: CustomSnackbarProps) => {
     >(null);
 
     useEffect(() => {
-        console.log(process.env.NODE_ENV);
-
         snackbarService.addNotifier((options: INotifyOptions) => {
             if (options.onClose) {
                 setOnSnackWillClose(options.onClose);

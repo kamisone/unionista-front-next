@@ -74,6 +74,7 @@ export class ProductCategoryService extends ComponentsStateNotify<
                     ],
                 },
             });
+
             return response.data;
         } catch (error: unknown) {
             if (error instanceof AxiosError && error.response) {

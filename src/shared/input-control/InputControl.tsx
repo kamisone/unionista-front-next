@@ -30,10 +30,6 @@ const InputControl = (props: InputControlProps) => {
         isFormChild = true,
     } = props;
 
-    useEffect(() => {
-        console.log('field email error: ', fieldError);
-    });
-
     return (
         <div
             className={clsx('ic_container', lng, {
