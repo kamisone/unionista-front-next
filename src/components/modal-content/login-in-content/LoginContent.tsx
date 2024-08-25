@@ -1,28 +1,27 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
 import '@/components/modal-content/login-in-content/LoginContent.css';
-import ActionButton from '@/shared/action-button/ActionButton';
-import InputControl from '@/shared/input-control/InputControl';
-import TextInput from '@/shared/text-input/TextInput';
-import CheckboxInput from '@/shared/checkbox-input/CheckboxInput';
 import EyeIcon from '@/icons/eye/EyeIcon';
 import GoogleIcon from '@/icons/google/GoogleIcon';
-import { useForm } from 'react-hook-form';
-import { AuthService } from '@/services/auth.service';
+import { AuthService, UserWithTokens } from '@/services/server/auth.service';
+import ActionButton from '@/shared/action-button/ActionButton';
+import CheckboxInput from '@/shared/checkbox-input/CheckboxInput';
+import InputControl from '@/shared/input-control/InputControl';
+import TextInput from '@/shared/text-input/TextInput';
 
-import clsx from 'clsx';
-import Link from 'next/link';
-import { useTranslation } from '@/i18n/client';
-import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
-import { usePathname, useRouter } from 'next/navigation';
-import { ModalService } from '@/services/modal.service';
-import FileUploader from '@/shared/file-uploader/FileUploader';
+import { useTranslation } from '@/i18n';
+import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
+import {
+    accessTokenNames,
+    modalContentNames,
+    PENDING_REDIRECT_PATH_NAME,
+} from '@/utils/constants';
 import { ModalContentMapping } from '@/utils/modal';
+import clsx from 'clsx';
+import { cookies, headers } from 'next/headers';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 const authService = AuthService.instance;
-const modalService = ModalService.instance;
 
 const FADE_IN_ANIMATE_MS = 700; // 700ms;
 
@@ -38,70 +37,66 @@ interface LoginContentProps {
     lng: SupportedLanguages;
 }
 
-const LoginContent = ({ lng }: LoginContentProps) => {
-    const [isPassDiscovered, setIsPassDiscovered] = useState(false);
+const LoginContent = async function ({ lng }: LoginContentProps) {
+    const { t } = await useTranslation(lng, 'login_content');
 
-    const [isSwitched, setIsSwitched] = useState(true);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const { t } = useTranslation(lng, 'login_content');
+    const currentModalContent = headers().get(
+        modalContentNames.HEADER_NAME
+    ) as ModalContentMapping | null;
 
-    const [bottomModalContent, setBottomModalContent] = useState(
-        modalService.state.currentModalContent
-    );
+    const isSignin = currentModalContent == ModalContentMapping.SIGN_IN;
 
-    const isSignin = bottomModalContent == ModalContentMapping.SIGN_IN;
+    async function submit(formData: FormData) {
+        'use server';
+        const email = formData.get('email');
+        const password = formData.get('password');
+        const fullName = formData.get('full_name');
+        const avatar = formData.get('avatar');
 
-    const {
-        register,
-        handleSubmit,
-        watch,
-        setError,
-        resetField,
-        formState: { errors, dirtyFields, isValid },
-    } = useForm<FormValues>({
-        mode: 'all',
-        defaultValues: { stayConnected: false, avatarFile: null },
-    });
-
-    const stayedConnected = watch('stayConnected');
-    const uploadedUserAvatar = watch('avatarFile');
-
-    useEffect(() => {
-        setTimeout(() => {
-            setIsSwitched(false);
-        }, FADE_IN_ANIMATE_MS);
-    }, []);
-
-    // set notifiers
-    useEffect(() => {
-        modalService.addNotifier(
-            (options) =>
-                options &&
-                setBottomModalContent(options.state.currentModalContent)
-        );
-    }, []);
-
-    async function onSubmit(data: FormValues) {
-        const signupData = {
-            ...data,
-            avatarFile: data.avatarFile ? data.avatarFile[0] : null,
-        };
-        setIsSubmitting(true);
+        let response: UserWithTokens | undefined;
         try {
-            const response = isSignin
-                ? await authService.signinUser(data)
-                : await authService.signupUser(signupData);
-            setIsSubmitting(false);
+            response = await (isSignin
+                ? authService.signinUser({
+                      email,
+                      password,
+                  })
+                : authService.signupUser({
+                      email,
+                      password,
+                      fullName,
+                      avatarFile: avatar,
+                  }));
         } catch (_) {
-            setError(
-                'email',
-                {
-                    message: t('sign-in.server-errors.unauthorized'),
-                },
-                { shouldFocus: true }
-            );
-            resetField('password', { defaultValue: data.password });
-            setIsSubmitting(false);
+            console.log('error: ', _);
+        } finally {
+            if (response) {
+                cookies().set(
+                    accessTokenNames.ACCESS_TOKEN,
+                    response?.accessToken,
+                    {
+                        httpOnly: true,
+                        path: '/',
+                        secure: true,
+                        maxAge: 99999999,
+                    }
+                );
+                cookies().set(
+                    accessTokenNames.REFRESH_TOKEN,
+                    response?.refreshToken,
+                    {
+                        httpOnly: true,
+                        path: '/',
+                        secure: true,
+                        maxAge: 99999999,
+                    }
+                );
+            }
+            const redirectTo = cookies().get(PENDING_REDIRECT_PATH_NAME);
+            if (redirectTo) {
+                cookies().set(PENDING_REDIRECT_PATH_NAME, '', { maxAge: 0 });
+                return redirect(redirectTo.value);
+            }
+            return redirect(`/${lng}`);
         }
     }
 
@@ -114,7 +109,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                     ? UthmanicFont.className
                     : Graphik.className,
                 {
-                    switched: isSwitched,
+                    // switched: isSwitched,
                 }
             )}
         >
@@ -122,19 +117,24 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                 <h2>{isSignin ? t('sign-in.title') : t('sign-up.title')}</h2>
 
                 <ActionButton
+                    to={`/${lng}?modal_content=${
+                        currentModalContent === ModalContentMapping.SIGN_IN
+                            ? ModalContentMapping.SIGN_UP
+                            : ModalContentMapping.SIGN_IN
+                    }`}
                     lng={lng}
-                    onClick={() => {
-                        setIsSwitched(true);
-                        setTimeout(() => {
-                            setIsSwitched(false);
-                        }, FADE_IN_ANIMATE_MS);
+                    // onClick={() => {
+                    //     setIsSwitched(true);
+                    //     setTimeout(() => {
+                    //         setIsSwitched(false);
+                    //     }, FADE_IN_ANIMATE_MS);
 
-                        modalService.state = {
-                            currentModalContent: isSignin
-                                ? ModalContentMapping.SIGN_UP
-                                : ModalContentMapping.SIGN_IN,
-                        };
-                    }}
+                    //     modalService.state = {
+                    //         currentModalContent: isSignin
+                    //             ? ModalContentMapping.SIGN_UP
+                    //             : ModalContentMapping.SIGN_IN,
+                    //     };
+                    // }}
                     variant="secondary"
                     radius="pilled"
                     animationOnHover
@@ -144,7 +144,7 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         : t('sign-up.sign-in-action')}
                 </ActionButton>
             </div>
-            <form noValidate>
+            <form noValidate action={submit}>
                 <div className="sic_input_container">
                     <label htmlFor="text-input-email">
                         {t('sign-in.email-label')}
@@ -154,26 +154,27 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         radius="rounded_1"
                         borderVariant="border_light"
                         insetShadow
-                        fieldError={errors.email}
-                        isDirty={!!dirtyFields['email']}
+                        // fieldError={errors.email}
+                        // isDirty={!!dirtyFields['email']}
                     >
                         <TextInput
                             lng={lng}
-                            register={register('email', {
-                                required: {
-                                    value: true,
-                                    message: t(
-                                        'sign-in.validation.email-empty'
-                                    ),
-                                },
-                                pattern: {
-                                    value: /\S+@\S+\.\S+/,
-                                    message: t(
-                                        'sign-in.validation.email-not-valid'
-                                    ),
-                                },
-                            })}
-                            isError={!!errors.email}
+                            name="email"
+                            // register={register('email', {
+                            //     required: {
+                            //         value: true,
+                            //         message: t(
+                            //             'sign-in.validation.email-empty'
+                            //         ),
+                            //     },
+                            //     pattern: {
+                            //         value: /\S+@\S+\.\S+/,
+                            //         message: t(
+                            //             'sign-in.validation.email-not-valid'
+                            //         ),
+                            //     },
+                            // })}
+                            // isError={!!errors.email}
                             labelId="text-input-email"
                             size="medium"
                         />
@@ -189,26 +190,27 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                             radius="rounded_1"
                             borderVariant="border_light"
                             insetShadow
-                            fieldError={errors.fullName}
-                            isDirty={!!dirtyFields['fullName']}
+                            // fieldError={errors.fullName}
+                            // isDirty={!!dirtyFields['fullName']}
                         >
                             <TextInput
                                 lng={lng}
-                                register={register('fullName', {
-                                    required: {
-                                        value: true,
-                                        message: t(
-                                            'sign-up.validation.full_name-empty'
-                                        ),
-                                    },
-                                    minLength: {
-                                        value: 4,
-                                        message: t(
-                                            'sign-up.validation.full_name-short'
-                                        ),
-                                    },
-                                })}
-                                isError={!!errors.fullName}
+                                name="full_name"
+                                // register={register('fullName', {
+                                //     required: {
+                                //         value: true,
+                                //         message: t(
+                                //             'sign-up.validation.full_name-empty'
+                                //         ),
+                                //     },
+                                //     minLength: {
+                                //         value: 4,
+                                //         message: t(
+                                //             'sign-up.validation.full_name-short'
+                                //         ),
+                                //     },
+                                // })}
+                                // isError={!!errors.fullName}
                                 labelId="text-input-full_name"
                                 size="medium"
                             />
@@ -224,38 +226,42 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         radius="rounded_1"
                         borderVariant="border_light"
                         insetShadow
-                        fieldError={errors.password}
-                        isDirty={!!dirtyFields['password']}
+                        // fieldError={errors.password}
+                        // isDirty={!!dirtyFields['password']}
                     >
                         <TextInput
                             lng={lng}
-                            register={register('password', {
-                                required: {
-                                    value: true,
-                                    message: t(
-                                        'sign-in.validation.password-empty'
-                                    ),
-                                },
-                                minLength: {
-                                    value: 8,
-                                    message: t(
-                                        'sign-in.validation.password-short'
-                                    ),
-                                },
-                            })}
-                            isError={!!errors.password}
+                            name="password"
+                            // register={register('password', {
+                            //     required: {
+                            //         value: true,
+                            //         message: t(
+                            //             'sign-in.validation.password-empty'
+                            //         ),
+                            //     },
+                            //     minLength: {
+                            //         value: 8,
+                            //         message: t(
+                            //             'sign-in.validation.password-short'
+                            //         ),
+                            //     },
+                            // })}
+                            // isError={!!errors.password}
                             isIconBgActive={false}
                             labelId="text-input-password"
                             size="medium"
-                            type={isPassDiscovered ? 'text' : 'password'}
+                            // type={isPassDiscovered ? 'text' : 'password'}
                         >
                             <div
                                 style={{ color: 'grey' }}
-                                onClick={() =>
-                                    setIsPassDiscovered(!isPassDiscovered)
-                                }
+                                // onClick={() =>
+                                //     setIsPassDiscovered(!isPassDiscovered)
+                                // }
                             >
-                                <EyeIcon isPassDiscovered={isPassDiscovered} />
+                                <EyeIcon
+                                    // isPassDiscovered={isPassDiscovered}
+                                    isPassDiscovered={false}
+                                />
                             </div>
                         </TextInput>
                     </InputControl>
@@ -265,28 +271,31 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         <label htmlFor="avatar-uploader-id">
                             {t('sign-up.avatar-label')}
                         </label>
-                        <FileUploader
+                        <input type="file" name="avatar" />
+                        {/* <FileUploader
                             uploadedFile={
-                                uploadedUserAvatar?.[0]
-                                    ? uploadedUserAvatar[0]
-                                    : null
+                                // uploadedUserAvatar?.[0]
+                                //     ? uploadedUserAvatar[0]
+                                //     : null
+                                null
                             }
                             fileInputId="avatar-uploader-id"
                             variant="avatar"
                             lng={lng}
-                            register={register('avatarFile', {})}
-                        />
+                            // register={register('avatarFile', {})}
+                        /> */}
                     </div>
                 )}
                 <div className="sic_remember_me_container">
                     <div className="sic_remember_me_checkbox_container">
                         <CheckboxInput
-                            register={register('stayConnected', {})}
+                            // register={register('stayConnected', {})}
                             size="medium"
                             variant="secondary"
                             radius="rounded_1"
                             labelId="sic_checkbox_id"
-                            checked={stayedConnected}
+                            // checked={stayedConnected}
+                            checked
                         />
                         <label
                             className="sic_remember_me_label"
@@ -304,23 +313,26 @@ const LoginContent = ({ lng }: LoginContentProps) => {
                         {t('sign-in.forgot-password')}
                     </Link>
                 </div>
-                <ActionButton
+                {/* <ActionButton
                     lng={lng}
-                    disabled={!isValid}
-                    loading={isSubmitting}
-                    onClick={handleSubmit(onSubmit)}
+                    // disabled={!isValid}
+                    // loading={isSubmitting}
+                    // onClick={handleSubmit(onSubmit)}
                     variant="primary"
                     fit="max"
                     radius="pilled"
                     animationOnHover
                 >
                     {isSignin ? t('sign-in.title') : t('sign-up.action-title')}
-                </ActionButton>
+                </ActionButton> */}
+                <button type="submit">
+                    {isSignin ? t('sign-in.title') : t('sign-up.action-title')}
+                </button>
             </form>
             <p className="sic_divider">{t('sign-in.divider-title')}</p>
             <ActionButton
                 lng={lng}
-                onClick={() => {}}
+                // onClick={() => {}}
                 variant="secondary"
                 fit="max"
                 radius="pilled"

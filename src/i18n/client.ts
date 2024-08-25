@@ -7,7 +7,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import {
     SupportedLanguages,
-    cookieName,
+    lngCookieName,
     getOptions,
     languages,
 } from '@/i18n/settings';
@@ -39,7 +39,7 @@ export function useTranslation(
     ns: Namespace = 'translation',
     options?: any
 ) {
-    const [cookies, setCookie] = useCookies([cookieName]);
+    const [cookies, setCookie] = useCookies([lngCookieName]);
     const ret = useTranslationOrg(ns, options);
     const { i18n } = ret;
     if (runsOnServerSide && lng && i18n.resolvedLanguage !== lng) {
@@ -62,7 +62,7 @@ export function useTranslation(
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
             if (cookies['lng'] === lng) return;
-            setCookie(cookieName, lng, { path: '/' });
+            setCookie(lngCookieName, lng, { path: '/' });
         }, [lng, cookies, setCookie]);
     }
     return ret;

@@ -29,8 +29,8 @@ export class HttpService {
         this._axiosInstance.interceptors.request.use(
             async (config) => {
                 if (config.url !== AuthService.endpoints.REFRESH_TOKEN) {
-                    const accessToken = AuthService.getAccessToken();
-                    config.headers['Authorization'] = `bearer ${accessToken}`;
+                    // const accessToken = AuthService.getAccessToken();
+                    // config.headers['Authorization'] = `bearer ${accessToken}`;
                 }
                 return config;
             },
@@ -87,10 +87,10 @@ export class HttpService {
                         this._lastFailedPath =
                             window.location.pathname + window.location.search;
                     }
-                    return await AuthService.refreshToken(() => {
-                        // retry the same original request after refreshing the token
-                        return this._axiosInstance(originalRequest);
-                    });
+                    // return await AuthService.refreshToken(() => {
+                    //     // retry the same original request after refreshing the token
+                    //     return this._axiosInstance(originalRequest);
+                    // });
                 } else {
                     modalService.state = {
                         isModalOpen: true,

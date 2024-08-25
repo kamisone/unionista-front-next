@@ -1,7 +1,9 @@
-import { Namespace, createInstance } from 'i18next';
+import i18n, { Namespace, createInstance, InitOptions } from 'i18next';
 import { SupportedLanguages, defaultNs, getOptions } from '@/i18n/settings';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
+import i18nextFSBackend from 'i18next-fs-backend';
+// import { I18n, InitPromise, CreateClientReturn } from 'next-i18next';
 
 const initI18next = async (lng: SupportedLanguages, ns: Namespace) => {
     const i18nInstance = createInstance();

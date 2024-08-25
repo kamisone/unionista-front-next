@@ -27,4 +27,14 @@ spec:
                 secretKeyRef:
                   name: front-envs
                   key: API_BASE_URL
+            - name: JWT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: front-envs
+                  key: JWT_ACCESS_KEY
+            - name: JWT_REFRESH_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: front-envs
+                  key: JWT_REFRESH_KEY
             

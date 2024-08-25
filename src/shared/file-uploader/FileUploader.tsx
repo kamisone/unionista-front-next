@@ -4,13 +4,11 @@ import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import { useTranslation } from '@/i18n/client';
 import clsx from 'clsx';
 import styles from '@/shared/file-uploader/FileUploader.module.css';
-import { UseFormRegisterReturn } from 'react-hook-form';
 import Image from 'next/image';
 
 interface FileUploaderProps {
     lng: SupportedLanguages;
     variant: 'avatar' | 'default';
-    register?: UseFormRegisterReturn;
     isError?: boolean;
     fileInputId?: string;
     uploadedFile: File | null;
@@ -19,7 +17,6 @@ interface FileUploaderProps {
 const FileUploader = ({
     lng,
     variant,
-    register,
     isError,
     uploadedFile,
     fileInputId,
@@ -52,7 +49,6 @@ const FileUploader = ({
                         <input
                             id={fileInputId}
                             type="file"
-                            {...register}
                             className={clsx(
                                 styles.file_control,
                                 'visually-hidden',

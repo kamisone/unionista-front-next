@@ -9,7 +9,6 @@ import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 
 interface ActionButtonProps {
-    onClick?: () => void;
     lng: SupportedLanguages;
     radius?: 'rounded' | 'pilled';
     boxShadow?: boolean;
@@ -24,7 +23,6 @@ interface ActionButtonProps {
 
 const ActionButton = (props: ActionButtonProps) => {
     const {
-        onClick,
         lng,
         radius,
         variant,
@@ -36,10 +34,20 @@ const ActionButton = (props: ActionButtonProps) => {
         disabled = false,
         loading = false,
     } = props;
-    return onClick ? (
+    return to ? (
+        <Link
+            data-disabled={disabled}
+            href={to}
+            className={clsx('ab_container', radius, variant, fit, {
+                'box-shadow': boxShadow,
+                animated: animationOnHover,
+            })}
+        >
+            {children}
+        </Link>
+    ) : (
         <button
             disabled={disabled}
-            onClick={onClick}
             className={clsx(
                 'ab_container',
                 lng,
@@ -57,17 +65,6 @@ const ActionButton = (props: ActionButtonProps) => {
         >
             {loading ? <LoadingIndicator size="1.25rem" /> : children}
         </button>
-    ) : (
-        <Link
-            data-disabled={disabled}
-            href={to}
-            className={clsx('ab_container', radius, variant, fit, {
-                'box-shadow': boxShadow,
-                animated: animationOnHover,
-            })}
-        >
-            {children}
-        </Link>
     );
 };
 

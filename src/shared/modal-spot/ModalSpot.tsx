@@ -1,16 +1,14 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import './ModalSpot.css';
-import { useTranslation } from 'react-i18next';
-import clsx from 'clsx';
-import ScaleBgWrapper from '@/shared/scale-bg-wrapper/ScaleBgWrapper';
-import CloseIcon from '@/icons/close-icon/CloseIcon';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
-import { usePathname, useRouter } from 'next/navigation';
+import CloseIcon from '@/icons/close-icon/CloseIcon';
 import { AuthService } from '@/services/auth.service';
-import { ComponentsStateNotify } from '@/services/components-state-notify.service';
 import { ModalService } from '@/services/modal.service';
+import ScaleBgWrapper from '@/shared/scale-bg-wrapper/ScaleBgWrapper';
+import clsx from 'clsx';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import { ReactNode } from 'react';
+import './ModalSpot.css';
 // import ScaleBgWrapper from 'shared/scale-bg-wrapper/ScaleBgWrapper';
 
 const authService = AuthService.instance;
@@ -29,60 +27,64 @@ interface ModalSpotProps {
     isDesktop?: boolean;
 }
 
-const ModalSpot = ({
+  function ModalSpot({
     children,
     headingTitle,
     lng,
     animationDirection = 'animate_to_top',
     isDesktop = false,
-}: ModalSpotProps) => {
-    const { t } = useTranslation();
-    const [isDrawerQuitting, setIsDrawerQuitting] = useState(false);
-    const [ModalContent, setModalContent] = useState(
-        modalService.state.currentModalContent
-    );
+}: ModalSpotProps) {
+    // const { t } = useTranslation();
+    // const [isDrawerQuitting, setIsDrawerQuitting] = useState(false);
+    // const [ModalContent, setModalContent] = useState(
+    //     modalService.state.currentModalContent
+    // );
 
-    const onCloseDrawer = (duration = 300) => {
-        // if (
-        //     (
-        //         [
-        //             ModalContentMapping.SIGN_IN,
-        //             ModalContentMapping.SIGN_UP,
-        //         ] as (ModalContentMapping | null)[]
-        //     ).includes(bottomModalContent)
-        // ) {
-        //     authService.state = {
-        //         isUserNotifiedToSignin: true,
-        //     };
-        // }
-        setIsDrawerQuitting(true);
-        setTimeout(() => {
-            modalService.state = {
-                isModalOpen: false,
-                currentModalContent: null,
-            };
-        }, duration);
-    };
+    // const onCloseDrawer = (duration = 300) => {
+    //     // if (
+    //     //     (
+    //     //         [
+    //     //             ModalContentMapping.SIGN_IN,
+    //     //             ModalContentMapping.SIGN_UP,
+    //     //         ] as (ModalContentMapping | null)[]
+    //     //     ).includes(bottomModalContent)
+    //     // ) {
+    //     //     authService.state = {
+    //     //         isUserNotifiedToSignin: true,
+    //     //     };
+    //     // }
+    //     setIsDrawerQuitting(true);
+    //     setTimeout(() => {
+    //         modalService.state = {
+    //             isModalOpen: false,
+    //             currentModalContent: null,
+    //         };
+    //     }, duration);
+    // };
 
     // set notifiers
-    useEffect(() => {
-        modalService.addNotifier(
-            (options) =>
-                options && setModalContent(options.state.currentModalContent)
-        );
-    }, []);
+    // useEffect(() => {
+    //     modalService.addNotifier(
+    //         (options) =>
+    //             options && setModalContent(options.state.currentModalContent)
+    //     );
+    // }, []);
+
+    function removeQueryParam(path: string, param:string) {
+        // path.replace()
+    }
 
     return (
         <div
             className={clsx('ms_container', animationDirection, {
-                ms_quitting: isDrawerQuitting,
+                // ms_quitting: isDrawerQuitting,
                 is_desktop: isDesktop,
             })}
-            onClick={() => onCloseDrawer()}
+            // onClick={() => onCloseDrawer()}
         >
             <div
                 className={clsx('ms_content')}
-                onClick={(e) => e.stopPropagation()}
+                // onClick={(e) => e.stopPropagation()}
             >
                 <div className={clsx({ ms_title_container: !!headingTitle })}>
                     {headingTitle && (
@@ -100,16 +102,17 @@ const ModalSpot = ({
                             </h2>
                         </>
                     )}
-                    <div
+                    <Link
+                        href={`/${lng}`}
                         className={clsx('ms_close_icon', {
                             floating: !headingTitle,
                         })}
                     >
                         <ScaleBgWrapper
                             Icon={<CloseIcon />}
-                            onClick={() => onCloseDrawer()}
+                            // onClick={() => onCloseDrawer()}
                         />
-                    </div>
+                    </Link>
                 </div>
                 {children}
             </div>

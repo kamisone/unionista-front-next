@@ -1,6 +1,6 @@
 // import { FormValues } from '@/app/components/modal-content/login-in-content/LoginContent';
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
-import { HttpService } from '@/services/http.service';
+import { HttpService } from '@/services/server/http.service';
 import { ModalService } from '@/services/modal.service';
 import { SnackbarService } from '@/services/snackbar.service';
 import { isBrowser } from '@/utils/is-browser';
@@ -96,23 +96,10 @@ export class AuthService extends ComponentsStateNotify<
                 isUserAuthenticated: true,
                 isUserNotifiedToSignin: false,
             };
-            AuthService.setPersistedIsUserNotifiedToAuth(false);
-            modalService.state = {
-                isModalOpen: false,
-                currentModalContent: null,
-            };
-            return response.data;
+
+            return response;
         } catch (error: any) {
             console.log('error in signinuser: ', error);
-            // if (error.response.status >= 500) {
-            //     return snackbarService.openSnackbar({
-            //         message: `Error: ${
-            //             error.response.data?.message ?? error.message
-            //         }`,
-            //         severity: SnackbarSeverity.ERROR,
-            //     });
-            // }
-            // throw new Error(error.response.data?.message);
         }
     }
     async signupUser(data: Record<string, any>) {
@@ -129,28 +116,15 @@ export class AuthService extends ComponentsStateNotify<
                 isUserAuthenticated: true,
                 isUserNotifiedToSignin: false,
             };
-            AuthService.setPersistedIsUserNotifiedToAuth(false);
+            // AuthService.setPersistedIsUserNotifiedToAuth(false);
             modalService.state = {
                 isModalOpen: false,
                 currentModalContent: null,
             };
 
-            return response.data;
+            return response;
         } catch (error: unknown) {
-            // console.log('error occured: ', error.response);
-            // if (error instanceof AxiosError && error.response) {
-            //     if (error.response.status >= 500) {
-            //         return snackbarService.openSnackbar({
-            //             message: `Error: ${
-            //                 error.response.data?.message ?? error.message
-            //             }`,
-            //             severity: SnackbarSeverity.ERROR,
-            //         });
-            //     }
-            //     throw new Error(error.response.data.message);
-            // } else {
-            //     throw error;
-            // }
+            console.log('error in signup: ', error);
         }
     }
 
@@ -180,63 +154,6 @@ export class AuthService extends ComponentsStateNotify<
             .catch((error) => {
                 console.log('error: ', error.message);
             });
-    }
-
-    static updateAccessToken(accessToken: string) {
-        if (isBrowser()) {
-            localStorage.setItem(
-                AuthService.localStorageKeys.ACCESS_TOKEN_ID,
-                accessToken
-            );
-            document.cookie = `${AuthService.localStorageKeys.ACCESS_TOKEN_ID}=${accessToken}; Path=/; Secure;`;
-        }
-    }
-    static updateRefreshToken(refreshToken: string) {
-        isBrowser() &&
-            localStorage.setItem(
-                AuthService.localStorageKeys.REFRESH_TOKEN_ID,
-                refreshToken
-            );
-    }
-
-    static getIsUserNotifiedToSignin(): boolean {
-        if (!isBrowser()) return false;
-        const userNotifToSignIn = localStorage.getItem(
-            this.localStorageKeys.USER_NOTIFIED_TO_SIGN_IN_ID
-        );
-        if (!userNotifToSignIn) return false;
-        const userNotifToSignInObj = JSON.parse(
-            userNotifToSignIn
-        ) as UserNotificationToSignIn;
-        return (
-            Math.floor(Date.now() / 1000) <
-            userNotifToSignInObj.time + ONE_DAY_MS
-        );
-    }
-
-    static setPersistedIsUserNotifiedToAuth(isNotified: boolean = true) {
-        if (!isBrowser()) return null;
-        isNotified
-            ? localStorage.setItem(
-                  this.localStorageKeys.USER_NOTIFIED_TO_SIGN_IN_ID,
-                  JSON.stringify({
-                      time: Date.now(),
-                  })
-              )
-            : localStorage.removeItem(
-                  this.localStorageKeys.USER_NOTIFIED_TO_SIGN_IN_ID
-              );
-    }
-
-    static isTokenInvalid(token: string) {
-        try {
-            const jwtBody = token.split('.')[1];
-            if (!jwtBody) return true;
-            const expiry = JSON.parse(atob(jwtBody)).exp as number;
-            return Math.floor(Date.now() / 1000) >= expiry;
-        } catch (_) {
-            return true;
-        }
     }
 
     static async verifyJwt(token: string, isRefresh: boolean = false) {

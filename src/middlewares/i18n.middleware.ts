@@ -2,19 +2,21 @@ import {
     SupportedLanguages,
     fallbackLng,
     languages,
-    cookieName,
+    lngCookieName,
 } from '@/i18n/settings';
 import { NextRequest, NextResponse } from 'next/server';
 import acceptLanguage from 'accept-language';
-import { createContext } from 'react';
 
 acceptLanguage.languages(languages);
 
-export function i18nMiddleware(req: NextRequest) {
+export function i18nMiddleware(req: NextRequest): {
+    request: NextRequest;
+    cb?: (response: NextResponse) => NextResponse;
+} {
     let lng: SupportedLanguages | null = null;
-    if (req.cookies.has(cookieName)) {
+    if (req.cookies.has(lngCookieName)) {
         lng = acceptLanguage.get(
-            req.cookies.get(cookieName)?.value
+            req.cookies.get(lngCookieName)?.value
         ) as SupportedLanguages;
     }
     if (!lng) {
@@ -26,16 +28,19 @@ export function i18nMiddleware(req: NextRequest) {
         lng = fallbackLng;
     }
 
-    if (
-        !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
-        !req.nextUrl.pathname.startsWith('/_next')
-    ) {
+    if (!languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`))) {
+        console.log(
+            'origin: ',
+            req.nextUrl.origin,
+            'host: ',
+            req.nextUrl.pathname
+        );
         return NextResponse.redirect(
             new URL(
-                `/${lng}${req.nextUrl.pathname === '/' ? '' : req.nextUrl.pathname}`,
-                req.url
+                `/${lng}${req.nextUrl.pathname !== '/' ? req.nextUrl.pathname : ''}${req.nextUrl.search}`,
+                req.nextUrl.origin
             )
-        );
+        ) as any;
     }
 
     if (req.headers.has('referer')) {
@@ -43,10 +48,19 @@ export function i18nMiddleware(req: NextRequest) {
         const lngInReferer = languages.find((loc) =>
             refererUrl.pathname.startsWith(`/${loc}`)
         );
-        const response = NextResponse.next();
+
         if (lngInReferer) {
-            response.cookies.set(cookieName, lngInReferer);
+            const cookies = req.cookies;
+            if (
+                !cookies.has(lngCookieName) ||
+                (cookies.has(lngCookieName) &&
+                    cookies.get(lngCookieName)!.value !== lngInReferer)
+            ) {
+                req.cookies.set(lngCookieName, lngInReferer);
+            }
         }
-        return response;
     }
+    return {
+        request: req,
+    };
 }

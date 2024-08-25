@@ -1,13 +1,10 @@
 import { AxiosError } from 'axios';
-import { SupportedLanguages } from '../i18n/settings';
-import { HttpService } from '@/services/http.service';
-import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
+import { HttpService } from '@/services/server/http.service';
+import { SupportedLanguages } from '@/i18n/settings';
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
 import { headers } from 'next/headers';
-import { CURRENT_USER_HEADER_NAME } from '@/utils/constants';
 
 const httpService = HttpService.instance;
-const snackbarService = SnackbarService.instance;
 
 interface ProductCategoryState {
     list?: ProductCategory[];
@@ -64,8 +61,6 @@ export class ProductCategoryService extends ComponentsStateNotify<
         locale: SupportedLanguages;
     }): Promise<ProductCategory[]> {
         try {
-            const user = headers().get(CURRENT_USER_HEADER_NAME);
-            console.log('user : ', user && JSON.parse(user));
             const response = await httpService.get<ProductCategory[]>({
                 path: ProductCategoryService.endpoints.ALL_PRODUCT_CATEGORIES,
                 queryParams: {
@@ -79,16 +74,16 @@ export class ProductCategoryService extends ComponentsStateNotify<
                 },
             });
 
-            return response.data;
+            return response;
         } catch (error: unknown) {
             if (error instanceof AxiosError && error.response) {
                 if (error.response.status >= 500) {
-                    snackbarService.openSnackbar({
-                        message: `Error: ${
-                            error.response.data?.message ?? error.message
-                        }`,
-                        severity: SnackbarSeverity.ERROR,
-                    });
+                    // snackbarService.openSnackbar({
+                    //     message: `Error: ${
+                    //         error.response.data?.message ?? error.message
+                    //     }`,
+                    //     severity: SnackbarSeverity.ERROR,
+                    // });
                 } else {
                     throw error;
                 }

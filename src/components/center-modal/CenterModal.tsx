@@ -1,50 +1,25 @@
-'use client';
 import { SupportedLanguages } from '@/i18n/settings';
-import { ModalService } from '@/services/modal.service';
+import LoadingIndicator from '@/shared/loading-indicator/LoadingIndicator';
 import ModalSpot from '@/shared/modal-spot/ModalSpot';
-import { ModalContentMapping } from '@/utils/modal';
-import { useEffect, useState } from 'react';
-import LoginContent from '../modal-content/login-in-content/LoginContent';
-
-const modalService = ModalService.instance;
+import { modalContentNames } from '@/utils/constants';
+import { getModalTitle, ModalContentMapping } from '@/utils/modal';
+import { headers } from 'next/headers';
+import { ReactElement, Suspense } from 'react';
 
 interface CenterModalProps {
     lng: SupportedLanguages;
+    content: ReactElement | Promise<ReactElement> | null;
 }
 
-const CenterModal = ({ lng }: CenterModalProps) => {
-    const [currentModalContent, setCurrentModalContent] = useState(
-        modalService.state.currentModalContent
+const CenterModal = async function ({ lng, content }: CenterModalProps) {
+    const currentModalContent = headers().get(
+        modalContentNames.HEADER_NAME
+    ) as ModalContentMapping | null;
+    return (
+        <ModalSpot lng={lng} headingTitle={getModalTitle(currentModalContent)}>
+            <Suspense fallback={<LoadingIndicator />}>{content}</Suspense>
+        </ModalSpot>
     );
-
-    useEffect(() => {
-        // set notifiers
-        modalService.addNotifier((options) => {
-            if (options) {
-                setCurrentModalContent(options.state.currentModalContent);
-            }
-        });
-    }, []);
-
-    switch (currentModalContent) {
-        case ModalContentMapping.SIGN_IN:
-        case ModalContentMapping.SIGN_UP:
-            return (
-                <ModalSpot
-                    lng={lng}
-                    animationDirection="animate_to_center"
-                    isDesktop={true}
-                >
-                    <LoginContent lng={lng} />
-                </ModalSpot>
-            );
-        default:
-            return (
-                <ModalSpot lng={lng} isDesktop={true}>
-                    <h2>no content found</h2>
-                </ModalSpot>
-            );
-    }
 };
 
 export default CenterModal;

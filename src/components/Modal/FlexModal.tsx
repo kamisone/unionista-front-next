@@ -1,55 +1,45 @@
-'use client';
-
-import LoadingIndicator from '@/shared/loading-indicator/LoadingIndicator';
-import React, { Suspense } from 'react';
+import { fetchProductsCategories } from '@/actions';
+import BottomModal from '@/components/bottom-modal/BottomModal';
 import { SupportedLanguages } from '@/i18n/settings';
-import { ModalService } from '@/services/modal.service';
+import { modalContentNames } from '@/utils/constants';
+import { ModalContentMapping } from '@/utils/modal';
+import { headers } from 'next/headers';
+import { ReactElement } from 'react';
+import CenterModal from '../center-modal/CenterModal';
+import LoginContent from '../modal-content/login-in-content/LoginContent';
+import MenuDrawerNavContent from '../modal-content/menu-drawer-nav-content/MenuDrawerNavContent';
 
 interface FlexModalProps {
     isMobileDevice: boolean;
     lng: SupportedLanguages;
-}
-interface FlexModalState {
-    isModalOpen: boolean;
+    searchParams: { [key: string]: string | undefined };
 }
 
-const BottomModal = React.lazy(
-    () => import('@/components/bottom-modal/BottomModal')
-);
-const CenterModal = React.lazy(
-    () => import('@/components/center-modal/CenterModal')
-);
 
-const modalService = ModalService.instance;
-
-class FlexModal extends React.Component<FlexModalProps, FlexModalState> {
-    state = {
-        isModalOpen: modalService.state.isModalOpen,
-    };
-    constructor(props: FlexModalProps) {
-        super(props);
-    }
-
-    componentDidMount(): void {
-        modalService.addNotifier((options) => {
-            options &&
-                this.setState({
-                    isModalOpen: options.state.isModalOpen,
-                });
-        });
-    }
-
-    render() {
-        if (modalService.state.isModalOpen)
-            return (
-                <Suspense fallback={<LoadingIndicator isExtended />}>
-                    {this.props.isMobileDevice ? (
-                        <BottomModal lng={this.props.lng} />
-                    ) : (
-                        <CenterModal lng={this.props.lng} />
-                    )}
-                </Suspense>
-            );
+async function FlexModal(props: FlexModalProps) {
+    const currentModalContent = headers().get(modalContentNames.HEADER_NAME);
+    if (currentModalContent) {
+        let content: ReactElement | Promise<ReactElement> | null = null;
+        switch (currentModalContent) {
+            case ModalContentMapping.MENU_DRAWER:
+                const categories = await fetchProductsCategories(props.lng);
+                content = (
+                    <MenuDrawerNavContent
+                        menuItems={categories}
+                        lng={props.lng}
+                    />
+                );
+                break;
+            case ModalContentMapping.SIGN_IN:
+            case ModalContentMapping.SIGN_UP:
+                content = <LoginContent lng={props.lng} />;
+                break;
+        }
+        return props.isMobileDevice ? (
+            <BottomModal lng={props.lng} content={content} />
+        ) : (
+            <CenterModal lng={props.lng} content={content} />
+        );
     }
 }
 

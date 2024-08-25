@@ -6,6 +6,7 @@ import { SupportedLanguages } from '@/i18n/settings';
 
 interface TextInputProps {
     lng: SupportedLanguages;
+    name: string;
     placeholder?: string;
     children?: ReactNode[] | ReactNode | string;
     size?: 'small' | 'medium' | 'large';
@@ -48,6 +49,7 @@ const TextInput = (props: TextInputProps) => {
                     type={type}
                     placeholder={placeholder}
                     {...register}
+                    name={props.name}
                 />
                 {Icon && (
                     <label htmlFor={labelId} className="ti_input_icon">

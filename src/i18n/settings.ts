@@ -12,7 +12,7 @@ export enum SupportedLanguagesEnum {
 
 export const languages: SupportedLanguages[] = [fallbackLng, 'es', 'fr', 'ar'];
 
-export const cookieName = 'lng';
+export const lngCookieName = 'lng';
 export const defaultNs = 'translation';
 
 export function getOptions(

@@ -1,13 +1,25 @@
 version: '3.1'
 
 services:
-    front_ssr:
-        container_name: front_ssr
-        build:
-            context: './'
-            dockerfile: './docker/Dockerfile.dev'
-        volumes:
-            - '.:/srv/front:rw,cached'
-            - '/srv/front/node_modules'
-        ports:
-            - 3000:3000
+    # front_ssr:
+    #     container_name: front_ssr
+    #     build:
+    #         context: './'
+    #         dockerfile: './docker/Dockerfile.dev'
+    #     volumes:
+    #         - '.:/srv/front:rw,cached'
+    #         - '/srv/front/node_modules'
+    #     ports:
+    #         - 3000:3000
+    
+    # redis:
+    #     container_name: redis
+    #     image: redis:7.4
+    #     ports:
+    #         - "6379:6379"
+    #     volumes:
+    #         - redis-data:/data
+
+
+# volumes:
+#     redis-data:

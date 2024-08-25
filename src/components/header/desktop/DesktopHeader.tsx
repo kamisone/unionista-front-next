@@ -1,24 +1,21 @@
-'use client';
-import React, { useEffect } from 'react';
+// 'use client';
 import styles from '@/components/header/desktop/DesktopHeader.module.css';
-import Hamburger from '../../Hamburger/Hamburger';
-import { useTranslation } from '@/i18n/client';
+import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
+import BoSettingsIcon from '@/icons/bo-settings/BoSettingsIcon';
+import CartIcon from '@/icons/cart/CartIcon';
+import NotificationIcon from '@/icons/notification/NotificationIcon';
+import SearchIcon from '@/icons/search-icon/SearchIcon';
+import { ModalService } from '@/services/modal.service';
+import AvatarSlot from '@/shared/avatar-slot/AvatarSlot';
 import InputControl from '@/shared/input-control/InputControl';
 import TextInput from '@/shared/text-input/TextInput';
-import SearchIcon from '@/icons/search-icon/SearchIcon';
-import CartIcon from '@/icons/cart/CartIcon';
-import Link from 'next/link';
-import NotificationIcon from '@/icons/notification/NotificationIcon';
-import BoSettingsIcon from '@/icons/bo-settings/BoSettingsIcon';
-import SwitchLanguage from '../../switch-language/SwitchLanguage';
-import clsx from 'clsx';
-import { Graphik, UthmanicFont } from '@/fonts/fonts';
-import { useSelectedLayoutSegment } from 'next/navigation';
-import Image from 'next/image';
-import AvatarSlot from '@/shared/avatar-slot/AvatarSlot';
-import { ModalService } from '@/services/modal.service';
 import { ModalContentMapping } from '@/utils/modal';
+import clsx from 'clsx';
+import Link from 'next/link';
+import Hamburger from '../../Hamburger/Hamburger';
+import SwitchLanguage from '../../switch-language/SwitchLanguage';
+import { useTranslation } from '@/i18n';
 
 const modalService = ModalService.instance;
 
@@ -27,8 +24,9 @@ interface DesktopHeaderProps {
     isUserAuthenticated: boolean;
 }
 
-const DesktopHeader = ({ lng, isUserAuthenticated }: DesktopHeaderProps) => {
-    const { t } = useTranslation(lng, 'header');
+async function DesktopHeader({ lng, isUserAuthenticated }: DesktopHeaderProps) {
+    const { t } = await useTranslation(lng, 'header');
+    // const t = (...args: any) => 'action';
 
     return (
         <>
@@ -60,6 +58,7 @@ const DesktopHeader = ({ lng, isUserAuthenticated }: DesktopHeaderProps) => {
                                 iconGap="large"
                                 size="medium"
                                 placeholder={t('search-input-placeholder')}
+                                name="search"
                             >
                                 <SearchIcon />
                             </TextInput>
@@ -75,7 +74,8 @@ const DesktopHeader = ({ lng, isUserAuthenticated }: DesktopHeaderProps) => {
                     )}
                 >
                     {!isUserAuthenticated && (
-                        <li
+                        <Link
+                            href={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
                             className={clsx(
                                 styles.h_nav_item_text,
                                 'onhover_bg_grey'
@@ -89,7 +89,7 @@ const DesktopHeader = ({ lng, isUserAuthenticated }: DesktopHeaderProps) => {
                             }}
                         >
                             <button>{t('sign-in.title')}</button>
-                        </li>
+                        </Link>
                     )}
                     <li className={clsx(styles.switch_lng)}>
                         <SwitchLanguage lng={lng} />
@@ -147,6 +147,6 @@ const DesktopHeader = ({ lng, isUserAuthenticated }: DesktopHeaderProps) => {
             </header>
         </>
     );
-};
+}
 
 export default DesktopHeader;

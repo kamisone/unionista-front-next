@@ -4,7 +4,7 @@ import styles from '@/components/header/mobile/MobileHeader.module.css';
 import BoSettingsIcon from '@/icons/bo-settings/BoSettingsIcon';
 import CartIcon from '@/icons/cart/CartIcon';
 import NotificationIcon from '@/icons/notification/NotificationIcon';
-import React, { useEffect, useState } from 'react';
+import React, { startTransition, useEffect, useState } from 'react';
 import TextInput from '@/shared/text-input/TextInput';
 import InputControl from '@/shared/input-control/InputControl';
 import Hamburger from '@/components/Hamburger/Hamburger';
@@ -18,16 +18,17 @@ import SwitchLanguage from '../../switch-language/SwitchLanguage';
 import { AuthService } from '@/services/auth.service';
 import { ModalService } from '@/services/modal.service';
 import { ModalContentMapping } from '@/utils/modal';
+import { openModal } from '@/actions';
 
 const modalService = ModalService.instance;
 const authService = AuthService.instance;
 
 interface HeaderProps {
     lng: SupportedLanguages;
-    isUserAuthenticated: boolean;
+    user: any;
 }
 
-const MobileHeader = ({ lng, isUserAuthenticated }: HeaderProps) => {
+const MobileHeader = ({ lng, user }: HeaderProps) => {
     const { t } = useTranslation(lng, 'header');
 
     return (
@@ -44,14 +45,15 @@ const MobileHeader = ({ lng, isUserAuthenticated }: HeaderProps) => {
                             : Graphik.className
                     )}
                 >
-                    {!isUserAuthenticated && (
-                        <li
+                    {!user && (
+                        <Link
+                        href={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
                             onClick={() => {
-                                modalService.state = {
-                                    isModalOpen: true,
-                                    currentModalContent:
-                                        ModalContentMapping.SIGN_IN,
-                                };
+                                // modalService.state = {
+                                //     isModalOpen: true,
+                                //     currentModalContent:
+                                //         ModalContentMapping.SIGN_IN,
+                                // };
                             }}
                             className={clsx(
                                 styles.nav_item,
@@ -60,7 +62,7 @@ const MobileHeader = ({ lng, isUserAuthenticated }: HeaderProps) => {
                             )}
                         >
                             <button>{t('sign-in.title')}</button>
-                        </li>
+                        </Link>
                     )}
                     <li className={clsx(styles.nav_item, styles.country_icon)}>
                         <SwitchLanguage lng={lng} />
@@ -122,24 +124,35 @@ const MobileHeader = ({ lng, isUserAuthenticated }: HeaderProps) => {
             </div>
             {/* sub part */}
             <div className={clsx(styles.sub_part)}>
-                <button
-                    title={t('hamburger.title')}
-                    onClick={() => {
-                        modalService.state = {
-                            isModalOpen: true,
-                            currentModalContent:
-                                ModalContentMapping.MENU_DRAWER,
-                        };
-                    }}
+                <Link
+                    href={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
                 >
-                    <Hamburger />
-                </button>
+                    <button
+                        title={t('hamburger.title')}
+                        onClick={() => {
+                            // startTransition(
+                            //     async function() {
+                            //         modalService.state = {
+                            //             isModalOpen: true,
+                            //             currentModalContent:
+                            //                 ModalContentMapping.MENU_DRAWER,
+                            //         };
+                            //         console.log('called');
+                            //         await openModal(ModalContentMapping.MENU_DRAWER);
+                            //     }
+                            // );
+                        }}
+                    >
+                        <Hamburger />
+                    </button>
+                </Link>
                 <InputControl lng={lng} radius="pilled" isFormChild={false}>
                     <TextInput
                         lng={lng}
                         iconGap="large"
                         size="medium"
                         placeholder={t('search-input-placeholder')}
+                        name=''
                     >
                         <SearchIcon />
                     </TextInput>

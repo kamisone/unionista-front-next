@@ -7,7 +7,6 @@ interface CheckboxInputProps {
     variant: 'primary' | 'secondary';
     labelId: string;
     size: 'small' | 'medium' | 'large';
-    register: any;
     checked: boolean;
 }
 
@@ -17,7 +16,6 @@ const CheckboxInput = (props: CheckboxInputProps) => {
         variant = 'primary',
         labelId,
         size = 'medium',
-        register,
         checked,
     } = props;
     return (
@@ -28,9 +26,8 @@ const CheckboxInput = (props: CheckboxInputProps) => {
         >
             <input
                 type="checkbox"
-                {...register}
                 className="visually-hidden"
-                tabIndex="0"
+                tabIndex={0}
                 id={labelId}
             />
         </label>

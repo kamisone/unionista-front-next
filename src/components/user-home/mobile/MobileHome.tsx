@@ -1,4 +1,4 @@
-import { useTranslation } from '@/i18n/client';
+// import { useTranslation } from '@/i18n/client';
 import { SupportedLanguages } from '@/i18n/settings';
 import React from 'react';
 import styles from '@/components/user-home/mobile/MobileHome.module.css';
@@ -10,7 +10,8 @@ interface MobileHomeProps {
 }
 
 const MobileHome = ({ lng, isUserAuthenticated }: MobileHomeProps) => {
-    const { t } = useTranslation(lng, 'mobile_body');
+    // const { t } = useTranslation(lng, 'mobile_body');
+    const t = (...args: any) => 'actions';
     const productCategories = [
         {
             imagePath:

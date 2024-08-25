@@ -8,26 +8,27 @@ import UserHeader from '@/components/header/UserHeader';
 import UserFooter from '@/components/footer/UserFooter';
 import CustomSnackbar from '@/components/custom-snackback/CustomSnackbar';
 import styles from '@/app/[lng]/(client)/layout.module.css';
-import '@/fb-pixel/pixel-script';
+// import '@/fb-pixel/pixel-script';
 import FlexModal from '@/components/Modal/FlexModal';
-
-
-
+import { ModalService } from '@/services/modal.service';
 
 interface ClientLayoutProps {
     children: ReactNode;
     analytics: ReactNode;
     centerModal: ReactNode;
     params: { lng: SupportedLanguages };
+    searchParams: {[key: string]: string | string[] | undefined}
 }
 
-
+const modalService = ModalService.instance;
 const ClientLayout = async ({
     children,
     params: { lng },
 }: ClientLayoutProps) => {
     const headersList = headers();
+    
     const isMobileDevice = isMobile(headersList.get('user-agent'));
+
     return (
         <main
             className={clsx(lng, styles.app_container, {
@@ -35,11 +36,14 @@ const ClientLayout = async ({
             })}
         >
             <div className={styles.mobile_container}>
-                <UserHeader isMobile={isMobileDevice} lng={lng} />
+                {/* <UserHeader isMobile={isMobileDevice} lng={lng} /> */}
                 {children}
                 <UserFooter isMobile={isMobileDevice} lng={lng} />
                 <CustomSnackbar lng={lng} />
-                <FlexModal lng={lng} isMobileDevice={isMobileDevice}/>
+                {/* <FlexModal
+                    lng={lng}
+                    isMobileDevice={isMobileDevice}
+                /> */}
             </div>
         </main>
     );
