@@ -1,6 +1,5 @@
 import { SubMiddlewareReturnType } from '@/middleware';
 import { modalContentNames } from '@/utils/constants';
-import { ModalContentMapping } from '@/utils/modal';
 import { NextRequest } from 'next/server';
 
 export function modalMiddleware(req: NextRequest): SubMiddlewareReturnType {

@@ -1,38 +1,14 @@
-import {
-    SupportedLanguages,
-    fallbackLng,
-    languages,
-    lngCookieName,
-} from '@/i18n/settings';
-import { NextRequest, NextResponse } from 'next/server';
+import { SupportedLanguages, languages, lngCookieName } from '@/i18n/settings';
+import { SubMiddlewareReturnType } from '@/middleware';
 import acceptLanguage from 'accept-language';
+import { NextRequest, NextResponse } from 'next/server';
 
 acceptLanguage.languages(languages);
 
 export function i18nMiddleware(
     req: NextRequest,
     lng: SupportedLanguages
-):
-    | {
-          request: NextRequest;
-          cb?: (response: NextResponse) => NextResponse;
-      }
-    | NextResponse {
-    // let lng: SupportedLanguages | null = null;
-    // if (req.cookies.has(lngCookieName)) {
-    //     lng = acceptLanguage.get(
-    //         req.cookies.get(lngCookieName)?.value
-    //     ) as SupportedLanguages;
-    // }
-    // if (!lng) {
-    //     lng = acceptLanguage.get(
-    //         req.headers.get('accept-language')
-    //     ) as SupportedLanguages;
-    // }
-    // if (!lng) {
-    //     lng = fallbackLng;
-    // }
-
+): SubMiddlewareReturnType | NextResponse {
     if (
         !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
         req.headers.get('Accept')?.includes('text/html')

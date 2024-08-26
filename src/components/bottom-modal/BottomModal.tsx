@@ -4,20 +4,18 @@ import { getModalTitle, ModalContentMapping } from '@/utils/modal';
 import { ReactElement, Suspense } from 'react';
 
 import LoadingIndicator from '@/shared/loading-indicator/LoadingIndicator';
-import { modalContentNames } from '@/utils/constants';
-import { headers } from 'next/headers';
 import LoginContent from '../modal-content/login-in-content/LoginContent';
 import MenuDrawerNavContent from '../modal-content/menu-drawer-nav-content/MenuDrawerNavContent';
 
 interface BottomModalProps {
     lng: SupportedLanguages;
+    currentModalContent: ModalContentMapping;
 }
 
-const BottomModal = async function ({ lng }: BottomModalProps) {
-    const currentModalContent = headers().get(
-        modalContentNames.HEADER_NAME
-    ) as ModalContentMapping | null;
-
+const BottomModal = async function ({
+    lng,
+    currentModalContent,
+}: BottomModalProps) {
     if (currentModalContent) {
         let content: ReactElement | Promise<ReactElement> | null = null;
         switch (currentModalContent) {

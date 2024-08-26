@@ -11,15 +11,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function setAuthMiddleware(
     req: NextRequest,
-    lng?: SupportedLanguages
-): Promise<{
-    request: NextRequest;
-    cb?: (response: NextResponse) => NextResponse;
-}> {
-    // const path = req.nextUrl.pathname + req.nextUrl.search;
-    // if (/.*modal_content=(signin|signup).*/.test(req.nextUrl.search)) {
-    //     return NextResponse.next();
-    // }
+    lng: SupportedLanguages
+): Promise<SubMiddlewareReturnType> {
     const cookies = req.cookies;
     const accessToken = cookies.get(accessTokenNames.ACCESS_TOKEN);
     const refreshToken = cookies.get(accessTokenNames.REFRESH_TOKEN);

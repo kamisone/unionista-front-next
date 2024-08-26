@@ -1,13 +1,9 @@
 import { i18nMiddleware } from '@/middlewares/i18n.middleware';
 import { NextRequest, NextResponse } from 'next/server';
+import { SupportedLanguages } from './i18n/settings';
+import { getLocaleMiddleware } from './middlewares/get-locale.middleware';
 import { modalMiddleware } from './middlewares/modal.middleware';
 import { setAuthMiddleware } from './middlewares/set-auth.middleware';
-import {
-    fallbackLng,
-    lngCookieName,
-    SupportedLanguages,
-} from './i18n/settings';
-import acceptLanguage from 'accept-language';
 
 export const config = {
     matcher: [
@@ -21,20 +17,16 @@ export async function middleware(req: NextRequest) {
     // Sub middlewares can return NextResponse only for redirecting.
     const cbs = [];
 
-    let lng: SupportedLanguages | null = null;
-    if (req.cookies.has(lngCookieName)) {
-        lng = acceptLanguage.get(
-            req.cookies.get(lngCookieName)?.value
-        ) as SupportedLanguages;
+    const getLocaleResult = getLocaleMiddleware(req);
+    if (getLocaleResult instanceof NextResponse) {
+        console.log('yes is response');
+        return getLocaleResult;
     }
-    if (!lng) {
-        lng = acceptLanguage.get(
-            req.headers.get('accept-language')
-        ) as SupportedLanguages;
+    if (getLocaleResult.cb) {
+        cbs.push(getLocaleResult.cb);
     }
-    if (!lng) {
-        lng = fallbackLng;
-    }
+
+    const lng = getLocaleResult.lng as SupportedLanguages;
 
     // Auth middleware
     const authResult = await setAuthMiddleware(req, lng);
@@ -58,7 +50,6 @@ export async function middleware(req: NextRequest) {
     // Modal middleware
     const modalResult = modalMiddleware(i18Result.request);
     if (modalResult instanceof NextResponse) {
-        console.log('yes is response');
         return authResult;
     }
     if (modalResult.cb) {
@@ -78,4 +69,5 @@ export async function middleware(req: NextRequest) {
 export interface SubMiddlewareReturnType {
     request: NextRequest;
     cb?: (response: NextResponse) => NextResponse;
+    [key: string]: unknown;
 }
