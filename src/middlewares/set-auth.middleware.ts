@@ -1,4 +1,5 @@
 import { protected_paths } from '@/config';
+import { SupportedLanguages } from '@/i18n/settings';
 import { SubMiddlewareReturnType } from '@/middleware';
 import { AuthService } from '@/services/auth.service';
 import {
@@ -6,10 +7,12 @@ import {
     CURRENT_USER_HEADER_NAME,
     PENDING_REDIRECT_PATH_NAME,
 } from '@/utils/constants';
-import { permanentRedirect, redirect } from 'next/navigation';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function setAuthMiddleware(req: NextRequest): Promise<{
+export async function setAuthMiddleware(
+    req: NextRequest,
+    lng?: SupportedLanguages
+): Promise<{
     request: NextRequest;
     cb?: (response: NextResponse) => NextResponse;
 }> {
@@ -68,7 +71,7 @@ export async function setAuthMiddleware(req: NextRequest): Promise<{
         const path = req.nextUrl.pathname + req.nextUrl.search;
         if (protected_paths.some((p) => path.includes(p))) {
             return NextResponse.redirect(
-                new URL('/?modal_content=signin', req.url),
+                new URL(`/${lng}?modal_content=signin`, req.url),
                 {
                     headers: {
                         'Set-Cookie': `${PENDING_REDIRECT_PATH_NAME}=${path};Path=/;HttpOnly;Secure`,

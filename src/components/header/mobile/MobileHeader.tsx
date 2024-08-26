@@ -10,7 +10,7 @@ import InputControl from '@/shared/input-control/InputControl';
 import Hamburger from '@/components/Hamburger/Hamburger';
 import SearchIcon from '@/icons/search-icon/SearchIcon';
 import Link from 'next/link';
-import { useTranslation } from '@/i18n/client';
+// import { useTranslation } from '@/i18n/client';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
@@ -29,7 +29,8 @@ interface HeaderProps {
 }
 
 const MobileHeader = ({ lng, user }: HeaderProps) => {
-    const { t } = useTranslation(lng, 'header');
+    // const { t } = useTranslation(lng, 'header');
+    const t = (...args: any) => 'action';
 
     return (
         <div className={clsx(styles.container, lng)}>
@@ -78,7 +79,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             styles.bo_icon
                         )}
                     >
-                        <Link href="/admin">
+                        <Link href={`${lng}/admin`}>
                             <BoSettingsIcon />
                         </Link>
                     </li>
@@ -90,7 +91,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                         )}
                     >
                         <Link
-                            href="/notifications"
+                            href={`/${lng}/notifications`}
                             style={{
                                 // @ts-ignore
                                 '--nav-icon-title': `"${t(
@@ -109,7 +110,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                         )}
                     >
                         <Link
-                            href="/cart"
+                            href={`/${lng}/cart`}
                             style={{
                                 // @ts-ignore
                                 '--nav-icon-title': `"${t(

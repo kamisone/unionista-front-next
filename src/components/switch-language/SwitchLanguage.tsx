@@ -1,5 +1,5 @@
 'use client';
-import { useTranslation } from '@/i18n/client';
+// import { useTranslation } from '@/i18n/client';
 import {
     SupportedLanguages,
     SupportedLanguagesEnum,
@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import ArabeFlagIcon from '@/icons/country/ArabeFlagIcon';
 import { usePathname } from 'next/navigation';
+import { Cookies } from 'react-cookie';
 
 interface SwitchLanguageProps {
     lng: SupportedLanguages;
@@ -23,7 +24,8 @@ interface SwitchLanguageProps {
 const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
     const [isSwitchOpened, setIsSwitchOpened] = useState(false);
     const buttonElement = useRef<HTMLButtonElement>(null);
-    const { t } = useTranslation(lng, 'switch_language');
+    // const { t } = useTranslation(lng, 'switch_language');
+    const t = (...args: any) => 'action';
     const pathname = usePathname();
     return (
         <button
@@ -55,7 +57,11 @@ const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
                     .map((l) => {
                         return (
                             <li className={styles.lng_option} key={l}>
-                                <Link href={`/${l}${pathname.slice(3)}`}>
+                                <Link href={`/${l}${pathname.slice(3)}`}
+                                onClick={() => {
+                                    document.cookie = `lng=${l}`
+                                }}
+                                >
                                     <div className={styles.icon}>
                                         {LanguageIconsMapping[l]}
                                     </div>
