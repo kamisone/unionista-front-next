@@ -166,11 +166,14 @@ export class HttpService {
             headers[httpHeadersNames.CONTENT_TYPE] =
                 httpHeadersValues.APPLICATION_JSON;
         }
-        return fetch(`${process.env.API_BASE_URL}/${path}`, {
-            method: httpMethods.POST,
-            body: isFormData ? body : JSON.stringify(body),
-            headers,
-        }).then((headers) => {
+        return fetch(
+            `http://back-cluster-ip-service.default.svc.cluster.local:3000/${path}`,
+            {
+                method: httpMethods.POST,
+                body: isFormData ? body : JSON.stringify(body),
+                headers,
+            }
+        ).then((headers) => {
             if (headers.status >= 200 && headers.status < 300) {
                 return headers.json();
             }

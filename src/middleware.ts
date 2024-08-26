@@ -19,7 +19,6 @@ export async function middleware(req: NextRequest) {
 
     const getLocaleResult = getLocaleMiddleware(req);
     if (getLocaleResult instanceof NextResponse) {
-        console.log('yes is response');
         return getLocaleResult;
     }
     if (getLocaleResult.cb) {
@@ -31,7 +30,6 @@ export async function middleware(req: NextRequest) {
     // Auth middleware
     const authResult = await setAuthMiddleware(req, lng);
     if (authResult instanceof NextResponse) {
-        console.log('yes is response');
         return authResult;
     }
     if (authResult.cb) {
