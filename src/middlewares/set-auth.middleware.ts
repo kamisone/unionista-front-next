@@ -12,7 +12,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function setAuthMiddleware(
     req: NextRequest,
     lng: SupportedLanguages
-): Promise<SubMiddlewareReturnType> {
+): Promise<SubMiddlewareReturnType | NextResponse> {
     const cookies = req.cookies;
     const accessToken = cookies.get(accessTokenNames.ACCESS_TOKEN);
     const refreshToken = cookies.get(accessTokenNames.REFRESH_TOKEN);
@@ -70,13 +70,12 @@ export async function setAuthMiddleware(
                         'Set-Cookie': `${PENDING_REDIRECT_PATH_NAME}=${path};Path=/;HttpOnly;Secure`,
                     },
                 }
-            ) as any;
+            ) as NextResponse;
         }
         // return NextResponse.next();
     }
 
     return {
         request: req,
-        cb: null,
-    } as any;
+    } as SubMiddlewareReturnType;
 }

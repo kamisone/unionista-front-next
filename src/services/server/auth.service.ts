@@ -133,7 +133,7 @@ export class AuthService extends ComponentsStateNotify<
         thenCB?: (data: any) => unknown
     ) {
         return fetch(
-            `${process.env.API_BASE_URL}/${AuthService.endpoints.REFRESH_TOKEN}`,
+            `http://back-cluster-ip-service.default.svc.cluster.local:3000/${AuthService.endpoints.REFRESH_TOKEN}`,
             {
                 method: 'post',
                 body: JSON.stringify({

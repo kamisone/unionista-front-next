@@ -138,12 +138,17 @@ export class HttpService {
         }
 
         const user = JSON.parse(headers().get(CURRENT_USER_HEADER_NAME) || '');
-        return fetch(process.env.API_BASE_URL + '/' + path, {
-            method: httpMethods.GET,
-            headers: {
-                Authorization: `bearer ${user && user.accessToken}`,
-            },
-        }).then((headers) => headers.json());
+        return fetch(
+            'http://back-cluster-ip-service.default.svc.cluster.local:3000' +
+                '/' +
+                path,
+            {
+                method: httpMethods.GET,
+                headers: {
+                    Authorization: `bearer ${user && user.accessToken}`,
+                },
+            }
+        ).then((headers) => headers.json());
     }
 
     async post<T>({
