@@ -1,18 +1,14 @@
-import DropListArrowIcon from '@/icons/drop-list-arrow/DropListArrowIcon';
-import React, { useEffect, useState } from 'react';
-import propTypes from 'prop-types';
+import { fetchProductsCategories } from '@/actions';
 import '@/components/modal-content/menu-drawer-nav-content/MenuDrawerNavContent.css';
-import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
-import Link from 'next/link';
+import DropListArrowIcon from '@/icons/drop-list-arrow/DropListArrowIcon';
 import {
-    ProductCategory,
-    ProductCategoryService,
+    ProductCategoryService
 } from '@/services/product-category.service';
-import { ModalContentMapping } from '@/utils/modal';
+import clsx from 'clsx';
+import Link from 'next/link';
 
-const productCategoryService = ProductCategoryService.instance;
 
 interface MenuDrawerNavItem {
     id: string;
@@ -24,11 +20,17 @@ interface MenuDrawerNavItem {
 
 interface MenuDrawerNavContentProps {
     lng: SupportedLanguages;
-    menuItems: MenuDrawerNavItem[];
 }
 
-const MenuDrawerNavContent = (props: MenuDrawerNavContentProps) => {
-    const { lng, menuItems } = props;
+const MenuDrawerNavContent = async (props: MenuDrawerNavContentProps) => {
+    const { lng } = props;
+
+
+    const menuItems = (await new Promise(function (res) {
+        setTimeout(() => {
+            res(fetchProductsCategories(lng));
+        }, 2000);
+    })) as MenuDrawerNavItem[];
 
     return (
         <ul

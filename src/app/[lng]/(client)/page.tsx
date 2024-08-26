@@ -1,13 +1,12 @@
-import React from 'react';
 
-import { SupportedLanguages } from '@/i18n/settings';
-import { cookies, headers } from 'next/headers';
-import { isMobile } from '@/utils/is-browser';
-import { Metadata } from 'next';
-import UserHome from '@/components/user-home/UserHome';
 import FlexModal from '@/components/Modal/FlexModal';
 import UserHeader from '@/components/header/UserHeader';
-import { CURRENT_USER_HEADER_NAME, modalContentNames } from '@/utils/constants';
+import UserHome from '@/components/user-home/UserHome';
+import { SupportedLanguages } from '@/i18n/settings';
+import { CURRENT_USER_HEADER_NAME } from '@/utils/constants';
+import { isMobile } from '@/utils/is-browser';
+import { Metadata } from 'next';
+import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
     title: 'UnionistaShop | Home',
@@ -34,6 +33,7 @@ function Home({ params: { lng }, searchParams }: HomeProps) {
                 isMobile={isMobile(headersList.get('user-agent'))}
                 lng={lng}
             />
+
             <FlexModal
                 lng={lng}
                 isMobileDevice={isMobileDevice}

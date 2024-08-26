@@ -1,16 +1,13 @@
-import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
-import React, { ReactNode } from 'react';
-import { headers } from 'next/headers';
-import clsx from 'clsx';
-import { UthmanicFont } from '@/fonts/fonts';
-import { isMobile } from '@/utils/is-browser';
-import UserHeader from '@/components/header/UserHeader';
-import UserFooter from '@/components/footer/UserFooter';
-import CustomSnackbar from '@/components/custom-snackback/CustomSnackbar';
 import styles from '@/app/[lng]/(client)/layout.module.css';
+import CustomSnackbar from '@/components/custom-snackback/CustomSnackbar';
+import UserFooter from '@/components/footer/UserFooter';
+import { UthmanicFont } from '@/fonts/fonts';
+import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
+import { isMobile } from '@/utils/is-browser';
+import clsx from 'clsx';
+import { headers } from 'next/headers';
+import { ReactNode } from 'react';
 // import '@/fb-pixel/pixel-script';
-import FlexModal from '@/components/Modal/FlexModal';
-import { ModalService } from '@/services/modal.service';
 
 interface ClientLayoutProps {
     children: ReactNode;
@@ -20,7 +17,6 @@ interface ClientLayoutProps {
     searchParams: {[key: string]: string | string[] | undefined}
 }
 
-const modalService = ModalService.instance;
 const ClientLayout = async ({
     children,
     params: { lng },
