@@ -17,8 +17,9 @@ export async function middleware(req: NextRequest) {
     // Sub middlewares can return NextResponse only for redirecting.
     const cbs = [];
 
-    // exclude prefetch requests
-    const headers = req.headers;
+    // exclude prefetch requests from other middlewares
+    //@ts-ignore
+    const headers = req.clone().headers;
     if (
         Array.from(headers.keys()).includes('next-router-prefetch') ||
         headers.get('purpose') === 'prefetch'
@@ -72,7 +73,7 @@ export async function middleware(req: NextRequest) {
     // Modal middleware
     const modalResult = modalMiddleware(i18Result.request);
     if (modalResult instanceof NextResponse) {
-        return authResult;
+        return modalResult;
     }
     if (modalResult.cb) {
         cbs.push(modalResult.cb);
