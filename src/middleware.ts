@@ -9,6 +9,10 @@ export const config = {
     matcher: [
         {
             source: '/((?!api|_next|assets|favicon.ico|sw.js|sitemap.xml|robots.txt).*)',
+            missing: [
+                { type: 'header', key: 'next-router-prefetch' },
+                { type: 'header', key: 'purpose', value: 'prefetch' },
+            ],
         },
     ],
 };
@@ -20,27 +24,27 @@ export async function middleware(req: NextRequest) {
     // exclude prefetch requests from other middlewares
     //@ts-ignore
     const headers = req.headers;
-    if (
-        Array.from(headers.keys()).includes('next-router-prefetch') ||
-        headers.get('purpose') === 'prefetch'
-    ) {
-        // Modal middleware
-        const modalResult = modalMiddleware(req);
-        if (modalResult instanceof NextResponse) {
-            return modalResult;
-        }
-        if (modalResult.cb) {
-            cbs.push(modalResult.cb);
-        }
-        // Prepare response
-        const response = NextResponse.next({
-            request: modalResult.request,
-        });
-        cbs.forEach((cb) => {
-            cb(response);
-        });
-        return response;
-    }
+    // if (
+    //     Array.from(headers.keys()).includes('next-router-prefetch') ||
+    //     headers.get('purpose') === 'prefetch'
+    // ) {
+    //     // Modal middleware
+    //     const modalResult = modalMiddleware(req);
+    //     if (modalResult instanceof NextResponse) {
+    //         return modalResult;
+    //     }
+    //     if (modalResult.cb) {
+    //         cbs.push(modalResult.cb);
+    //     }
+    //     // Prepare response
+    //     const response = NextResponse.next({
+    //         request: modalResult.request,
+    //     });
+    //     cbs.forEach((cb) => {
+    //         cb(response);
+    //     });
+    //     return response;
+    // }
 
     const getLocaleResult = getLocaleMiddleware(req);
     if (getLocaleResult instanceof NextResponse) {

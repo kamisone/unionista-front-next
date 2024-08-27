@@ -12,9 +12,12 @@ interface FlexModalProps {
 }
 
 async function FlexModal(props: FlexModalProps) {
-    const currentModalContent = headers().get(
-        modalContentNames.HEADER_NAME
-    ) as ModalContentMapping | null || ModalContentMapping.SIGN_IN;
+    console.log('headers prefetch: ', headers().has('next-router-prefetch'));
+    const currentModalContent =
+        (headers().get(
+            modalContentNames.HEADER_NAME
+        ) as ModalContentMapping | null) ||
+        (headers().has('next-router-prefetch') && ModalContentMapping.SIGN_IN);
     if (currentModalContent) {
         return props.isMobileDevice ? (
             <BottomModal
