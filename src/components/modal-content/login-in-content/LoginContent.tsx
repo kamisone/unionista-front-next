@@ -117,7 +117,6 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 <h2>{isSignin ? t('sign-in.title') : t('sign-up.title')}</h2>
 
                 <ActionButton
-                    prefetch={false}
                     to={`/${lng}?modal_content=${
                         currentModalContent === ModalContentMapping.SIGN_IN
                             ? ModalContentMapping.SIGN_UP

@@ -48,7 +48,6 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                 >
                     {!user && (
                         <Link
-                            prefetch={false}
                             href={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
                             onClick={() => {
                                 // modalService.state = {
@@ -127,7 +126,6 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
             {/* sub part */}
             <div className={clsx(styles.sub_part)}>
                 <Link
-                    prefetch={false}
                     href={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
                 >
                     <button

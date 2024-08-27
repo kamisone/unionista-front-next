@@ -19,7 +19,6 @@ interface ActionButtonProps {
     animationOnHover?: boolean;
     disabled?: boolean;
     loading?: boolean;
-    prefetch?: boolean
 }
 
 const ActionButton = (props: ActionButtonProps) => {
@@ -37,7 +36,6 @@ const ActionButton = (props: ActionButtonProps) => {
     } = props;
     return to ? (
         <Link
-            prefetch={props.prefetch}
             data-disabled={disabled}
             href={to}
             className={clsx('ab_container', radius, variant, fit, {
