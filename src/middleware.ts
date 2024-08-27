@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
 
     // exclude prefetch requests from other middlewares
     //@ts-ignore
-    const headers = req.clone().headers;
+    const headers = req.headers;
     if (
         Array.from(headers.keys()).includes('next-router-prefetch') ||
         headers.get('purpose') === 'prefetch'
