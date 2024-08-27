@@ -75,6 +75,7 @@ async function DesktopHeader({ lng, isUserAuthenticated }: DesktopHeaderProps) {
                 >
                     {!isUserAuthenticated && (
                         <Link
+                            prefetch={false}
                             href={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
                             className={clsx(
                                 styles.h_nav_item_text,

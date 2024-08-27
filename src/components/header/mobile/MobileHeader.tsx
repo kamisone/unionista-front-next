@@ -48,7 +48,8 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                 >
                     {!user && (
                         <Link
-                        href={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
+                            prefetch={false}
+                            href={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
                             onClick={() => {
                                 // modalService.state = {
                                 //     isModalOpen: true,
@@ -126,6 +127,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
             {/* sub part */}
             <div className={clsx(styles.sub_part)}>
                 <Link
+                    prefetch={false}
                     href={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
                 >
                     <button
@@ -153,7 +155,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                         iconGap="large"
                         size="medium"
                         placeholder={t('search-input-placeholder')}
-                        name=''
+                        name=""
                     >
                         <SearchIcon />
                     </TextInput>
