@@ -29,7 +29,7 @@ const MenuDrawerNavContent = async (props: MenuDrawerNavContentProps) => {
     const menuItems = (await new Promise(function (res) {
         setTimeout(() => {
             res(fetchProductsCategories(lng));
-        }, 2000);
+        }, 8000);
     })) as MenuDrawerNavItem[];
 
     return (

@@ -44,7 +44,7 @@ async function BottomModal({ lng, currentModalContent }: BottomModalProps) {
                 lng={lng}
                 headingTitle={getModalTitle(currentModalContent)}
             >
-                <Suspense fallback={<LoadingIndicator />}>
+                <Suspense key={currentModalContent} fallback={<LoadingIndicator />}>
                     {<Content lng={lng} />}
                 </Suspense>
             </ModalSpot>
