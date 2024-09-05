@@ -1,7 +1,7 @@
 import '@/components/modal-content/login-in-content/LoginContent.css';
 import EyeIcon from '@/icons/eye/EyeIcon';
 import GoogleIcon from '@/icons/google/GoogleIcon';
-import { AuthService, UserWithTokens } from '@/services/server/auth.service';
+import { AuthService } from '@/services/server/auth.service';
 import ActionButton from '@/shared/action-button/ActionButton';
 import CheckboxInput from '@/shared/checkbox-input/CheckboxInput';
 import InputControl from '@/shared/input-control/InputControl';
@@ -10,6 +10,7 @@ import TextInput from '@/shared/text-input/TextInput';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { useTranslation } from '@/i18n';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
+import ClientActionButton from '@/shared/client-action-button/ClientActionButton';
 import {
     accessTokenNames,
     modalContentNames,
@@ -37,8 +38,11 @@ interface LoginContentProps {
     lng: SupportedLanguages;
 }
 
+let isFail = false
+
 const LoginContent = async function ({ lng }: LoginContentProps) {
     const { t } = await useTranslation(lng, 'login_content');
+    
 
     const currentModalContent = headers().get(
         modalContentNames.HEADER_NAME
@@ -52,23 +56,9 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
         const password = formData.get('password');
         const fullName = formData.get('full_name');
         const avatar = formData.get('avatar');
+        
 
-        let response: UserWithTokens | undefined;
-        try {
-            response = await (isSignin
-                ? authService.signinUser({
-                      email,
-                      password,
-                  })
-                : authService.signupUser({
-                      email,
-                      password,
-                      fullName,
-                      avatarFile: avatar,
-                  }));
-        } catch (_) {
-            console.log('error: ', _);
-        } finally {
+        function onSignSuccess(response: any) {
             if (response) {
                 cookies().set(
                     accessTokenNames.ACCESS_TOKEN,
@@ -91,6 +81,29 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     }
                 );
             }
+        }
+
+        // let response: UserWithTokens | undefined;
+
+        const response: { success: boolean } = await (isSignin
+            ? authService.signinUser(
+                  {
+                      email,
+                      password,
+                  },
+                  onSignSuccess
+              )
+            : authService.signupUser(
+                  {
+                      email,
+                      password,
+                      fullName,
+                      avatarFile: avatar,
+                  },
+                  onSignSuccess
+              ));
+
+        if (response.success) {
             const redirectTo = cookies().get(PENDING_REDIRECT_PATH_NAME);
             if (redirectTo) {
                 cookies().set(PENDING_REDIRECT_PATH_NAME, '', { maxAge: 0 });
@@ -98,6 +111,8 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
             }
             return redirect(`/${lng}`);
         }
+        // TODO: send error message
+        // and maybe revalidatePath
     }
 
     return (
@@ -313,21 +328,24 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                         {t('sign-in.forgot-password')}
                     </Link>
                 </div>
-                {/* <ActionButton
-                    lng={lng}
-                    // disabled={!isValid}
-                    // loading={isSubmitting}
-                    // onClick={handleSubmit(onSubmit)}
-                    variant="primary"
-                    fit="max"
-                    radius="pilled"
-                    animationOnHover
-                >
+                    <ClientActionButton
+                        lng={lng}
+                        // disabled={!isValid}
+                        variant="primary"
+                        fit="max"
+                        radius="pilled"
+                        animationOnHover
+                        isSubmit
+                        isFail={isFail}
+                    >
+                        {isSignin
+                            ? t('sign-in.title')
+                            : t('sign-up.action-title')}
+                    </ClientActionButton>
+
+                {/* <button type="submit">
                     {isSignin ? t('sign-in.title') : t('sign-up.action-title')}
-                </ActionButton> */}
-                <button type="submit">
-                    {isSignin ? t('sign-in.title') : t('sign-up.action-title')}
-                </button>
+                </button> */}
             </form>
             <p className="sic_divider">{t('sign-in.divider-title')}</p>
             <ActionButton

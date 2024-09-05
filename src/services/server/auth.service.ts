@@ -86,46 +86,54 @@ export class AuthService extends ComponentsStateNotify<
         };
     }
 
-    async signinUser(data: Record<string, unknown> | FormData) {
-        try {
-            const response = await this.httpService.post<UserWithTokens>({
+    async signinUser(
+        data: Record<string, unknown> | FormData,
+        onSuccess: (...args: any) => unknown
+    ): Promise<{ success: boolean }> {
+        return this.httpService
+            .post<UserWithTokens>({
                 path: AuthService.endpoints.SIGN_IN,
                 body: data,
-            });
-            this.state = {
-                isUserAuthenticated: true,
-                isUserNotifiedToSignin: false,
-            };
-
-            return response;
-        } catch (error: any) {
-            console.log('error in signinuser: ', error);
-        }
+            })
+            .then((reponse) => {
+                onSuccess(reponse);
+                return {
+                    success: true,
+                };
+            })
+            .catch((_) => {
+                // TODO: notify user
+                return {
+                    success: false,
+                };
+            }) as Promise<{ success: boolean }>;
     }
-    async signupUser(data: Record<string, any>) {
+    async signupUser(
+        data: Record<string, any>,
+        onSuccess: (...args: any[]) => unknown
+    ): Promise<{ success: boolean }> {
         const formData = new FormData();
         for (let key in data) {
             formData.append(key, data[key]);
         }
-        try {
-            const response = await this.httpService.post<UserWithTokens>({
+
+        return this.httpService
+            .post<UserWithTokens>({
                 path: AuthService.endpoints.SIGN_UP,
                 body: formData,
-            });
-            this.state = {
-                isUserAuthenticated: true,
-                isUserNotifiedToSignin: false,
-            };
-            // AuthService.setPersistedIsUserNotifiedToAuth(false);
-            modalService.state = {
-                isModalOpen: false,
-                currentModalContent: null,
-            };
-
-            return response;
-        } catch (error: unknown) {
-            console.log('error in signup: ', error);
-        }
+            })
+            .then((reponse) => {
+                onSuccess(reponse);
+                return {
+                    success: true,
+                };
+            })
+            .catch((_) => {
+                // TODO: notify user
+                return {
+                    success: false,
+                };
+            }) as Promise<{ success: boolean }>;
     }
 
     static async refreshToken(

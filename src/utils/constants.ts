@@ -18,6 +18,7 @@ export enum httpMethods {
     POST = 'post',
     PUT = 'put',
     DELETE = 'delete',
+    HEAD = 'head',
 }
 
 export enum httpHeadersNames {
