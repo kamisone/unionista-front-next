@@ -1,1 +1,5 @@
-export const protected_paths = ['modal_content=menu-drawer', '/admin'];
+import { SupportedLanguages } from '@/i18n/settings';
+
+export function getProtectedPaths(lng: SupportedLanguages) {
+    return ['modal_content=menu-drawer', `/${lng}/admin`];
+}

@@ -10,8 +10,8 @@ export function i18nMiddleware(
     lng: SupportedLanguages
 ): SubMiddlewareReturnType | NextResponse {
     if (
-        !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
-        req.headers.get('Accept')?.includes('text/html')
+        !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`))
+        //  && req.headers.get('Accept')?.includes('text/html')
     ) {
         return NextResponse.redirect(
             new URL(
@@ -19,16 +19,17 @@ export function i18nMiddleware(
                 req.nextUrl.origin
             )
         ) as NextResponse;
-    } else if (
-        !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`))
-    ) {
-        return NextResponse.rewrite(
-            new URL(
-                `/${lng}${req.nextUrl.pathname !== '/' ? req.nextUrl.pathname : ''}${req.nextUrl.search}`,
-                req.nextUrl.origin
-            )
-        );
     }
+    // else if (
+    //     !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`))
+    // ) {
+    //     return NextResponse.rewrite(
+    //         new URL(
+    //             `/${lng}${req.nextUrl.pathname !== '/' ? req.nextUrl.pathname : ''}${req.nextUrl.search}`,
+    //             req.nextUrl.origin
+    //         )
+    //     );
+    // }
 
     if (req.headers.has('referer')) {
         const refererUrl = new URL(req.headers.get('referer') ?? '');

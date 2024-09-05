@@ -1,5 +1,6 @@
 import {
     fallbackLng,
+    languages,
     lngCookieName,
     SupportedLanguages,
 } from '@/i18n/settings';
@@ -10,8 +11,10 @@ import { SubMiddlewareReturnType } from '@/middleware';
 export function getLocaleMiddleware(
     req: NextRequest
 ): SubMiddlewareReturnType | NextResponse {
-    let lng: SupportedLanguages | null = null;
-    if (req.cookies.has(lngCookieName)) {
+    let lng: SupportedLanguages | null =
+        languages.find((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) ??
+        null;
+    if (!lng && req.cookies.has(lngCookieName)) {
         lng = acceptLanguage.get(
             req.cookies.get(lngCookieName)?.value
         ) as SupportedLanguages;

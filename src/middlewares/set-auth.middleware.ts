@@ -1,4 +1,4 @@
-import { protected_paths } from '@/config';
+import { getProtectedPaths } from '@/config';
 import { SupportedLanguages } from '@/i18n/settings';
 import { SubMiddlewareReturnType } from '@/middleware';
 import { AuthService } from '@/services/server/auth.service';
@@ -57,7 +57,7 @@ export async function setAuthMiddleware(
         ) as unknown as SubMiddlewareReturnType;
     } else {
         const path = req.nextUrl.pathname + req.nextUrl.search;
-        if (protected_paths.some((p) => path.includes(p))) {
+        if (getProtectedPaths(lng).some((p) => path.includes(p))) {
             return NextResponse.redirect(
                 new URL(`/${lng}?modal_content=signin`, req.url),
                 {
