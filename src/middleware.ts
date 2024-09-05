@@ -43,18 +43,9 @@ export async function middleware(req: NextRequest) {
             cbs.push(modalResult.cb);
         }
 
-        // Auth middleware
-        const authResult = await setAuthMiddleware(modalResult.request, lng);
-        if (authResult instanceof NextResponse) {
-            return authResult;
-        }
-        if (authResult.cb) {
-            cbs.push(authResult.cb);
-        }
-
         // Prepare response
         const response = NextResponse.next({
-            request: authResult.request,
+            request: modalResult.request,
         });
         cbs.forEach((cb) => {
             cb(response);
