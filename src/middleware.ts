@@ -30,10 +30,10 @@ export async function middleware(req: NextRequest) {
     // exclude prefetch requests from other middlewares
     //@ts-ignore
     const headers = req.headers;
-    if (
+    const isPrefetch =
         headers.get('x-next-router-prefetch') ||
-        headers.get('x-purpose') === 'prefetch'
-    ) {
+        headers.get('x-purpose') === 'prefetch';
+    if (isPrefetch) {
         // Modal middleware
         const modalResult = modalMiddleware(req);
         if (modalResult instanceof NextResponse) {
@@ -42,9 +42,19 @@ export async function middleware(req: NextRequest) {
         if (modalResult.cb) {
             cbs.push(modalResult.cb);
         }
+
+        // Auth middleware
+        const authResult = await setAuthMiddleware(modalResult.request, lng);
+        if (authResult instanceof NextResponse) {
+            return authResult;
+        }
+        if (authResult.cb) {
+            cbs.push(authResult.cb);
+        }
+
         // Prepare response
         const response = NextResponse.next({
-            request: modalResult.request,
+            request: authResult.request,
         });
         cbs.forEach((cb) => {
             cb(response);
