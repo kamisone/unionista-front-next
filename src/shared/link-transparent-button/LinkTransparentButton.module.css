@@ -1,0 +1,10 @@
+.container {
+    position: relative;
+}
+.spinner {
+    position: absolute;
+    inset: 0;
+    height: fit-content;
+    width: fit-content;
+    margin: auto;
+}
