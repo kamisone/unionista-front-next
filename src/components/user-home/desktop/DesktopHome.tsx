@@ -15,15 +15,15 @@ const DesktopHome = ({ lng, isUserAuthenticated }: DesktopHomeProps) => {
             <nav className={styles.category_nav}>
                 <ul>
                     <li>
-                        <Link href={'home-favorites'} />
+                        <Link href={`/${lng}/home-favorites`} />
                         Home Favorites
                     </li>
                     <li>
-                        <Link href={'fashion-favorites'} />
+                        <Link href={`/${lng}/fashion-favorites`} />
                         Fashion
                     </li>
                     <li>
-                        <Link href={'gifts'} />
+                        <Link href={`/${lng}/gifts`} />
                         Gifts
                     </li>
                 </ul>

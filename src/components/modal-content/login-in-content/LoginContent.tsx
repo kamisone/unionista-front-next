@@ -308,7 +308,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     </div>
                     <Link
                         className="sic_forgot_password"
-                        href={'/forgot_password'}
+                        href={`/${lng}/forgot_password`}
                     >
                         {t('sign-in.forgot-password')}
                     </Link>

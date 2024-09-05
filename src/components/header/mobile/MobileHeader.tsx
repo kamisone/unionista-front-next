@@ -79,7 +79,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             styles.bo_icon
                         )}
                     >
-                        <Link href={`${lng}/admin`}>
+                        <Link href={`/${lng}/admin`}>
                             <BoSettingsIcon />
                         </Link>
                     </li>

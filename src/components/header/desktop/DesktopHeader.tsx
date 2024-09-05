@@ -102,13 +102,13 @@ async function DesktopHeader({ lng, isUserAuthenticated }: DesktopHeaderProps) {
                         }}
                     >
                         <Link
-                        href={`${lng}/admin`}>
+                        href={`/${lng}/admin`}>
                             <BoSettingsIcon />
                         </Link>
                     </li>
                     <li className={clsx(styles.h_nav_item)}>
                         <Link
-                            href="/notifications"
+                            href={`/${lng}/notifications`}
                             style={{
                                 // @ts-ignore
                                 '--nav-icon-title': `"${t(
@@ -121,7 +121,7 @@ async function DesktopHeader({ lng, isUserAuthenticated }: DesktopHeaderProps) {
                     </li>
                     <li className={clsx(styles.h_nav_item)}>
                         <Link
-                            href="/cart"
+                            href={`/${lng}/cart`}
                             style={{
                                 // @ts-ignore
                                 '--nav-icon-title': `"${t(
