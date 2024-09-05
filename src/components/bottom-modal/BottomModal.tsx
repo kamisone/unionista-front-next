@@ -1,7 +1,9 @@
 import { SupportedLanguages } from '@/i18n/settings';
 import ModalSpot from '@/shared/modal-spot/ModalSpot';
 import { getModalTitle, ModalContentMapping } from '@/utils/modal';
-import { ReactElement, Suspense } from 'react';
+import React, {
+    Suspense
+} from 'react';
 
 import LoadingIndicator from '@/shared/loading-indicator/LoadingIndicator';
 import LoginContent from '../modal-content/login-in-content/LoginContent';
@@ -12,19 +14,28 @@ interface BottomModalProps {
     currentModalContent: ModalContentMapping;
 }
 
-const BottomModal = async function ({
-    lng,
-    currentModalContent,
-}: BottomModalProps) {
+async function BottomModal({ lng, currentModalContent }: BottomModalProps) {
     if (currentModalContent) {
-        let content: ReactElement | Promise<ReactElement> | null = null;
+        let Content: React.LazyExoticComponent<
+            typeof LoginContent | typeof MenuDrawerNavContent
+        > | null = null;
         switch (currentModalContent) {
             case ModalContentMapping.MENU_DRAWER:
-                content = <MenuDrawerNavContent lng={lng} />;
+                Content = React.lazy(
+                    () =>
+                        import(
+                            '@/components/modal-content/menu-drawer-nav-content/MenuDrawerNavContent'
+                        )
+                );
                 break;
             case ModalContentMapping.SIGN_IN:
             case ModalContentMapping.SIGN_UP:
-                content = <LoginContent lng={lng} />;
+                Content = React.lazy(
+                    () =>
+                        import(
+                            '@/components/modal-content/login-in-content/LoginContent'
+                        )
+                );
                 break;
         }
 
@@ -33,15 +44,12 @@ const BottomModal = async function ({
                 lng={lng}
                 headingTitle={getModalTitle(currentModalContent)}
             >
-                <Suspense
-                    key={currentModalContent}
-                    fallback={<LoadingIndicator />}
-                >
-                    {content}
+                <Suspense fallback={<LoadingIndicator />}>
+                    {<Content lng={lng} />}
                 </Suspense>
             </ModalSpot>
         );
     }
-};
+}
 
 export default BottomModal;
