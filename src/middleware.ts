@@ -38,28 +38,28 @@ export async function middleware(req: NextRequest) {
 
     // exclude prefetch requests from other middlewares
     //@ts-ignore
-    const headers = req.headers;
-    if (
-        headers.get('x-next-router-prefetch') ||
-        headers.get('x-purpose') === 'prefetch'
-    ) {
-        // Modal middleware
-        const modalResult = modalMiddleware(req);
-        if (modalResult instanceof NextResponse) {
-            return modalResult;
-        }
-        if (modalResult.cb) {
-            cbs.push(modalResult.cb);
-        }
-        // Prepare response
-        const response = NextResponse.next({
-            request: modalResult.request,
-        });
-        cbs.forEach((cb) => {
-            cb(response);
-        });
-        return response;
-    }
+    // const headers = req.headers;
+    // if (
+    //     headers.get('x-next-router-prefetch') ||
+    //     headers.get('x-purpose') === 'prefetch'
+    // ) {
+    //     // Modal middleware
+    //     const modalResult = modalMiddleware(req);
+    //     if (modalResult instanceof NextResponse) {
+    //         return modalResult;
+    //     }
+    //     if (modalResult.cb) {
+    //         cbs.push(modalResult.cb);
+    //     }
+    //     // Prepare response
+    //     const response = NextResponse.next({
+    //         request: modalResult.request,
+    //     });
+    //     cbs.forEach((cb) => {
+    //         cb(response);
+    //     });
+    //     return response;
+    // }
 
     // Auth middleware
     const authResult = await setAuthMiddleware(i18Result.request, lng);
