@@ -22,7 +22,7 @@ export class HttpService {
 
     constructor(private apiTokenService: ApiTokenService) {
         this._axiosInstance = axios.create({
-            baseURL: process.env.API_BASE_URL,
+            baseURL: process.env.API_BASE_URL_BROWSER,
         });
 
         // interceptors:

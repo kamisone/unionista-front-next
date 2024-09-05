@@ -21,7 +21,7 @@ export class HttpService {
 
     constructor(private apiTokenService: ApiTokenService) {
         this._axiosInstance = axios.create({
-            baseURL: process.env.API_BASE_URL,
+            baseURL: process.env.API_BASE_URL_SERVER,
         });
 
         // interceptors:
@@ -138,17 +138,12 @@ export class HttpService {
         }
 
         const user = JSON.parse(headers().get(CURRENT_USER_HEADER_NAME) || '');
-        return fetch(
-            'http://back-cluster-ip-service.default.svc.cluster.local:3000' +
-                '/' +
-                path,
-            {
-                method: httpMethods.GET,
-                headers: {
-                    Authorization: `bearer ${user && user.accessToken}`,
-                },
-            }
-        ).then((headers) => headers.json());
+        return fetch(process.env.API_BASE_URL_SERVER + '/' + path, {
+            method: httpMethods.GET,
+            headers: {
+                Authorization: `bearer ${user && user.accessToken}`,
+            },
+        }).then((headers) => headers.json());
     }
 
     async post<T>({
@@ -171,14 +166,11 @@ export class HttpService {
             headers[httpHeadersNames.CONTENT_TYPE] =
                 httpHeadersValues.APPLICATION_JSON;
         }
-        return fetch(
-            `http://back-cluster-ip-service.default.svc.cluster.local:3000/${path}`,
-            {
-                method: httpMethods.POST,
-                body: isFormData ? body : JSON.stringify(body),
-                headers,
-            }
-        ).then((headers) => {
+        return fetch(`${process.env.API_BASE_URL_SERVER}/${path}`, {
+            method: httpMethods.POST,
+            body: isFormData ? body : JSON.stringify(body),
+            headers,
+        }).then((headers) => {
             if (headers.status >= 200 && headers.status < 300) {
                 return headers.json();
             }

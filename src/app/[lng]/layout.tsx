@@ -18,13 +18,6 @@ export async function generateStaticParams() {
 function RootLayout({ children, params: { lng } }: RootLayoutProps) {
     return (
         <html lang={lng} dir={dir(lng)}>
-            <head>
-                {/* <script
-                    async
-                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1060049744591818"
-                    crossOrigin="anonymous"
-                ></script> */}
-            </head>
             <body>{children}</body>
         </html>
     );

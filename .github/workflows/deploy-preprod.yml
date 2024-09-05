@@ -58,7 +58,8 @@ jobs:
                 script: |
                   kubectl delete secret front-envs --ignore-not-found=true
                   kubectl create secret generic front-envs \
-                  --from-literal API_BASE_URL=${{ secrets.API_BASE_URL }} \
+                  --from-literal API_BASE_URL_BROWSER=${{ secrets.API_BASE_URL_BROWSER }} \
+                  --from-literal API_BASE_URL_SERVER=${{ secrets.API_BASE_URL_SERVER }} \
                   --from-literal JWT_ACCESS_KEY=${{ secrets.JWT_ACCESS_KEY }} \
                   --from-literal JWT_REFRESH_KEY=${{ secrets.JWT_REFRESH_KEY }}
                   kubectl apply -f /srv/k8s/front

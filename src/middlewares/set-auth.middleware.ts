@@ -1,7 +1,7 @@
 import { protected_paths } from '@/config';
 import { SupportedLanguages } from '@/i18n/settings';
 import { SubMiddlewareReturnType } from '@/middleware';
-import { AuthService } from '@/services/auth.service';
+import { AuthService } from '@/services/server/auth.service';
 import {
     accessTokenNames,
     CURRENT_USER_HEADER_NAME,
@@ -43,9 +43,6 @@ export async function setAuthMiddleware(
                         accessToken: data.accessToken,
                     })
                 );
-                // const response = NextResponse.next({
-                //     request: req,
-                // });
                 return {
                     request: req,
                     cb: (response: NextResponse) => {
@@ -56,8 +53,6 @@ export async function setAuthMiddleware(
                         return response;
                     },
                 };
-
-                // return response;
             }
         ) as unknown as SubMiddlewareReturnType;
     } else {
@@ -72,7 +67,6 @@ export async function setAuthMiddleware(
                 }
             ) as NextResponse;
         }
-        // return NextResponse.next();
     }
 
     return {

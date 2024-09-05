@@ -1,40 +1,44 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: front-deployment
+    name: front-deployment
 spec:
-  selector: 
-    matchLabels:
-      component: front
-  template:
-    metadata:
-      labels:
-        component: front
-    spec:
-      containers:
-        - name: front-container
-          image: mo29172/unionista_front:latest
-          ports:
-            - containerPort: 3000
-          resources:
-            limits:
-              cpu: 500m
-            requests:
-              cpu: 200m
-          env:
-            - name: API_BASE_URL
-              valueFrom: 
-                secretKeyRef:
-                  name: front-envs
-                  key: API_BASE_URL
-            - name: JWT_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: front-envs
-                  key: JWT_ACCESS_KEY
-            - name: JWT_REFRESH_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: front-envs
-                  key: JWT_REFRESH_KEY
-            
+    selector:
+        matchLabels:
+            component: front
+    template:
+        metadata:
+            labels:
+                component: front
+        spec:
+            containers:
+                - name: front-container
+                  image: mo29172/unionista_front:latest
+                  ports:
+                      - containerPort: 3000
+                  resources:
+                      limits:
+                          cpu: 500m
+                      requests:
+                          cpu: 200m
+                  env:
+                      - name: API_BASE_URL_BROWSER
+                        valueFrom:
+                            secretKeyRef:
+                                name: front-envs
+                                key: API_BASE_URL_BROWSER
+                      - name: API_BASE_URL_SERVER
+                        valueFrom:
+                            secretKeyRef:
+                                name: front-envs
+                                key: API_BASE_URL_SERVER
+                      - name: JWT_ACCESS_KEY
+                        valueFrom:
+                            secretKeyRef:
+                                name: front-envs
+                                key: JWT_ACCESS_KEY
+                      - name: JWT_REFRESH_KEY
+                        valueFrom:
+                            secretKeyRef:
+                                name: front-envs
+                                key: JWT_REFRESH_KEY
