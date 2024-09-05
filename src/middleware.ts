@@ -17,6 +17,25 @@ export async function middleware(req: NextRequest) {
     // Sub middlewares can return NextResponse only for redirecting.
     const cbs = [];
 
+    const getLocaleResult = getLocaleMiddleware(req);
+    if (getLocaleResult instanceof NextResponse) {
+        return getLocaleResult;
+    }
+    if (getLocaleResult.cb) {
+        cbs.push(getLocaleResult.cb);
+    }
+
+    const lng = getLocaleResult.lng as SupportedLanguages;
+
+    // I18n middleware
+    const i18Result = i18nMiddleware(req, lng);
+    if (i18Result instanceof NextResponse) {
+        return i18Result;
+    }
+    if (i18Result.cb) {
+        cbs.push(i18Result.cb);
+    }
+
     // exclude prefetch requests from other middlewares
     //@ts-ignore
     const headers = req.headers;
@@ -42,32 +61,13 @@ export async function middleware(req: NextRequest) {
         return response;
     }
 
-    const getLocaleResult = getLocaleMiddleware(req);
-    if (getLocaleResult instanceof NextResponse) {
-        return getLocaleResult;
-    }
-    if (getLocaleResult.cb) {
-        cbs.push(getLocaleResult.cb);
-    }
-
-    const lng = getLocaleResult.lng as SupportedLanguages;
-
     // Auth middleware
-    const authResult = await setAuthMiddleware(req, lng);
+    const authResult = await setAuthMiddleware(i18Result.request, lng);
     if (authResult instanceof NextResponse) {
         return authResult;
     }
     if (authResult.cb) {
         cbs.push(authResult.cb);
-    }
-
-    // I18n middleware
-    const i18Result = i18nMiddleware(authResult.request, lng);
-    if (i18Result instanceof NextResponse) {
-        return i18Result;
-    }
-    if (i18Result.cb) {
-        cbs.push(i18Result.cb);
     }
 
     // Modal middleware
