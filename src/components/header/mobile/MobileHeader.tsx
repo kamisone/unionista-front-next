@@ -1,24 +1,21 @@
-'use client';
-
+import Hamburger from '@/components/Hamburger/Hamburger';
 import styles from '@/components/header/mobile/MobileHeader.module.css';
 import BoSettingsIcon from '@/icons/bo-settings/BoSettingsIcon';
 import CartIcon from '@/icons/cart/CartIcon';
 import NotificationIcon from '@/icons/notification/NotificationIcon';
-import React, { startTransition, useEffect, useState } from 'react';
-import TextInput from '@/shared/text-input/TextInput';
-import InputControl from '@/shared/input-control/InputControl';
-import Hamburger from '@/components/Hamburger/Hamburger';
 import SearchIcon from '@/icons/search-icon/SearchIcon';
+import InputControl from '@/shared/input-control/InputControl';
+import TextInput from '@/shared/text-input/TextInput';
 import Link from 'next/link';
 // import { useTranslation } from '@/i18n/client';
-import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
-import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
-import SwitchLanguage from '../../switch-language/SwitchLanguage';
+import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import { AuthService } from '@/services/auth.service';
 import { ModalService } from '@/services/modal.service';
+import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
 import { ModalContentMapping } from '@/utils/modal';
-import { openModal } from '@/actions';
+import clsx from 'clsx';
+import SwitchLanguage from '../../switch-language/SwitchLanguage';
 
 const modalService = ModalService.instance;
 const authService = AuthService.instance;
@@ -47,23 +44,29 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                     )}
                 >
                     {!user && (
-                        <Link
-                            href={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
-                            onClick={() => {
-                                // modalService.state = {
-                                //     isModalOpen: true,
-                                //     currentModalContent:
-                                //         ModalContentMapping.SIGN_IN,
-                                // };
-                            }}
-                            className={clsx(
-                                styles.nav_item,
-                                styles.text,
-                                styles.signin
-                            )}
+                        // <Link
+                        //     href={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
+                        //     // onClick={() => {
+                        //     //     // modalService.state = {
+                        //     //     //     isModalOpen: true,
+                        //     //     //     currentModalContent:
+                        //     //     //         ModalContentMapping.SIGN_IN,
+                        //     //     // };
+                        //     // }}
+                        //     className={clsx(
+                        //         styles.nav_item,
+                        //         styles.text,
+                        //         styles.signin
+                        //     )}
+                        // >
+                        //     <button>{t('sign-in.title')}</button>
+                        // </Link>
+
+                        <LinkTransparentButton
+                            to={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
                         >
-                            <button>{t('sign-in.title')}</button>
-                        </Link>
+                            {t('sign-in.title')}
+                        </LinkTransparentButton>
                     )}
                     <li className={clsx(styles.nav_item, styles.country_icon)}>
                         <SwitchLanguage lng={lng} />
@@ -79,9 +82,12 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             styles.bo_icon
                         )}
                     >
-                        <Link href={`/${lng}/admin`}>
+                        {/* <Link href={`/${lng}/admin`}>
                             <BoSettingsIcon />
-                        </Link>
+                        </Link> */}
+                        <LinkTransparentButton isProtected to={`/${lng}/admin`}>
+                            <BoSettingsIcon />
+                        </LinkTransparentButton>
                     </li>
                     <li
                         className={clsx(
@@ -109,7 +115,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             styles.cart_icon
                         )}
                     >
-                        <Link
+                        {/* <Link
                             href={`/${lng}/cart`}
                             style={{
                                 // @ts-ignore
@@ -119,34 +125,43 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             }}
                         >
                             <CartIcon />
-                        </Link>
+                        </Link> */}
+                        <LinkTransparentButton to={`/${lng}/cart`}>
+                            <CartIcon />
+                        </LinkTransparentButton>
                     </li>
                 </ul>
             </div>
             {/* sub part */}
             <div className={clsx(styles.sub_part)}>
-                <Link
+                {/* <Link
                     href={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
                 >
                     <button
                         title={t('hamburger.title')}
-                        onClick={() => {
-                            // startTransition(
-                            //     async function() {
-                            //         modalService.state = {
-                            //             isModalOpen: true,
-                            //             currentModalContent:
-                            //                 ModalContentMapping.MENU_DRAWER,
-                            //         };
-                            //         console.log('called');
-                            //         await openModal(ModalContentMapping.MENU_DRAWER);
-                            //     }
-                            // );
-                        }}
+                        // onClick={() => {
+                        // startTransition(
+                        //     async function() {
+                        //         modalService.state = {
+                        //             isModalOpen: true,
+                        //             currentModalContent:
+                        //                 ModalContentMapping.MENU_DRAWER,
+                        //         };
+                        //         console.log('called');
+                        //         await openModal(ModalContentMapping.MENU_DRAWER);
+                        //     }
+                        // );
+                        // }}
                     >
                         <Hamburger />
                     </button>
-                </Link>
+                </Link> */}
+                <LinkTransparentButton
+                    isProtected
+                    to={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
+                >
+                    <Hamburger />
+                </LinkTransparentButton>
                 <InputControl lng={lng} radius="pilled" isFormChild={false}>
                     <TextInput
                         lng={lng}

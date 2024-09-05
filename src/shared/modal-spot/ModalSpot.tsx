@@ -9,6 +9,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 import './ModalSpot.css';
+import LinkTransparentButton from '../link-transparent-button/LinkTransparentButton';
 // import ScaleBgWrapper from 'shared/scale-bg-wrapper/ScaleBgWrapper';
 
 const authService = AuthService.instance;
@@ -27,7 +28,7 @@ interface ModalSpotProps {
     isDesktop?: boolean;
 }
 
-  function ModalSpot({
+function ModalSpot({
     children,
     headingTitle,
     lng,
@@ -70,7 +71,7 @@ interface ModalSpotProps {
     //     );
     // }, []);
 
-    function removeQueryParam(path: string, param:string) {
+    function removeQueryParam(path: string, param: string) {
         // path.replace()
     }
 
@@ -102,7 +103,7 @@ interface ModalSpotProps {
                             </h2>
                         </>
                     )}
-                    <Link
+                    {/* <Link
                         href={`/${lng}`}
                         className={clsx('ms_close_icon', {
                             floating: !headingTitle,
@@ -112,13 +113,19 @@ interface ModalSpotProps {
                             Icon={<CloseIcon />}
                             // onClick={() => onCloseDrawer()}
                         />
-                    </Link>
+                    </Link> */}
+                    <LinkTransparentButton to={`/${lng}`}>
+                        <ScaleBgWrapper
+                            Icon={<CloseIcon />}
+                            // onClick={() => onCloseDrawer()}
+                        />
+                    </LinkTransparentButton>
                 </div>
                 {children}
             </div>
         </div>
     );
-};
+}
 
 ModalSpot.propTypes = {
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),

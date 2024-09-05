@@ -62,7 +62,7 @@ export async function setAuthMiddleware(
                 new URL(`/${lng}?modal_content=signin`, req.url),
                 {
                     headers: {
-                        'Set-Cookie': `${PENDING_REDIRECT_PATH_NAME}=${path};Path=/;HttpOnly;Secure`,
+                        'Set-Cookie': `${PENDING_REDIRECT_PATH_NAME}=${path};Path=/;`,
                     },
                 }
             ) as NextResponse;
