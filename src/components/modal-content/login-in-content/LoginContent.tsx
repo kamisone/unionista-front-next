@@ -8,7 +8,6 @@ import InputControl from '@/shared/input-control/InputControl';
 import TextInput from '@/shared/text-input/TextInput';
 
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
-import { useTranslation } from '@/i18n';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import ClientActionButton from '@/shared/client-action-button/ClientActionButton';
 import {
@@ -20,7 +19,8 @@ import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
 import { cookies, headers } from 'next/headers';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { redirect, RedirectType } from 'next/navigation';
+import { i18nTranslation } from '@/i18n';
 
 const authService = AuthService.instance;
 
@@ -38,11 +38,10 @@ interface LoginContentProps {
     lng: SupportedLanguages;
 }
 
-let isFail = false
 
 const LoginContent = async function ({ lng }: LoginContentProps) {
-    const { t } = await useTranslation(lng, 'login_content');
-    
+
+    const t = i18nTranslation(lng, 'login_content')
 
     const currentModalContent = headers().get(
         modalContentNames.HEADER_NAME
@@ -56,7 +55,6 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
         const password = formData.get('password');
         const fullName = formData.get('full_name');
         const avatar = formData.get('avatar');
-        
 
         function onSignSuccess(response: any) {
             if (response) {
@@ -107,9 +105,9 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
             const redirectTo = cookies().get(PENDING_REDIRECT_PATH_NAME);
             if (redirectTo) {
                 cookies().set(PENDING_REDIRECT_PATH_NAME, '', { maxAge: 0 });
-                return redirect(redirectTo.value);
+                return redirect(redirectTo.value, RedirectType.replace);
             }
-            return redirect(`/${lng}`);
+            return redirect(`/${lng}`, RedirectType.replace);
         }
         // TODO: send error message
         // and maybe revalidatePath
@@ -328,20 +326,17 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                         {t('sign-in.forgot-password')}
                     </Link>
                 </div>
-                    <ClientActionButton
-                        lng={lng}
-                        // disabled={!isValid}
-                        variant="primary"
-                        fit="max"
-                        radius="pilled"
-                        animationOnHover
-                        isSubmit
-                        isFail={isFail}
-                    >
-                        {isSignin
-                            ? t('sign-in.title')
-                            : t('sign-up.action-title')}
-                    </ClientActionButton>
+                <ClientActionButton
+                    lng={lng}
+                    // disabled={!isValid}
+                    variant="primary"
+                    fit="max"
+                    radius="pilled"
+                    animationOnHover
+                    isSubmit
+                >
+                    {isSignin ? t('sign-in.title') : t('sign-up.action-title')}
+                </ClientActionButton>
 
                 {/* <button type="submit">
                     {isSignin ? t('sign-in.title') : t('sign-up.action-title')}

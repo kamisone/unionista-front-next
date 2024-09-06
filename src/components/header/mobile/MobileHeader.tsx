@@ -1,24 +1,19 @@
 import Hamburger from '@/components/Hamburger/Hamburger';
 import styles from '@/components/header/mobile/MobileHeader.module.css';
+import { Graphik, UthmanicFont } from '@/fonts/fonts';
+import { i18nTranslation } from '@/i18n';
+import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import BoSettingsIcon from '@/icons/bo-settings/BoSettingsIcon';
 import CartIcon from '@/icons/cart/CartIcon';
 import NotificationIcon from '@/icons/notification/NotificationIcon';
 import SearchIcon from '@/icons/search-icon/SearchIcon';
 import InputControl from '@/shared/input-control/InputControl';
-import TextInput from '@/shared/text-input/TextInput';
-import Link from 'next/link';
-// import { useTranslation } from '@/i18n/client';
-import { Graphik, UthmanicFont } from '@/fonts/fonts';
-import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
-import { AuthService } from '@/services/auth.service';
-import { ModalService } from '@/services/modal.service';
 import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
+import TextInput from '@/shared/text-input/TextInput';
 import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
+import Link from 'next/link';
 import SwitchLanguage from '../../switch-language/SwitchLanguage';
-
-const modalService = ModalService.instance;
-const authService = AuthService.instance;
 
 interface HeaderProps {
     lng: SupportedLanguages;
@@ -26,8 +21,7 @@ interface HeaderProps {
 }
 
 const MobileHeader = ({ lng, user }: HeaderProps) => {
-    // const { t } = useTranslation(lng, 'header');
-    const t = (...args: any) => 'action';
+    const t = i18nTranslation(lng, 'header');
 
     return (
         <div className={clsx(styles.container, lng)}>
@@ -96,7 +90,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             styles.notif
                         )}
                     >
-                        <Link
+                        {/* <Link
                             href={`/${lng}/notifications`}
                             style={{
                                 // @ts-ignore
@@ -106,7 +100,10 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             }}
                         >
                             <NotificationIcon />
-                        </Link>
+                        </Link> */}
+                        <LinkTransparentButton to={`/${lng}/notifications`}>
+                            <NotificationIcon />
+                        </LinkTransparentButton>
                     </li>
                     <li
                         className={clsx(

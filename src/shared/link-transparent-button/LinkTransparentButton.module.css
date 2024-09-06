@@ -1,5 +1,7 @@
 .container {
     position: relative;
+    text-decoration: inherit;
+    color: inherit;
 }
 .spinner {
     position: absolute;

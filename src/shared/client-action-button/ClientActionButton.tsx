@@ -20,7 +20,6 @@ interface ClientActionButtonProps {
     animationOnHover?: boolean;
     disabled?: boolean;
     isSubmit?: boolean;
-    isFail: boolean
 }
 
 interface ClientActionButtonState {
@@ -31,6 +30,8 @@ export default class ClientActionButton extends React.Component<
     ClientActionButtonProps,
     ClientActionButtonState
 > {
+
+    
     //  {
     //     lng,
     //     radius,
@@ -92,7 +93,7 @@ export default class ClientActionButton extends React.Component<
                     }
                 )}
             >
-                {this.state.isLoading && !this.props.isFail? (
+                {this.state.isLoading ? (
                     <LoadingIndicator size="1.25rem" />
                 ) : (
                     this.props.children

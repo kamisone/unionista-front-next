@@ -1,17 +1,17 @@
-import { useTranslation } from 'react-i18next';
 import React from 'react';
 import './NotFound.css';
 import ActionButton from '@/shared/action-button/ActionButton';
 import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
+import { i18nTranslation } from '@/i18n';
 
 interface NotFoundProps {
     lng: SupportedLanguages;
 }
 
 const NotFound = ({ lng }: NotFoundProps) => {
-    const { t } = useTranslation();
+    const t = i18nTranslation(lng);
 
     return (
         <div

@@ -15,7 +15,7 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import Hamburger from '../../Hamburger/Hamburger';
 import SwitchLanguage from '../../switch-language/SwitchLanguage';
-import { useTranslation } from '@/i18n';
+import { i18nTranslation } from '@/i18n';
 
 const modalService = ModalService.instance;
 
@@ -25,8 +25,7 @@ interface DesktopHeaderProps {
 }
 
 async function DesktopHeader({ lng, isUserAuthenticated }: DesktopHeaderProps) {
-    const { t } = await useTranslation(lng, 'header');
-    // const t = (...args: any) => 'action';
+    const t = i18nTranslation(lng, 'header');
 
     return (
         <>
@@ -101,8 +100,7 @@ async function DesktopHeader({ lng, isUserAuthenticated }: DesktopHeaderProps) {
                             '--nav-icon-title': `"${t('icons.hover.admin')}"`,
                         }}
                     >
-                        <Link
-                        href={`/${lng}/admin`}>
+                        <Link href={`/${lng}/admin`}>
                             <BoSettingsIcon />
                         </Link>
                     </li>

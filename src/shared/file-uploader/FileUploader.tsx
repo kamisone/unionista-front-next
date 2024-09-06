@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import InputControl from '../input-control/InputControl';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
-// import { useTranslation } from '@/i18n/client';
 import clsx from 'clsx';
 import styles from '@/shared/file-uploader/FileUploader.module.css';
 import Image from 'next/image';
@@ -21,9 +20,7 @@ const FileUploader = ({
     uploadedFile,
     fileInputId,
 }: FileUploaderProps) => {
-    useEffect(() => {
-        console.log('uploadddding: ', uploadedFile);
-    });
+
 
     switch (variant) {
         case 'avatar':

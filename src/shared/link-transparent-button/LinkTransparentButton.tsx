@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useState, useTransition } from 'react';
 import LoadingIndicator from '../loading-indicator/LoadingIndicator';
 import styles from './LinkTransparentButton.module.css';
+import Link from 'next/link';
 
 interface LinkTransparentButtonProps {
     to: string;
@@ -17,20 +18,20 @@ export default function LinkTransparentButton(
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [isPending, startTransition] = useTransition();
-    const [isTriggered, setIsTriggered] = useState(false);
 
     useEffect(() => {
-        if(isTriggered && !isPending) {
+        console.log('ispending: ', isPending)
+        if(!isPending) {
             setIsLoading(false);
         }
     }, [isPending])
     return (
-        <button
+        <Link
+            href={props.to}
             className={styles.container}
             onClick={() => {
                 setIsLoading(true);
                 startTransition(() => {
-                    setIsTriggered(true);
                     router.push(props.to);
                 });
                 
@@ -53,6 +54,6 @@ export default function LinkTransparentButton(
                     <LoadingIndicator />
                 </div>
             )}
-        </button>
+        </Link>
     );
 }

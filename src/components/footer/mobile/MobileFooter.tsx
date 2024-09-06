@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '@/components/footer/mobile/MobileFooter.module.css';
-import { Trans } from 'react-i18next/TransWithoutContext';
+// import { Trans } from 'react-i18next/TransWithoutContext';
 import Link from 'next/link';
 import { SupportedLanguages, languages } from '@/i18n/settings';
 

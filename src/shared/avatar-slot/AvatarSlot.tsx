@@ -8,8 +8,7 @@ interface AvatarSlotProps {
 const AvatarSlot = ({content}: AvatarSlotProps) => {
      const [isSwitchOpened, setIsSwitchOpened] = useState(false);
      const buttonElement = useRef<HTMLButtonElement>(null);
-    //  const { t } = useTranslation(lng, 'switch_language');
-    //  const pathname = usePathname();
+    
      return (
          <button
              ref={buttonElement}

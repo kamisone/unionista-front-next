@@ -1,8 +1,12 @@
 import React from 'react';
-import { dir } from 'i18next';
 import '@/app/[lng]/globals.css';
 import { ReactNode } from 'react';
-import { SupportedLanguages, languages } from '@/i18n/settings';
+import {
+    SupportedLanguages,
+    SupportedLanguagesEnum,
+    languages,
+} from '@/i18n/settings';
+import SkeletonLoader from '@/shared/skeleton-loader/SkeletonLoader';
 
 interface RootLayoutProps {
     children: ReactNode;
@@ -17,8 +21,14 @@ export async function generateStaticParams() {
 
 function RootLayout({ children, params: { lng } }: RootLayoutProps) {
     return (
-        <html lang={lng} dir={dir(lng)}>
-            <body>{children}</body>
+        <html
+            lang={lng}
+            dir={lng === SupportedLanguagesEnum.AR ? 'rtl' : 'ltr'}
+        >
+            <body>
+                {children}
+                {/* <SkeletonLoader /> */}
+            </body>
         </html>
     );
 }

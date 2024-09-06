@@ -1,4 +1,4 @@
-import { useTranslation } from '@/i18n';
+import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages } from '@/i18n/settings';
 import { Metadata } from 'next';
 import React from 'react';
@@ -14,7 +14,7 @@ interface PrivacyPolicyProps {
 }
 
 const PrivacyPolicy = async ({ params: { lng } }: PrivacyPolicyProps) => {
-    const { t } = await useTranslation(lng, 'privacy-policy');
+    const t = i18nTranslation(lng, 'privacy-policy');
     return (
         <main>
             <h1>{t('title', { brandTitle: 'UnionistaShop' })}</h1>
