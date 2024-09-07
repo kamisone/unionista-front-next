@@ -66,13 +66,21 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             styles.bo_icon
                         )}
                     >
-                        <LinkTransparentButton
-                            isProtected
-                            to={`/${lng}/admin`}
-                            prefetch={!!user}
-                        >
-                            <BoSettingsIcon />
-                        </LinkTransparentButton>
+                        {user ? (
+                            <LinkTransparentButton
+                                isProtected
+                                to={`/${lng}/admin`}
+                            >
+                                <BoSettingsIcon />
+                            </LinkTransparentButton>
+                        ) : (
+                            <LinkTransparentButton
+                                isProtected
+                                to={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
+                            >
+                                <BoSettingsIcon />
+                            </LinkTransparentButton>
+                        )}
                     </li>
                     <li
                         className={clsx(
@@ -122,13 +130,21 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
             </div>
             {/* sub part */}
             <div className={clsx(styles.sub_part)}>
-                <LinkTransparentButton
-                    isProtected
-                    prefetch={!!user}
-                    to={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
-                >
-                    <Hamburger />
-                </LinkTransparentButton>
+                {user ? (
+                    <LinkTransparentButton
+                        isProtected
+                        to={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
+                    >
+                        <Hamburger />
+                    </LinkTransparentButton>
+                ) : (
+                    <LinkTransparentButton
+                        isProtected
+                        to={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
+                    >
+                        <Hamburger />
+                    </LinkTransparentButton>
+                )}
                 <InputControl lng={lng} radius="pilled" isFormChild={false}>
                     <TextInput
                         lng={lng}
