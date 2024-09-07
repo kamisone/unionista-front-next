@@ -22,7 +22,7 @@ export default function LinkTransparentButton(
             onClick={() => {
                 if (
                     props.isProtected &&
-                    document.cookie.includes(PENDING_REDIRECT_PATH_NAME) &&
+                    // document.cookie.includes(PENDING_REDIRECT_PATH_NAME) &&
                     !document.cookie.includes(
                         `${PENDING_REDIRECT_PATH_NAME}=${props.to}`
                     )
