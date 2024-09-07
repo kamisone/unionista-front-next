@@ -38,28 +38,18 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                     )}
                 >
                     {!user && (
-                        // <Link
-                        //     href={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
-                        //     // onClick={() => {
-                        //     //     // modalService.state = {
-                        //     //     //     isModalOpen: true,
-                        //     //     //     currentModalContent:
-                        //     //     //         ModalContentMapping.SIGN_IN,
-                        //     //     // };
-                        //     // }}
-                        //     className={clsx(
-                        //         styles.nav_item,
-                        //         styles.text,
-                        //         styles.signin
-                        //     )}
-                        // >
-                        //     <button>{t('sign-in.title')}</button>
-                        // </Link>
-
                         <LinkTransparentButton
                             to={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
                         >
-                            {t('sign-in.title')}
+                            <span
+                                className={clsx(
+                                    styles.nav_item,
+                                    styles.text,
+                                    styles.signin
+                                )}
+                            >
+                                {t('sign-in.title')}
+                            </span>
                         </LinkTransparentButton>
                     )}
                     <li className={clsx(styles.nav_item, styles.country_icon)}>
@@ -76,10 +66,11 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             styles.bo_icon
                         )}
                     >
-                        {/* <Link href={`/${lng}/admin`}>
-                            <BoSettingsIcon />
-                        </Link> */}
-                        <LinkTransparentButton isProtected to={`/${lng}/admin`}>
+                        <LinkTransparentButton
+                            isProtected
+                            to={`/${lng}/admin`}
+                            prefetch={!!user}
+                        >
                             <BoSettingsIcon />
                         </LinkTransparentButton>
                     </li>
@@ -131,30 +122,9 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
             </div>
             {/* sub part */}
             <div className={clsx(styles.sub_part)}>
-                {/* <Link
-                    href={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
-                >
-                    <button
-                        title={t('hamburger.title')}
-                        // onClick={() => {
-                        // startTransition(
-                        //     async function() {
-                        //         modalService.state = {
-                        //             isModalOpen: true,
-                        //             currentModalContent:
-                        //                 ModalContentMapping.MENU_DRAWER,
-                        //         };
-                        //         console.log('called');
-                        //         await openModal(ModalContentMapping.MENU_DRAWER);
-                        //     }
-                        // );
-                        // }}
-                    >
-                        <Hamburger />
-                    </button>
-                </Link> */}
                 <LinkTransparentButton
                     isProtected
+                    prefetch={!!user}
                     to={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
                 >
                     <Hamburger />
