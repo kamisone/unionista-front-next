@@ -86,8 +86,6 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
             }
         }
 
-        // let response: UserWithTokens | undefined;
-
         const response: { success: boolean } = await (isSignin
             ? authService.signinUser(
                   {

@@ -25,90 +25,90 @@ export class HttpService {
             baseURL: process.env.API_BASE_URL_BROWSER,
         });
 
-        // interceptors:
-        this._axiosInstance.interceptors.request.use(
-            async (config) => {
-                if (config.url !== AuthService.endpoints.REFRESH_TOKEN) {
-                    // const accessToken = AuthService.getAccessToken();
-                    // config.headers['Authorization'] = `bearer ${accessToken}`;
-                }
-                return config;
-            },
+        //     // interceptors:
+        //     this._axiosInstance.interceptors.request.use(
+        //         async (config) => {
+        //             if (config.url !== AuthService.endpoints.REFRESH_TOKEN) {
+        //                 // const accessToken = AuthService.getAccessToken();
+        //                 // config.headers['Authorization'] = `bearer ${accessToken}`;
+        //             }
+        //             return config;
+        //         },
 
-            async (error) => {
-                snackbarService.openSnackbar({
-                    message: error.message,
-                    severity: SnackbarSeverity.ERROR,
-                });
-            }
-        );
+        //         async (error) => {
+        //             snackbarService.openSnackbar({
+        //                 message: error.message,
+        //                 severity: SnackbarSeverity.ERROR,
+        //             });
+        //         }
+        //     );
 
-        this._axiosInstance.interceptors.response.use(
-            async (response) => {
-                const originalRequest = response.config;
-                if (
-                    [
-                        AuthService.endpoints.SIGN_IN,
-                        AuthService.endpoints.SIGN_UP,
-                    ].includes(originalRequest.url ?? '')
-                ) {
-                    const { accessToken, refreshToken } = response.data;
-                    AuthService.updateRefreshToken(refreshToken);
-                    AuthService.updateAccessToken(accessToken);
-                } else if (
-                    originalRequest.url === AuthService.endpoints.REFRESH_TOKEN
-                ) {
-                    const authService = AuthService.instance;
-                    const { accessToken } = response.data;
-                    AuthService.updateAccessToken(accessToken);
-                    authService.state = {
-                        isUserAuthenticated:
-                            !AuthService.isTokenInvalid(accessToken),
-                    };
-                }
-                if (this._lastFailedPath && isBrowser()) {
-                    window.location.href = this._lastFailedPath;
-                    this._lastFailedPath = null;
-                }
-                return response;
-            },
-            async (error: AxiosError) => {
-                const originalRequest = error.config as
-                    | InternalAxiosRequestConfig<any>
-                    | undefined;
-                if (!originalRequest || error.response?.status !== 401) {
-                    throw error;
-                }
+        //     this._axiosInstance.interceptors.response.use(
+        //         async (response) => {
+        //             const originalRequest = response.config;
+        //             if (
+        //                 [
+        //                     AuthService.endpoints.SIGN_IN,
+        //                     AuthService.endpoints.SIGN_UP,
+        //                 ].includes(originalRequest.url ?? '')
+        //             ) {
+        //                 const { accessToken, refreshToken } = response.data;
+        //                 AuthService.updateRefreshToken(refreshToken);
+        //                 AuthService.updateAccessToken(accessToken);
+        //             } else if (
+        //                 originalRequest.url === AuthService.endpoints.REFRESH_TOKEN
+        //             ) {
+        //                 const authService = AuthService.instance;
+        //                 const { accessToken } = response.data;
+        //                 AuthService.updateAccessToken(accessToken);
+        //                 authService.state = {
+        //                     isUserAuthenticated:
+        //                         !AuthService.isTokenInvalid(accessToken),
+        //                 };
+        //             }
+        //             if (this._lastFailedPath && isBrowser()) {
+        //                 window.location.href = this._lastFailedPath;
+        //                 this._lastFailedPath = null;
+        //             }
+        //             return response;
+        //         },
+        //         async (error: AxiosError) => {
+        //             const originalRequest = error.config as
+        //                 | InternalAxiosRequestConfig<any>
+        //                 | undefined;
+        //             if (!originalRequest || error.response?.status !== 401) {
+        //                 throw error;
+        //             }
 
-                if (
-                    originalRequest.url !== AuthService.endpoints.REFRESH_TOKEN
-                ) {
-                    if (isBrowser()) {
-                        this._lastFailedPath =
-                            window.location.pathname + window.location.search;
-                    }
-                    // return await AuthService.refreshToken(() => {
-                    //     // retry the same original request after refreshing the token
-                    //     return this._axiosInstance(originalRequest);
-                    // });
-                } else {
-                    modalService.state = {
-                        isModalOpen: true,
-                        currentModalContent: ModalContentMapping.SIGN_IN,
-                    };
+        //             if (
+        //                 originalRequest.url !== AuthService.endpoints.REFRESH_TOKEN
+        //             ) {
+        //                 if (isBrowser()) {
+        //                     this._lastFailedPath =
+        //                         window.location.pathname + window.location.search;
+        //                 }
+        //                 // return await AuthService.refreshToken(() => {
+        //                 //     // retry the same original request after refreshing the token
+        //                 //     return this._axiosInstance(originalRequest);
+        //                 // });
+        //             } else {
+        //                 modalService.state = {
+        //                     isModalOpen: true,
+        //                     currentModalContent: ModalContentMapping.SIGN_IN,
+        //                 };
 
-                    AuthService.setPersistedIsUserNotifiedToAuth(true);
+        //                 AuthService.setPersistedIsUserNotifiedToAuth(true);
 
-                    const authService = AuthService.instance;
-                    authService.state = {
-                        isUserAuthenticated: false,
-                        isUserNotifiedToSignin: true,
-                    };
+        //                 const authService = AuthService.instance;
+        //                 authService.state = {
+        //                     isUserAuthenticated: false,
+        //                     isUserNotifiedToSignin: true,
+        //                 };
 
-                    throw error;
-                }
-            }
-        );
+        //                 throw error;
+        //             }
+        //         }
+        //     );
     }
 
     static get instance() {

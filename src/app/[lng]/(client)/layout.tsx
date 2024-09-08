@@ -7,22 +7,15 @@ import { isMobile } from '@/utils/is-browser';
 import clsx from 'clsx';
 import { headers } from 'next/headers';
 import { ReactNode } from 'react';
-// import '@/fb-pixel/pixel-script';
 
 interface ClientLayoutProps {
-    children: ReactNode;
-    analytics: ReactNode;
-    centerModal: ReactNode;
     params: { lng: SupportedLanguages };
-    searchParams: {[key: string]: string | string[] | undefined}
+    children: ReactNode;
 }
 
-const ClientLayout = async ({
-    children,
-    params: { lng },
-}: ClientLayoutProps) => {
+async function ClientLayout({ children, params: { lng } }: ClientLayoutProps) {
     const headersList = headers();
-    
+
     const isMobileDevice = isMobile(headersList.get('user-agent'));
 
     return (
@@ -43,6 +36,6 @@ const ClientLayout = async ({
             </div>
         </main>
     );
-};
+}
 
 export default ClientLayout;
