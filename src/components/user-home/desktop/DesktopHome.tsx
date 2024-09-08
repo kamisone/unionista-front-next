@@ -1,15 +1,13 @@
-import { SupportedLanguages } from '@/i18n/settings';
-import React from 'react';
 import styles from '@/components/user-home/desktop/DesktopHome.module.css';
+import { SupportedLanguages } from '@/i18n/settings';
 import clsx from 'clsx';
 import Link from 'next/link';
 
 interface DesktopHomeProps {
     lng: SupportedLanguages;
-    isUserAuthenticated: boolean;
 }
 
-const DesktopHome = ({ lng, isUserAuthenticated }: DesktopHomeProps) => {
+const DesktopHome = ({ lng }: DesktopHomeProps) => {
     return (
         <div className={clsx(styles.container)}>
             <nav className={styles.category_nav}>

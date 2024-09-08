@@ -1,13 +1,12 @@
 'use client';
 
-import React, { ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import './ClientActionButton.css';
-import clsx from 'clsx';
-import LoadingIndicator from '../loading-indicator/LoadingIndicator';
-import Link from 'next/link';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
+import clsx from 'clsx';
+import Link from 'next/link';
+import React, { ReactNode } from 'react';
+import LoadingIndicator from '../loading-indicator/LoadingIndicator';
+import './ClientActionButton.css';
 
 interface ClientActionButtonProps {
     lng: SupportedLanguages;
@@ -30,22 +29,6 @@ export default class ClientActionButton extends React.Component<
     ClientActionButtonProps,
     ClientActionButtonState
 > {
-
-    
-    //  {
-    //     lng,
-    //     radius,
-    //     variant,
-    //     boxShadow = false,
-    //     to = '/',
-    //     children,
-    //     fit = 'min',
-    //     animationOnHover = false,
-    //     disabled = false,
-    //     loading = false,
-    //     isSubmit,
-    // } = this.props;
-    // lng = this.props.lng;
 
     state: ClientActionButtonState = {
         isLoading: false,

@@ -1,12 +1,7 @@
-'use client';
-
-import { SupportedLanguages } from '@/i18n/settings';
-import { useEffect, useState } from 'react';
-import { AuthService } from '@/services/auth.service';
-import MobileHome from '@/components/user-home/mobile/MobileHome';
 import DesktopHome from '@/components/user-home/desktop/DesktopHome';
+import MobileHome from '@/components/user-home/mobile/MobileHome';
+import { SupportedLanguages } from '@/i18n/settings';
 
-const authService = AuthService.instance;
 
 interface UserHomeProps {
     lng: SupportedLanguages;
@@ -14,23 +9,7 @@ interface UserHomeProps {
 }
 
 const UserHome = ({ lng, isMobile = false }: UserHomeProps) => {
-    const [isUserAuthenticated, setIsUserAuthenticated] = useState(
-        authService.state.isUserAuthenticated
-    );
-
-    useEffect(() => {
-        authService.addNotifier(
-            (options) =>
-                options &&
-                setIsUserAuthenticated(options.state.isUserAuthenticated)
-        );
-    }, []);
-
-    return isMobile ? (
-        <MobileHome isUserAuthenticated={isUserAuthenticated} lng={lng} />
-    ) : (
-        <DesktopHome isUserAuthenticated={isUserAuthenticated} lng={lng} />
-    );
+    return isMobile ? <MobileHome lng={lng} /> : <DesktopHome lng={lng} />;
 };
 
 export default UserHome;

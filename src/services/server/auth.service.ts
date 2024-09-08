@@ -1,13 +1,7 @@
 // import { FormValues } from '@/app/components/modal-content/login-in-content/LoginContent';
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
 import { HttpService } from '@/services/server/http.service';
-import { ModalService } from '@/services/modal.service';
-import { SnackbarService } from '@/services/snackbar.service';
-import { isBrowser } from '@/utils/is-browser';
 import * as jose from 'jose';
-
-const snackbarService = SnackbarService.instance;
-const modalService = ModalService.instance;
 
 type CBType = typeof Function;
 
@@ -18,13 +12,6 @@ export interface JwtPayload {
     exp: number;
     iss: string;
 }
-
-// constants
-const ONE_DAY_MS = 8.64e7;
-const AUTH_CHECK_INTERVAL_TIME = 5000;
-
-export const EMAIL_REGEX =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export interface AuthState {
     isUserAuthenticated: boolean;
@@ -95,8 +82,8 @@ export class AuthService extends ComponentsStateNotify<
                 path: AuthService.endpoints.SIGN_IN,
                 body: data,
             })
-            .then((reponse) => {
-                onSuccess(reponse);
+            .then((response: UserWithTokens) => {
+                onSuccess(response);
                 return {
                     success: true,
                 };
@@ -122,8 +109,8 @@ export class AuthService extends ComponentsStateNotify<
                 path: AuthService.endpoints.SIGN_UP,
                 body: formData,
             })
-            .then((reponse) => {
-                onSuccess(reponse);
+            .then((response) => {
+                onSuccess(response);
                 return {
                     success: true,
                 };
@@ -164,7 +151,10 @@ export class AuthService extends ComponentsStateNotify<
             });
     }
 
-    static async verifyJwt(token: string, isRefresh: boolean = false) {
+    static async verifyJwt(
+        token: string,
+        isRefresh: boolean = false
+    ): Promise<JwtResponse> {
         const secret = isRefresh
             ? new TextEncoder().encode(process.env.JWT_REFRESH_KEY)
             : new TextEncoder().encode(process.env.JWT_ACCESS_KEY);
@@ -202,4 +192,10 @@ export interface User {
 export interface AuthTokens {
     accessToken: string;
     refreshToken: string;
+}
+
+export interface JwtResponse {
+    success: boolean;
+    payload?: jose.JWTPayload;
+    message?: string;
 }

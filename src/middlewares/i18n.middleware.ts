@@ -9,10 +9,7 @@ export function i18nMiddleware(
     req: NextRequest,
     lng: SupportedLanguages
 ): SubMiddlewareReturnType | NextResponse {
-    if (
-        !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`))
-        //  && req.headers.get('Accept')?.includes('text/html')
-    ) {
+    if (!languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`))) {
         return NextResponse.redirect(
             new URL(
                 `/${lng}${req.nextUrl.pathname !== '/' ? req.nextUrl.pathname : ''}${req.nextUrl.search}`,

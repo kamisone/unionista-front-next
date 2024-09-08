@@ -5,7 +5,9 @@
 // import i18nextFSBackend from 'i18next-fs-backend';
 // // import { I18n, InitPromise, CreateClientReturn } from 'next-i18next';
 
+import { isBrowser } from '@/utils/is-browser';
 import { SupportedLanguages } from './settings';
+import { getCookies } from '@/utils/query-params';
 
 // const initI18next = async (lng: SupportedLanguages, ns: Namespace) => {
 //     const i18nInstance = createInstance();
@@ -58,4 +60,12 @@ export function i18nTranslation(lng: SupportedLanguages, namespace?: string) {
             return acc[curr];
         }, json);
     };
+}
+
+export function getLocale() {
+    if (!isBrowser()) return null;
+
+    const cookies = getCookies();
+
+    return cookies.lng || null;
 }

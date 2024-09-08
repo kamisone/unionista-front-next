@@ -1,4 +1,3 @@
-// 'use client';
 import styles from '@/components/header/desktop/DesktopHeader.module.css';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';

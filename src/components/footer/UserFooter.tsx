@@ -1,14 +1,6 @@
-'use client';
-import React from 'react';
-import { AuthService } from '@/services/auth.service';
-
-import { useEffect, useState } from 'react';
-import { SupportedLanguages } from '@/i18n/settings';
-import { useUpdatePathQuery } from '@/hooks/useUpdatePathQuery';
-import MobileFooter from '@/components/footer/mobile/MobileFooter';
 import DesktopFooter from '@/components/footer/desktop/DesktopFooter';
-
-const authService = AuthService.instance;
+import MobileFooter from '@/components/footer/mobile/MobileFooter';
+import { SupportedLanguages } from '@/i18n/settings';
 
 interface UserFooterProps {
     lng: SupportedLanguages;
@@ -16,21 +8,10 @@ interface UserFooterProps {
 }
 
 const UserFooter = ({ lng, isMobile = false }: UserFooterProps) => {
-    const [isUserAuthenticated, setIsUserAuthenticated] = useState(
-        authService.state.isUserAuthenticated
-    );
-    useEffect(() => {
-        // add notifiers
-        authService.addNotifier(
-            (options) =>
-                options &&
-                setIsUserAuthenticated(options.state.isUserAuthenticated)
-        );
-    }, []);
     return isMobile ? (
-        <MobileFooter isUserAuthenticated={isUserAuthenticated} lng={lng} />
+        <MobileFooter lng={lng} />
     ) : (
-        <DesktopFooter isUserAuthenticated={isUserAuthenticated} lng={lng} />
+        <DesktopFooter lng={lng} />
     );
 };
 

@@ -1,10 +1,7 @@
-// 'use client';
 import DesktopHeader from '@/components/header/desktop/DesktopHeader';
 import MobileHeader from '@/components/header/mobile/MobileHeader';
 import { SupportedLanguages } from '@/i18n/settings';
-import { AuthService } from '@/services/auth.service';
 
-const authService = AuthService.instance;
 
 interface UserHeaderProps {
     lng: SupportedLanguages;

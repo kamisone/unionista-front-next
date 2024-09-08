@@ -1,9 +1,10 @@
 import { getProtectedPaths } from '@/config';
 import { SupportedLanguages } from '@/i18n/settings';
 import { SubMiddlewareReturnType } from '@/middleware';
-import { AuthService } from '@/services/server/auth.service';
+import { AuthService, JwtResponse } from '@/services/server/auth.service';
 import {
     accessTokenNames,
+    CURRENT_USER_COOKIE_NAME,
     CURRENT_USER_HEADER_NAME,
     PENDING_REDIRECT_PATH_NAME,
 } from '@/utils/constants';
@@ -16,7 +17,7 @@ export async function setAuthMiddleware(
     const cookies = req.cookies;
     const accessToken = cookies.get(accessTokenNames.ACCESS_TOKEN);
     const refreshToken = cookies.get(accessTokenNames.REFRESH_TOKEN);
-    let res;
+    let res: JwtResponse;
     if (
         accessToken &&
         (res = await AuthService.verifyJwt(accessToken.value)).success
@@ -28,6 +29,17 @@ export async function setAuthMiddleware(
                 accessToken: accessToken.value,
             })
         );
+
+        return {
+            request: req,
+            cb: (response: NextResponse) => {
+                response.cookies.set(
+                    CURRENT_USER_COOKIE_NAME,
+                    JSON.stringify(res.payload)
+                );
+                return response;
+            },
+        } as SubMiddlewareReturnType;
     } else if (
         refreshToken &&
         (res = await AuthService.verifyJwt(refreshToken.value, true)).success
@@ -50,6 +62,10 @@ export async function setAuthMiddleware(
                             accessTokenNames.ACCESS_TOKEN,
                             data.accessToken
                         );
+                        response.cookies.set(
+                            CURRENT_USER_COOKIE_NAME,
+                            JSON.stringify(res.payload)
+                        );
                         return response;
                     },
                 };
@@ -58,18 +74,26 @@ export async function setAuthMiddleware(
     } else {
         const path = req.nextUrl.pathname + req.nextUrl.search;
         if (getProtectedPaths(lng).some((p) => path.includes(p))) {
-            return NextResponse.redirect(
-                new URL(`/${lng}?modal_content=signin`, req.url),
-                {
-                    headers: {
-                        'Set-Cookie': `${PENDING_REDIRECT_PATH_NAME}=${path};Path=/;`,
-                    },
-                }
-            ) as NextResponse;
+            const response = NextResponse.redirect(
+                new URL(`/${lng}?modal_content=signin`, req.url)
+            );
+            response.cookies.set(PENDING_REDIRECT_PATH_NAME, path);
+            response.cookies.set(
+                CURRENT_USER_COOKIE_NAME,
+                JSON.stringify(null)
+            );
+            return response;
         }
     }
 
     return {
         request: req,
+        cb: (response: NextResponse) => {
+            response.cookies.set(
+                CURRENT_USER_COOKIE_NAME,
+                JSON.stringify(null)
+            );
+            return response;
+        },
     } as SubMiddlewareReturnType;
 }

@@ -1,21 +1,17 @@
-'use client';
-
-import React from 'react';
-import styles from '@/components/footer/mobile/MobileFooter.module.css';
 // import { Trans } from 'react-i18next/TransWithoutContext';
-import Link from 'next/link';
 import { SupportedLanguages, languages } from '@/i18n/settings';
+import { PATHNAME_HEADER_NAME } from '@/utils/constants';
+import { headers } from 'next/headers';
+import Link from 'next/link';
 
-import { usePathname } from 'next/navigation';
 
 interface FooterProps {
     lng: SupportedLanguages;
-    isUserAuthenticated: boolean;
 }
 
-const MobileFooter = ({ lng, isUserAuthenticated }: FooterProps) => {
-    const pathname = usePathname();
-
+const MobileFooter = ({ lng }: FooterProps) => {
+    const headersList = headers();
+    const pathname = headersList.get(PATHNAME_HEADER_NAME) || '';
     return (
         <footer style={{ marginTop: 50 }}>
             {languages

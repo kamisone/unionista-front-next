@@ -1,7 +1,7 @@
 import '@/components/modal-content/login-in-content/LoginContent.css';
 import EyeIcon from '@/icons/eye/EyeIcon';
 import GoogleIcon from '@/icons/google/GoogleIcon';
-import { AuthService } from '@/services/server/auth.service';
+import { AuthService, UserWithTokens } from '@/services/server/auth.service';
 import ActionButton from '@/shared/action-button/ActionButton';
 import CheckboxInput from '@/shared/checkbox-input/CheckboxInput';
 import InputControl from '@/shared/input-control/InputControl';
@@ -12,6 +12,7 @@ import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import ClientActionButton from '@/shared/client-action-button/ClientActionButton';
 import {
     accessTokenNames,
+    CURRENT_USER_COOKIE_NAME,
     modalContentNames,
     PENDING_REDIRECT_PATH_NAME,
 } from '@/utils/constants';
@@ -55,12 +56,12 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
         const password = formData.get('password');
         const fullName = formData.get('full_name');
         const avatar = formData.get('avatar');
-
-        function onSignSuccess(response: any) {
+        
+        async function onSignSuccess(response: UserWithTokens) {
             if (response) {
                 cookies().set(
                     accessTokenNames.ACCESS_TOKEN,
-                    response?.accessToken,
+                    response.accessToken,
                     {
                         httpOnly: true,
                         path: '/',
@@ -70,13 +71,17 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 );
                 cookies().set(
                     accessTokenNames.REFRESH_TOKEN,
-                    response?.refreshToken,
+                    response.refreshToken,
                     {
                         httpOnly: true,
                         path: '/',
                         secure: true,
                         maxAge: 99999999,
                     }
+                );
+                cookies().set(
+                    CURRENT_USER_COOKIE_NAME,
+                    JSON.stringify((await AuthService.verifyJwt(response.accessToken)).payload)
                 );
             }
         }

@@ -1,9 +1,10 @@
 import { i18nMiddleware } from '@/middlewares/i18n.middleware';
 import { NextRequest, NextResponse } from 'next/server';
-import { SupportedLanguages } from './i18n/settings';
+import { lngCookieName, SupportedLanguages } from './i18n/settings';
 import { getLocaleMiddleware } from './middlewares/get-locale.middleware';
 import { modalMiddleware } from './middlewares/modal.middleware';
 import { setAuthMiddleware } from './middlewares/set-auth.middleware';
+import { setPathnameMiddleware } from './middlewares/set-pathname.middleware';
 
 export const config = {
     matcher: [
@@ -80,13 +81,25 @@ export async function middleware(req: NextRequest) {
         cbs.push(modalResult.cb);
     }
 
+    // SetPathname middleware
+    const pathnameResult = setPathnameMiddleware(modalResult.request);
+    if (pathnameResult instanceof NextResponse) {
+        return pathnameResult;
+    }
+    if (pathnameResult.cb) {
+        cbs.push(pathnameResult.cb);
+    }
+
     // Prepare response
-    const response = NextResponse.next({
-        request: modalResult.request,
+    let response = NextResponse.next({
+        request: pathnameResult.request,
     });
     cbs.forEach((cb) => {
-        cb(response);
+        response = cb(response);
     });
+
+    response.cookies.set(lngCookieName, lng);
+
     return response;
 }
 

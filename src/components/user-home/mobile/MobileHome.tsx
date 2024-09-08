@@ -6,10 +6,9 @@ import { i18nTranslation } from '@/i18n';
 
 interface MobileHomeProps {
     lng: SupportedLanguages;
-    isUserAuthenticated: boolean;
 }
 
-const MobileHome = ({ lng, isUserAuthenticated }: MobileHomeProps) => {
+const MobileHome = ({ lng }: MobileHomeProps) => {
     const t = i18nTranslation(lng, 'mobile_body');
     const productCategories = [
         {
