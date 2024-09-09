@@ -1,13 +1,11 @@
-import { AxiosError } from 'axios';
-import { SupportedLanguages } from '../i18n/settings';
-import { HttpService } from '@/services/http.service';
-import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
-import { headers } from 'next/headers';
+import { HttpService } from '@/services/http.service';
 import { CURRENT_USER_HEADER_NAME } from '@/utils/constants';
+import { AxiosError } from 'axios';
+import { headers } from 'next/headers';
+import { SupportedLanguages } from '../i18n/settings';
 
 const httpService = HttpService.instance;
-const snackbarService = SnackbarService.instance;
 
 interface ProductCategoryState {
     list?: ProductCategory[];
@@ -83,12 +81,6 @@ export class ProductCategoryService extends ComponentsStateNotify<
         } catch (error: unknown) {
             if (error instanceof AxiosError && error.response) {
                 if (error.response.status >= 500) {
-                    snackbarService.openSnackbar({
-                        message: `Error: ${
-                            error.response.data?.message ?? error.message
-                        }`,
-                        severity: SnackbarSeverity.ERROR,
-                    });
                 } else {
                     throw error;
                 }

@@ -1,5 +1,4 @@
 import styles from '@/app/[lng]/(client)/layout.module.css';
-import CustomSnackbar from '@/components/custom-snackback/CustomSnackbar';
 import UserFooter from '@/components/footer/UserFooter';
 import { UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
@@ -28,7 +27,6 @@ async function ClientLayout({ children, params: { lng } }: ClientLayoutProps) {
                 {/* <UserHeader isMobile={isMobileDevice} lng={lng} /> */}
                 {children}
                 <UserFooter isMobile={isMobileDevice} lng={lng} />
-                <CustomSnackbar lng={lng} />
                 {/* <FlexModal
                     lng={lng}
                     isMobileDevice={isMobileDevice}

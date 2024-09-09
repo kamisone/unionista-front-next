@@ -12,3 +12,7 @@ export function getCookies() {
 
     return cookiesObj ?? {};
 }
+
+export function deleteCookie(key: string) {
+    document.cookie = `${key}=; Max-Age=0;`;
+}

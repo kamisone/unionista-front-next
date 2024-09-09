@@ -77,6 +77,7 @@ export async function setAuthMiddleware(
             const response = NextResponse.redirect(
                 new URL(`/${lng}?modal_content=signin`, req.url)
             );
+            console.log('yesss: ', path);
             response.cookies.set(PENDING_REDIRECT_PATH_NAME, path);
             response.cookies.set(
                 CURRENT_USER_COOKIE_NAME,

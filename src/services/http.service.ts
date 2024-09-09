@@ -1,19 +1,6 @@
 import { ApiTokenService } from '@/services/api-token.service';
-import axios, {
-    AxiosError,
-    AxiosHeaders,
-    AxiosInstance,
-    InternalAxiosRequestConfig,
-} from 'axios';
 import { IWhere } from '@/services/product-category.service';
-import { AuthService } from '@/services/auth.service';
-import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
-import { ModalService } from '@/services/modal.service';
-import { ModalContentMapping } from '@/utils/modal';
-import { isBrowser } from '@/utils/is-browser';
-
-const snackbarService = SnackbarService.instance;
-const modalService = ModalService.instance;
+import axios, { AxiosHeaders, AxiosInstance } from 'axios';
 
 export class HttpService {
     private static _instance: HttpService;

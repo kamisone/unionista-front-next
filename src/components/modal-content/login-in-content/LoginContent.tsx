@@ -8,7 +8,9 @@ import InputControl from '@/shared/input-control/InputControl';
 import TextInput from '@/shared/text-input/TextInput';
 
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
+import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
+import { SnackbarSeverity } from '@/services/snackbar.service';
 import ClientActionButton from '@/shared/client-action-button/ClientActionButton';
 import {
     accessTokenNames,
@@ -21,7 +23,7 @@ import clsx from 'clsx';
 import { cookies, headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
-import { i18nTranslation } from '@/i18n';
+import { revalidatePath } from 'next/cache';
 
 const authService = AuthService.instance;
 
@@ -39,10 +41,8 @@ interface LoginContentProps {
     lng: SupportedLanguages;
 }
 
-
 const LoginContent = async function ({ lng }: LoginContentProps) {
-
-    const t = i18nTranslation(lng, 'login_content')
+    const t = i18nTranslation(lng, 'login_content');
 
     const currentModalContent = headers().get(
         modalContentNames.HEADER_NAME
@@ -56,7 +56,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
         const password = formData.get('password');
         const fullName = formData.get('full_name');
         const avatar = formData.get('avatar');
-        
+
         async function onSignSuccess(response: UserWithTokens) {
             if (response) {
                 cookies().set(
@@ -81,12 +81,23 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 );
                 cookies().set(
                     CURRENT_USER_COOKIE_NAME,
-                    JSON.stringify((await AuthService.verifyJwt(response.accessToken)).payload)
+                    JSON.stringify(
+                        (await AuthService.verifyJwt(response.accessToken))
+                            .payload
+                    )
+                );
+
+                cookies().set(
+                    'notification',
+                    JSON.stringify({
+                        message: 'successfully connected',
+                        severity: SnackbarSeverity.SUCCESS,
+                    })
                 );
             }
         }
 
-        const response: { success: boolean } = await (isSignin
+        const response: { success: boolean; message?: string } = await (isSignin
             ? authService.signinUser(
                   {
                       email,
@@ -112,8 +123,16 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
             }
             return redirect(`/${lng}`, RedirectType.replace);
         }
-        // TODO: send error message
-        // and maybe revalidatePath
+
+        // Error notification
+        cookies().set(
+            'notification',
+            JSON.stringify({
+                message: response?.message,
+                severity: SnackbarSeverity.SUCCESS,
+            })
+        );
+
     }
 
     return (
@@ -170,27 +189,10 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                         radius="rounded_1"
                         borderVariant="border_light"
                         insetShadow
-                        // fieldError={errors.email}
-                        // isDirty={!!dirtyFields['email']}
                     >
                         <TextInput
                             lng={lng}
                             name="email"
-                            // register={register('email', {
-                            //     required: {
-                            //         value: true,
-                            //         message: t(
-                            //             'sign-in.validation.email-empty'
-                            //         ),
-                            //     },
-                            //     pattern: {
-                            //         value: /\S+@\S+\.\S+/,
-                            //         message: t(
-                            //             'sign-in.validation.email-not-valid'
-                            //         ),
-                            //     },
-                            // })}
-                            // isError={!!errors.email}
                             labelId="text-input-email"
                             size="medium"
                         />

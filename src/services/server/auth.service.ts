@@ -88,12 +88,13 @@ export class AuthService extends ComponentsStateNotify<
                     success: true,
                 };
             })
-            .catch((_) => {
+            .catch((error) => {
                 // TODO: notify user
                 return {
+                    message: error.message,
                     success: false,
                 };
-            }) as Promise<{ success: boolean }>;
+            }) as Promise<{ success: boolean; message?: string }>;
     }
     async signupUser(
         data: Record<string, any>,

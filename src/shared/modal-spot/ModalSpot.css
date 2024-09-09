@@ -1,7 +1,7 @@
 .ms_container {
     border: solid red;
     position: fixed;
-    z-index: 10;
+    z-index: 3;
     inset: 0;
     animation: ms_container_in_animate 0.5s forwards;
 }

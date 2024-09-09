@@ -7,6 +7,7 @@ import {
     languages,
 } from '@/i18n/settings';
 import SkeletonLoader from '@/shared/skeleton-loader/SkeletonLoader';
+import Notifier from '@/components/notifier/Notifier';
 
 interface RootLayoutProps {
     children: ReactNode;
@@ -28,6 +29,7 @@ function RootLayout({ children, params: { lng } }: RootLayoutProps) {
             <body>
                 {children}
                 {/* <SkeletonLoader /> */}
+                <Notifier />
             </body>
         </html>
     );

@@ -1,10 +1,15 @@
+import { Notification } from '@/components/notifier/Notifier';
+import { isBrowser } from '@/utils/is-browser';
+import { deleteCookie, getCookies } from '@/utils/query-params';
+import { ComponentsStateNotify } from './components-state-notify.service';
+
 export interface INotifyOptions {
-    message: string;
-    severity: SnackbarSeverity;
-    onClose?: () => void;
+    state: SnackbarState;
 }
 
-type ToNotifiyFunc = (options: INotifyOptions) => void;
+export interface SnackbarState {
+    notification: Notification | null;
+}
 
 export enum SnackbarSeverity {
     SUCCESS = 'success',
@@ -15,25 +20,32 @@ export enum SnackbarSeverity {
 
 export const SNACKBAR_DURATION = 5000;
 
-export class SnackbarService {
+export class SnackbarService extends ComponentsStateNotify<
+    SnackbarState,
+    INotifyOptions
+> {
     private static _instance: SnackbarService;
 
     static get instance() {
         if (!this._instance) {
-            this._instance = new SnackbarService();
+            this._instance = new SnackbarService({
+                notification: null,
+            });
+
+            if (isBrowser()) {
+                setInterval(() => {
+                    const cookies = getCookies();
+                    if (cookies.notification) {
+                        this._instance.state = {
+                            notification: JSON.parse(
+                                decodeURIComponent(cookies.notification)
+                            ) as Notification,
+                        };
+                        deleteCookie('notification');
+                    }
+                }, 1000);
+            }
         }
         return this._instance;
-    }
-
-    toNotifiy: ToNotifiyFunc[] = [];
-
-    addNotifier(notifyFunction: (options: INotifyOptions) => void) {
-        this.toNotifiy.push(notifyFunction);
-    }
-
-    openSnackbar(options: INotifyOptions) {
-        this.toNotifiy.forEach((func) => {
-            func(options);
-        });
     }
 }

@@ -1,0 +1,27 @@
+.container {
+    position: fixed;
+    z-index: 4;
+    right: 0;
+    top: 0;
+}
+
+.notification {
+    background-color: var(--clr-primary);
+    margin-top: 0.15rem;
+    padding: 0.25rem 1rem;
+    border-radius: 5px 0 0 5px;
+    animation-name: fadeToLeft;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeToLeft {
+    0% {
+        transform: translateX(50%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
