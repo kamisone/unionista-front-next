@@ -1,4 +1,3 @@
-import { ApiTokenService } from '@/services/api-token.service';
 import { IWhere } from '@/services/product-category.service';
 import axios, { AxiosHeaders, AxiosInstance } from 'axios';
 
@@ -7,7 +6,7 @@ export class HttpService {
     private _axiosInstance: AxiosInstance;
     private _lastFailedPath: string | null = null;
 
-    constructor(private apiTokenService: ApiTokenService) {
+    constructor() {
         this._axiosInstance = axios.create({
             baseURL: process.env.API_BASE_URL_BROWSER,
         });
@@ -100,7 +99,7 @@ export class HttpService {
 
     static get instance() {
         if (!this._instance) {
-            this._instance = new HttpService(ApiTokenService.instance);
+            this._instance = new HttpService();
         }
         return this._instance;
     }

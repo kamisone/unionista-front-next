@@ -5,7 +5,6 @@ import BoSettingsIcon from '@/icons/bo-settings/BoSettingsIcon';
 import CartIcon from '@/icons/cart/CartIcon';
 import NotificationIcon from '@/icons/notification/NotificationIcon';
 import SearchIcon from '@/icons/search-icon/SearchIcon';
-import { ModalService } from '@/services/modal.service';
 import AvatarSlot from '@/shared/avatar-slot/AvatarSlot';
 import InputControl from '@/shared/input-control/InputControl';
 import TextInput from '@/shared/text-input/TextInput';
@@ -16,7 +15,6 @@ import Hamburger from '../../Hamburger/Hamburger';
 import SwitchLanguage from '../../switch-language/SwitchLanguage';
 import { i18nTranslation } from '@/i18n';
 
-const modalService = ModalService.instance;
 
 interface DesktopHeaderProps {
     lng: SupportedLanguages;
@@ -78,13 +76,13 @@ async function DesktopHeader({ lng, isUserAuthenticated }: DesktopHeaderProps) {
                                 styles.h_nav_item_text,
                                 'onhover_bg_grey'
                             )}
-                            onClick={() => {
-                                modalService.state = {
-                                    isModalOpen: true,
-                                    currentModalContent:
-                                        ModalContentMapping.SIGN_IN,
-                                };
-                            }}
+                            // onClick={() => {
+                            //     modalService.state = {
+                            //         isModalOpen: true,
+                            //         currentModalContent:
+                            //             ModalContentMapping.SIGN_IN,
+                            //     };
+                            // }}
                         >
                             <button>{t('sign-in.title')}</button>
                         </Link>

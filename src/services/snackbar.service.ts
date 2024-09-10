@@ -1,3 +1,5 @@
+// import 'client-only';
+
 import { isBrowser } from '@/utils/is-browser';
 import { deleteCookie, getCookies } from '@/utils/query-params';
 import { ComponentsStateNotify } from './components-state-notify.service';
