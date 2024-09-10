@@ -53,7 +53,7 @@ function UserHeader({
     return isMobile ? (
         <MobileHeader user={user} lng={lng} />
     ) : (
-        <p>dsf</p>
+        <DesktopHeader user={user} lng={lng} />
     );
 }
 

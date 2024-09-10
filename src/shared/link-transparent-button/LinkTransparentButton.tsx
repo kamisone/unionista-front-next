@@ -7,12 +7,14 @@ import { AuthService } from '@/services/auth.service';
 import { useRouter } from 'next/navigation';
 import { ModalContentMapping } from '@/utils/modal';
 import { getLocale } from '@/i18n';
+import clsx from 'clsx';
 
 interface LinkTransparentButtonProps {
     to: string;
     isProtected?: boolean;
     children: ReactNode;
     prefetch?: boolean;
+    utilityClasses?: string;
 }
 
 const authService = AuthService.instance;
@@ -37,7 +39,7 @@ export default function LinkTransparentButton(
         <Link
             prefetch={props.prefetch}
             href={props.to}
-            className={styles.container}
+            className={clsx(styles.container, props.utilityClasses)}
             onClick={(e) => {
                 if (props.isProtected && !isUserAuthenticated) {
                     if (

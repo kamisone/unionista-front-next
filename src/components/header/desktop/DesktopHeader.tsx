@@ -14,35 +14,46 @@ import Link from 'next/link';
 import Hamburger from '../../Hamburger/Hamburger';
 import SwitchLanguage from '../../switch-language/SwitchLanguage';
 import { i18nTranslation } from '@/i18n';
-
+import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
 
 interface DesktopHeaderProps {
     lng: SupportedLanguages;
-    isUserAuthenticated: boolean;
+    user: any;
 }
 
-async function DesktopHeader({ lng, isUserAuthenticated }: DesktopHeaderProps) {
+async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
     const t = i18nTranslation(lng, 'header');
 
     return (
         <>
             <header className={clsx(styles.container, lng)}>
                 <div className={styles.logo}>
-                    <Link className={styles.logo_link} href="/">
-                        <img
-                            className={styles.logo_picture}
-                            src="/assets/icons/unionista-logo2.png"
-                            alt="logo"
-                        />
-                    </Link>
+                    <LinkTransparentButton to="/">
+                        <div className={styles.logo_link}>
+                            <img
+                                className={styles.logo_picture}
+                                src="/assets/icons/unionista-logo2.png"
+                                alt="logo"
+                            />
+                        </div>
+                    </LinkTransparentButton>
                 </div>
                 <div className={clsx(styles.hamburger_search)}>
-                    <div className={clsx(styles.hamburger, 'onhover_bg_grey')}>
-                        <Hamburger />
-                        <span className={styles.hamburger_label}>
-                            {t('hamburger.label')}
-                        </span>
-                    </div>
+                    <LinkTransparentButton
+                        to={`/${lng}?modal_content=menu-drawer`}
+                    >
+                        <div
+                            className={clsx(
+                                styles.hamburger,
+                                'onhover_bg_grey'
+                            )}
+                        >
+                            <Hamburger />
+                            <span className={styles.hamburger_label}>
+                                {t('hamburger.label')}
+                            </span>
+                        </div>
+                    </LinkTransparentButton>
                     <div className={clsx(styles.search_input)}>
                         <InputControl
                             lng={lng}
@@ -69,23 +80,19 @@ async function DesktopHeader({ lng, isUserAuthenticated }: DesktopHeaderProps) {
                             : Graphik.className
                     )}
                 >
-                    {!isUserAuthenticated && (
-                        <Link
-                            href={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
-                            className={clsx(
-                                styles.h_nav_item_text,
-                                'onhover_bg_grey'
-                            )}
-                            // onClick={() => {
-                            //     modalService.state = {
-                            //         isModalOpen: true,
-                            //         currentModalContent:
-                            //             ModalContentMapping.SIGN_IN,
-                            //     };
-                            // }}
+                    {!user && (
+                        <LinkTransparentButton
+                            to={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
                         >
-                            <button>{t('sign-in.title')}</button>
-                        </Link>
+                            <div
+                                className={clsx(
+                                    styles.h_nav_item_text,
+                                    'onhover_bg_grey'
+                                )}
+                            >
+                                <button>{t('sign-in.title')}</button>
+                            </div>
+                        </LinkTransparentButton>
                     )}
                     <li className={clsx(styles.switch_lng)}>
                         <SwitchLanguage lng={lng} />
@@ -97,37 +104,39 @@ async function DesktopHeader({ lng, isUserAuthenticated }: DesktopHeaderProps) {
                             '--nav-icon-title': `"${t('icons.hover.admin')}"`,
                         }}
                     >
-                        <Link href={`/${lng}/admin`}>
+                        <LinkTransparentButton to={`/${lng}/admin`}>
                             <BoSettingsIcon />
-                        </Link>
+                        </LinkTransparentButton>
                     </li>
                     <li className={clsx(styles.h_nav_item)}>
-                        <Link
-                            href={`/${lng}/notifications`}
-                            style={{
-                                // @ts-ignore
-                                '--nav-icon-title': `"${t(
-                                    'icons.hover.notifications'
-                                )}"`,
-                            }}
-                        >
-                            <NotificationIcon />
-                        </Link>
+                        <LinkTransparentButton to={`/${lng}/notifications`}>
+                            <div
+                                style={{
+                                    // @ts-ignore
+                                    '--nav-icon-title': `"${t(
+                                        'icons.hover.notifications'
+                                    )}"`,
+                                }}
+                            >
+                                <NotificationIcon />
+                            </div>
+                        </LinkTransparentButton>
                     </li>
                     <li className={clsx(styles.h_nav_item)}>
-                        <Link
-                            href={`/${lng}/cart`}
-                            style={{
-                                // @ts-ignore
-                                '--nav-icon-title': `"${t(
-                                    'icons.hover.cart'
-                                )}"`,
-                            }}
-                        >
-                            <CartIcon />
-                        </Link>
+                        <LinkTransparentButton to={`/${lng}/cart`}>
+                            <div
+                                style={{
+                                    // @ts-ignore
+                                    '--nav-icon-title': `"${t(
+                                        'icons.hover.cart'
+                                    )}"`,
+                                }}
+                            >
+                                <CartIcon />
+                            </div>
+                        </LinkTransparentButton>
                     </li>
-                    {isUserAuthenticated && (
+                    {user && (
                         <li>
                             <AvatarSlot
                                 content={
