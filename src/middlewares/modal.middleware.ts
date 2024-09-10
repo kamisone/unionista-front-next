@@ -4,10 +4,9 @@ import { NextRequest } from 'next/server';
 
 export function modalMiddleware(req: NextRequest): SubMiddlewareReturnType {
     const search = req.nextUrl.searchParams;
-    console.log('queyr: ', search.get(modalContentNames.QUERY_NAME));
     if (
-        search.has(modalContentNames.QUERY_NAME)
-        // && req.method.toLowerCase() === httpMethods.GET
+        search.has(modalContentNames.QUERY_NAME) &&
+        req.method.toLowerCase() === httpMethods.GET
     ) {
         req.headers.set(
             modalContentNames.HEADER_NAME,

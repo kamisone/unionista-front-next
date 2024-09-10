@@ -17,6 +17,7 @@ import {
     CURRENT_USER_COOKIE_NAME,
     modalContentNames,
     PENDING_REDIRECT_PATH_NAME,
+    TOAST_COOKIE_NAME,
 } from '@/utils/constants';
 import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
@@ -88,7 +89,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 );
 
                 cookies().set(
-                    'notification',
+                    TOAST_COOKIE_NAME,
                     JSON.stringify({
                         message: 'successfully connected',
                         severity: SnackbarSeverity.SUCCESS,
@@ -126,13 +127,16 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
 
         // Error notification
         cookies().set(
-            'notification',
+            TOAST_COOKIE_NAME,
             JSON.stringify({
                 message: response?.message,
                 severity: SnackbarSeverity.SUCCESS,
             })
         );
 
+        return redirect(
+            `/${lng}?modal_content=${isSignin ? 'signin' : 'signup'}`
+        );
     }
 
     return (

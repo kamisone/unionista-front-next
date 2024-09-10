@@ -17,6 +17,8 @@ export const CURRENT_USER_COOKIE_NAME = 'user';
 
 export const PATHNAME_HEADER_NAME = 'x-pathname';
 
+export const TOAST_COOKIE_NAME = 'toast';
+
 export enum httpMethods {
     GET = 'get',
     POST = 'post',

@@ -2,6 +2,7 @@ import { Notification } from '@/components/notifier/Notifier';
 import { isBrowser } from '@/utils/is-browser';
 import { deleteCookie, getCookies } from '@/utils/query-params';
 import { ComponentsStateNotify } from './components-state-notify.service';
+import { TOAST_COOKIE_NAME } from '@/utils/constants';
 
 export interface INotifyOptions {
     state: SnackbarState;
@@ -41,7 +42,7 @@ export class SnackbarService extends ComponentsStateNotify<
                                 decodeURIComponent(cookies.notification)
                             ) as Notification,
                         };
-                        deleteCookie('notification');
+                        deleteCookie(TOAST_COOKIE_NAME);
                     }
                 }, 1000);
             }
