@@ -1,15 +1,15 @@
-import { Notification } from '@/components/notifier/Notifier';
 import { isBrowser } from '@/utils/is-browser';
 import { deleteCookie, getCookies } from '@/utils/query-params';
 import { ComponentsStateNotify } from './components-state-notify.service';
 import { TOAST_COOKIE_NAME } from '@/utils/constants';
+import { Toast } from '@/components/notifier/Notifier';
 
 export interface INotifyOptions {
     state: SnackbarState;
 }
 
 export interface SnackbarState {
-    notification: Notification | null;
+    toast: Toast | null;
 }
 
 export enum SnackbarSeverity {
@@ -30,17 +30,17 @@ export class SnackbarService extends ComponentsStateNotify<
     static get instance() {
         if (!this._instance) {
             this._instance = new SnackbarService({
-                notification: null,
+                toast: null,
             });
 
             if (isBrowser()) {
                 setInterval(() => {
                     const cookies = getCookies();
-                    if (cookies.notification) {
+                    if (cookies[TOAST_COOKIE_NAME]) {
                         this._instance.state = {
-                            notification: JSON.parse(
-                                decodeURIComponent(cookies.notification)
-                            ) as Notification,
+                            toast: JSON.parse(
+                                decodeURIComponent(cookies[TOAST_COOKIE_NAME])
+                            ) as Toast,
                         };
                         deleteCookie(TOAST_COOKIE_NAME);
                     }

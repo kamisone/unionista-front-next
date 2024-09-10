@@ -7,6 +7,7 @@ import Link from 'next/link';
 import React, { ReactNode } from 'react';
 import LoadingIndicator from '../loading-indicator/LoadingIndicator';
 import './ClientActionButton.css';
+import { SnackbarService } from '@/services/snackbar.service';
 
 interface ClientActionButtonProps {
     lng: SupportedLanguages;
@@ -25,14 +26,26 @@ interface ClientActionButtonState {
     isLoading: boolean;
 }
 
+const snackbarService = SnackbarService.instance;
+
 export default class ClientActionButton extends React.Component<
     ClientActionButtonProps,
     ClientActionButtonState
 > {
-
     state: ClientActionButtonState = {
         isLoading: false,
     };
+
+    componentDidMount(): void {
+        snackbarService.addNotifier((options) => {
+            console.log('state: ', options?.state.toast);
+            if (options && !options.state.toast) {
+                this.setState({
+                    isLoading: false,
+                });
+            }
+        });
+    }
 
     render() {
         return this.props.to ? (

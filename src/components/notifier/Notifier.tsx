@@ -6,43 +6,37 @@ import styles from './Notifier.module.css';
 const snackbarService = SnackbarService.instance;
 
 export default function Notifier() {
-    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [toasts, setToasts] = useState<Toast[]>([]);
 
     useEffect(() => {
-        console.log('notifier useeffect')
+        console.log('notifier useeffect');
         snackbarService.addNotifier((options) => {
-            console.log('called: ', notifications);
-            if (!options || !options.state.notification) return;
-            setNotifications((notifications) => [
-                ...notifications,
-                options.state.notification as Notification,
-            ]);
+            console.log('called: ', toasts);
+            if (!options || !options.state.toast) return;
+            setToasts((toasts) => [...toasts, options.state.toast as Toast]);
             snackbarService.state = {
-                notification: null,
+                toast: null,
             };
             setTimeout(() => {
-                setNotifications((notifications) =>
-                    notifications.reduce((acc, curr) => {
-                        if (curr !== options.state.notification) {
+                setToasts((toasts) =>
+                    toasts.reduce((acc, curr) => {
+                        if (curr !== options.state.toast) {
                             acc.push(curr);
                         }
                         return acc;
-                    }, [] as Notification[])
+                    }, [] as Toast[])
                 );
             }, 5000);
         });
     }, []);
 
-    if (notifications.length) {
+    if (toasts.length) {
         return (
             <div className={styles.container}>
-                {notifications.map((notif) => {
+                {toasts.map((toast) => {
                     return (
-                        <div
-                            key={notif.message}
-                            className={styles.notification}
-                        >
-                            <p>{notif.message}</p>
+                        <div key={toast.message} className={styles.toast}>
+                            <p>{toast.message}</p>
                         </div>
                     );
                 })}
@@ -53,7 +47,7 @@ export default function Notifier() {
     return;
 }
 
-export interface Notification {
+export interface Toast {
     message: string;
     severity: SnackbarSeverity;
 }

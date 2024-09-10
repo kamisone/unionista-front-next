@@ -5,7 +5,7 @@
     top: 0;
 }
 
-.notification {
+.toast {
     background-color: var(--clr-primary);
     margin-top: 0.15rem;
     padding: 0.25rem 1rem;
