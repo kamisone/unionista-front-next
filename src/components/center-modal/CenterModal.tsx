@@ -26,8 +26,14 @@ const CenterModal = async function ({
             break;
     }
     return (
-        <ModalSpot lng={lng} headingTitle={getModalTitle(currentModalContent)} isDesktop>
-            <Suspense fallback={<LoadingIndicator />}>{content}</Suspense>
+        <ModalSpot
+            lng={lng}
+            headingTitle={getModalTitle(currentModalContent, lng)}
+            isDesktop
+        >
+            <Suspense key={currentModalContent} fallback={<LoadingIndicator />}>
+                {content}
+            </Suspense>
         </ModalSpot>
     );
 };

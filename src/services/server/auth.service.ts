@@ -89,7 +89,6 @@ export class AuthService extends ComponentsStateNotify<
                 };
             })
             .catch((error) => {
-                // TODO: notify user
                 return {
                     message: error.message,
                     success: false,
@@ -116,12 +115,12 @@ export class AuthService extends ComponentsStateNotify<
                     success: true,
                 };
             })
-            .catch((_) => {
-                // TODO: notify user
+            .catch((error) => {
                 return {
+                    message: error.message,
                     success: false,
                 };
-            }) as Promise<{ success: boolean }>;
+            }) as Promise<{ success: boolean; message?: string }>;
     }
 
     static async refreshToken(

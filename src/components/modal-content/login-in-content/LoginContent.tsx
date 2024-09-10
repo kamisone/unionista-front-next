@@ -129,7 +129,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
         cookies().set(
             TOAST_COOKIE_NAME,
             JSON.stringify({
-                message: response?.message,
+                message: response.message,
                 severity: SnackbarSeverity.SUCCESS,
             })
         );
@@ -146,10 +146,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 lng,
                 lng === SupportedLanguagesEnum.AR
                     ? UthmanicFont.className
-                    : Graphik.className,
-                {
-                    // switched: isSwitched,
-                }
+                    : Graphik.className
             )}
         >
             <div className="sic_head">

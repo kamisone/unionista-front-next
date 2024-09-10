@@ -31,7 +31,7 @@ async function BottomModal({
         return (
             <ModalSpot
                 lng={lng}
-                headingTitle={getModalTitle(currentModalContent)}
+                headingTitle={getModalTitle(currentModalContent, lng)}
             >
                 <Suspense
                     key={currentModalContent}
