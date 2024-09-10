@@ -40,7 +40,8 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                 </div>
                 <div className={clsx(styles.hamburger_search)}>
                     <LinkTransparentButton
-                        to={`/${lng}?modal_content=menu-drawer`}
+                        isProtected
+                        to={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
                     >
                         <div
                             className={clsx(

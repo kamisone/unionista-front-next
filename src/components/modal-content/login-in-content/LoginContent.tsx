@@ -1,4 +1,4 @@
-import '@/components/modal-content/login-in-content/LoginContent.css';
+import styles from '@/components/modal-content/login-in-content/LoginContent.module.css';
 import EyeIcon from '@/icons/eye/EyeIcon';
 import GoogleIcon from '@/icons/google/GoogleIcon';
 import { AuthService, UserWithTokens } from '@/services/server/auth.service';
@@ -24,7 +24,6 @@ import clsx from 'clsx';
 import { cookies, headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
 
 const authService = AuthService.instance;
 
@@ -142,14 +141,14 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
     return (
         <div
             className={clsx(
-                'sic_container',
+                styles.container,
                 lng,
                 lng === SupportedLanguagesEnum.AR
                     ? UthmanicFont.className
                     : Graphik.className
             )}
         >
-            <div className="sic_head">
+            <div className={styles.head}>
                 <h2>{isSignin ? t('sign-in.title') : t('sign-up.title')}</h2>
 
                 <ActionButton
@@ -181,7 +180,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 </ActionButton>
             </div>
             <form noValidate action={submit}>
-                <div className="sic_input_container">
+                <div className={styles['input-container']}>
                     <label htmlFor="text-input-email">
                         {t('sign-in.email-label')}
                     </label>
@@ -200,7 +199,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     </InputControl>
                 </div>
                 {!isSignin && (
-                    <div className="sic_input_container">
+                    <div className={styles['input-container']}>
                         <label htmlFor="text-input-full_name">
                             {t('sign-up.full_name')}
                         </label>
@@ -236,7 +235,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                         </InputControl>
                     </div>
                 )}
-                <div className="sic_input_container">
+                <div className={styles['input-container']}>
                     <label htmlFor="text-input-password">
                         {t('sign-in.password-label')}
                     </label>
@@ -286,7 +285,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     </InputControl>
                 </div>
                 {!isSignin && (
-                    <div className="sic_input_container">
+                    <div className={styles['input-container']}>
                         <label htmlFor="avatar-uploader-id">
                             {t('sign-up.avatar-label')}
                         </label>
@@ -305,28 +304,23 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                         /> */}
                     </div>
                 )}
-                <div className="sic_remember_me_container">
-                    <div className="sic_remember_me_checkbox_container">
+                <div className={styles['rememberme-container']}>
+                    <div className={styles['rememberme-checkbox-container']}>
                         <CheckboxInput
-                            // register={register('stayConnected', {})}
                             size="medium"
                             variant="secondary"
                             radius="rounded_1"
                             labelId="sic_checkbox_id"
-                            // checked={stayedConnected}
                             checked
                         />
-                        <label
-                            className="sic_remember_me_label"
-                            htmlFor="sic_checkbox_id"
-                        >
+                        <label htmlFor="sic_checkbox_id">
                             {isSignin
                                 ? t('sign-in.remember-me')
                                 : t('sign-up.receive-newsletter.title')}
                         </label>
                     </div>
                     <Link
-                        className="sic_forgot_password"
+                        className={styles['forgot-password']}
                         href={`/${lng}/forgot_password`}
                     >
                         {t('sign-in.forgot-password')}
@@ -348,7 +342,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     {isSignin ? t('sign-in.title') : t('sign-up.action-title')}
                 </button> */}
             </form>
-            <p className="sic_divider">{t('sign-in.divider-title')}</p>
+            <p className={styles.divider}>{t('sign-in.divider-title')}</p>
             <ActionButton
                 lng={lng}
                 // onClick={() => {}}
@@ -357,7 +351,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 radius="pilled"
                 animationOnHover
             >
-                <span className="sic_sso_google">
+                <span className={styles['sso-google']}>
                     <GoogleIcon />
                     {t('sign-in.sso-google-title')}
                 </span>

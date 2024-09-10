@@ -143,13 +143,3 @@ input.error:-webkit-autofill {
 .onhover_bg_grey:hover::before {
     transform: scale(1);
 }
-
-/* animations */
-@keyframes fade_in_animate {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}

@@ -1,4 +1,4 @@
-.sic_container {
+.container {
     overflow-y: scroll;
     padding: 1rem;
     display: grid;
@@ -6,58 +6,58 @@
     gap: 1rem;
 }
 
-.sic_container.switched {
+.container.switched {
     animation: fade_in_animate 0.75s;
 }
 
-.sic_container > form {
+.container > form {
     display: grid;
     gap: 1rem;
 }
 
-.sic_head {
+.head {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.sic_head h2 {
+.head h2 {
     font-weight: 400;
     font-size: var(--fs-500);
 }
 
-.sic_container .sic_head h2::first-letter {
+.container .head h2::first-letter {
     text-transform: capitalize;
 }
 
-.sic_input_container > label {
+.input-container > label {
     display: block;
     font-size: var(--fs-300);
     margin-bottom: var(--size-200);
 }
-.sic_container .sic_input_container > label::first-letter {
+.container .input-container > label::first-letter {
     text-transform: capitalize;
 }
 
-.sic_remember_me_container {
+.rememberme-container {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
 }
 
-.sic_remember_me_container > .sic_remember_me_checkbox_container {
+.rememberme-container > .rememberme-checkbox-container {
     display: flex;
     align-items: flex-start;
     gap: var(--size-600);
 }
 
-.sic_remember_me_checkbox_container > .sic_remember_me_label {
+.rememberme-checkbox-container > label {
     font-weight: 350;
     font-size: clamp(var(--fs-200), 4vw, var(--fs-400));
     text-align: start;
 }
 
-.sic_remember_me_container > .sic_forgot_password {
+.rememberme-container > .forgot-password {
     color: var(--clr-neutral-grey);
     font-weight: 350;
     font-size: clamp(var(--fs-200), 4vw, var(--fs-400));
@@ -66,7 +66,7 @@
     text-wrap: nowrap;
 }
 
-.sic_container .sic_divider {
+.container .divider {
     position: relative;
     margin-block: 2rem;
     width: fit-content;
@@ -77,7 +77,7 @@
     display: grid;
     place-content: center;
 }
-.sic_container .sic_divider::after {
+.container .divider::after {
     content: '';
     clip-path: inset(calc(50% - 0.5px) -100vmax);
     box-shadow: 0 0 0 100vmax;
@@ -87,7 +87,7 @@
     margin-block: auto;
 }
 
-.sic_container .sic_sso_google {
+.container .sso-google {
     display: flex;
     align-items: center;
     justify-content: center;
