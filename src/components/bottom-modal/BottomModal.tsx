@@ -1,21 +1,11 @@
 import { SupportedLanguages } from '@/i18n/settings';
 import ModalSpot from '@/shared/modal-spot/ModalSpot';
 import { getModalTitle, ModalContentMapping } from '@/utils/modal';
-import { ReactElement } from 'react';
-import LoadingIndicator from '@/shared/loading-indicator/LoadingIndicator';
-import dynamic from 'next/dynamic';
+import { ReactElement, Suspense } from 'react';
 
-const MenuDrawerNavContent = dynamic(
-    () =>
-        import(
-            '@/components/modal-content/menu-drawer-nav-content/MenuDrawerNavContent'
-        ),
-    { loading: () => <LoadingIndicator /> }
-);
-const LoginContent = dynamic(
-    () => import('@/components/modal-content/login-in-content/LoginContent'),
-    { loading: () => <LoadingIndicator /> }
-);
+import LoadingIndicator from '@/shared/loading-indicator/LoadingIndicator';
+import LoginContent from '../modal-content/login-in-content/LoginContent';
+import MenuDrawerNavContent from '../modal-content/menu-drawer-nav-content/MenuDrawerNavContent';
 
 interface BottomModalProps {
     lng: SupportedLanguages;
@@ -40,7 +30,12 @@ async function BottomModal({ lng, currentModalContent }: BottomModalProps) {
                 lng={lng}
                 headingTitle={getModalTitle(currentModalContent, lng)}
             >
-                {content}
+                <Suspense
+                    key={currentModalContent}
+                    fallback={<LoadingIndicator />}
+                >
+                    {content}
+                </Suspense>
             </ModalSpot>
         );
     }
