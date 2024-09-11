@@ -34,7 +34,7 @@ async function BottomModal({
                 headingTitle={getModalTitle(currentModalContent, lng)}
             >
                 <Suspense
-                    key={currentModalContent}
+                    key={Date.now()}
                     fallback={<LoadingIndicator />}
                 >
                     {content}
