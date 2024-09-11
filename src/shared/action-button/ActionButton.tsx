@@ -1,18 +1,14 @@
-import React, { ReactNode } from 'react';
-import PropTypes from 'prop-types';
-// import { Link } from 'react-router-dom';
-import './ActionButton.css';
-import clsx from 'clsx';
-import LoadingIndicator from '../loading-indicator/LoadingIndicator';
-import Link from 'next/link';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
+import clsx from 'clsx';
+import { ReactNode } from 'react';
+import LoadingIndicator from '../loading-indicator/LoadingIndicator';
+import './ActionButton.css';
 
 interface ActionButtonProps {
     lng: SupportedLanguages;
     radius?: 'rounded' | 'pilled';
     boxShadow?: boolean;
-    to?: string;
     children: ReactNode[] | ReactNode | string;
     variant?: 'primary' | 'secondary';
     fit?: 'min' | 'max';
@@ -27,30 +23,17 @@ const ActionButton = (props: ActionButtonProps) => {
         radius,
         variant,
         boxShadow = false,
-        to = '/',
         children,
         fit = 'min',
         animationOnHover = false,
         disabled = false,
         loading = false,
     } = props;
-    return to ? (
-        <Link
-            data-disabled={disabled}
-            href={to}
-            className={clsx('ab_container', radius, variant, fit, {
-                'box-shadow': boxShadow,
-                animated: animationOnHover,
-            })}
-        >
-            {children}
-        </Link>
-    ) : (
+    return (
         <button
             disabled={disabled}
             className={clsx(
                 'ab_container',
-                lng,
                 lng === SupportedLanguagesEnum.AR
                     ? UthmanicFont.className
                     : Graphik.className,
@@ -68,21 +51,5 @@ const ActionButton = (props: ActionButtonProps) => {
     );
 };
 
-ActionButton.propTypes = {
-    onClick: PropTypes.func,
-    radius: PropTypes.oneOf(['rounded', 'pilled']),
-    boxShadow: PropTypes.bool,
-    to: PropTypes.string,
-    children: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object,
-        PropTypes.string,
-    ]).isRequired,
-    variant: PropTypes.oneOf(['primary', 'secondary']),
-    fit: PropTypes.oneOf(['min', 'max']),
-    animationOnHover: PropTypes.bool,
-    disabled: PropTypes.bool,
-    loading: PropTypes.bool,
-};
 
 export default ActionButton;

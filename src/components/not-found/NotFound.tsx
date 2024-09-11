@@ -29,7 +29,7 @@ const NotFound = ({ lng }: NotFoundProps) => {
                 <p>{t('page-not-found.message-2')}</p>
             </div>
 
-            <ActionButton lng={lng} to="/" radius="pilled" boxShadow={true}>
+            <ActionButton lng={lng} radius="pilled" boxShadow={true}>
                 <p className="nf_go_back_btn">{t('page-not-found.go-back')}</p>
             </ActionButton>
         </div>

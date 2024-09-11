@@ -152,33 +152,24 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
             <div className={styles.head}>
                 <h2>{isSignin ? t('sign-in.title') : t('sign-up.title')}</h2>
 
-                <ActionButton
+                <LinkTransparentButton
                     to={`/${lng}?modal_content=${
                         currentModalContent === ModalContentMapping.SIGN_IN
                             ? ModalContentMapping.SIGN_UP
                             : ModalContentMapping.SIGN_IN
                     }`}
-                    lng={lng}
-                    // onClick={() => {
-                    //     setIsSwitched(true);
-                    //     setTimeout(() => {
-                    //         setIsSwitched(false);
-                    //     }, FADE_IN_ANIMATE_MS);
-
-                    //     modalService.state = {
-                    //         currentModalContent: isSignin
-                    //             ? ModalContentMapping.SIGN_UP
-                    //             : ModalContentMapping.SIGN_IN,
-                    //     };
-                    // }}
-                    variant="secondary"
-                    radius="pilled"
-                    animationOnHover
                 >
-                    {isSignin
-                        ? t('sign-in.sign-up-action')
-                        : t('sign-up.sign-in-action')}
-                </ActionButton>
+                    <ActionButton
+                        variant="secondary"
+                        radius="pilled"
+                        animationOnHover
+                        lng={lng}
+                    >
+                        {isSignin
+                            ? t('sign-in.sign-up-action')
+                            : t('sign-up.sign-in-action')}
+                    </ActionButton>
+                </LinkTransparentButton>
             </div>
             <form noValidate action={submit}>
                 <div className={styles['input-container']}>
@@ -215,21 +206,6 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                             <TextInput
                                 lng={lng}
                                 name="full_name"
-                                // register={register('fullName', {
-                                //     required: {
-                                //         value: true,
-                                //         message: t(
-                                //             'sign-up.validation.full_name-empty'
-                                //         ),
-                                //     },
-                                //     minLength: {
-                                //         value: 4,
-                                //         message: t(
-                                //             'sign-up.validation.full_name-short'
-                                //         ),
-                                //     },
-                                // })}
-                                // isError={!!errors.fullName}
                                 labelId="text-input-full_name"
                                 size="medium"
                             />
@@ -245,27 +221,10 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                         radius="rounded_1"
                         borderVariant="border_light"
                         insetShadow
-                        // fieldError={errors.password}
-                        // isDirty={!!dirtyFields['password']}
                     >
                         <TextInput
                             lng={lng}
                             name="password"
-                            // register={register('password', {
-                            //     required: {
-                            //         value: true,
-                            //         message: t(
-                            //             'sign-in.validation.password-empty'
-                            //         ),
-                            //     },
-                            //     minLength: {
-                            //         value: 8,
-                            //         message: t(
-                            //             'sign-in.validation.password-short'
-                            //         ),
-                            //     },
-                            // })}
-                            // isError={!!errors.password}
                             isIconBgActive={false}
                             labelId="text-input-password"
                             size="medium"
@@ -345,7 +304,6 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
             <p className={styles.divider}>{t('sign-in.divider-title')}</p>
             <ActionButton
                 lng={lng}
-                // onClick={() => {}}
                 variant="secondary"
                 fit="max"
                 radius="pilled"
