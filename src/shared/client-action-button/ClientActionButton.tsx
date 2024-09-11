@@ -38,7 +38,6 @@ export default class ClientActionButton extends React.Component<
 
     componentDidMount(): void {
         snackbarService.addNotifier((options) => {
-            console.log('state: ', options?.state.toast);
             if (options && !options.state.toast) {
                 this.setState({
                     isLoading: false,

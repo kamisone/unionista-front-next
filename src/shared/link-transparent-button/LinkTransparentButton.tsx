@@ -1,13 +1,15 @@
 'use client';
-import { PENDING_REDIRECT_PATH_NAME } from '@/utils/constants';
-import Link from 'next/link';
-import { ReactNode, useEffect, useState } from 'react';
-import styles from './LinkTransparentButton.module.css';
-import { AuthService } from '@/services/auth.service';
-import { useRouter } from 'next/navigation';
-import { ModalContentMapping } from '@/utils/modal';
 import { getLocale } from '@/i18n';
+import { AuthService } from '@/services/auth.service';
+import { SnackbarService } from '@/services/snackbar.service';
+import { PENDING_REDIRECT_PATH_NAME } from '@/utils/constants';
+import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { ReactNode, useEffect, useState, useTransition } from 'react';
+import LoadingIndicator from '../loading-indicator/LoadingIndicator';
+import styles from './LinkTransparentButton.module.css';
 
 interface LinkTransparentButtonProps {
     to: string;
@@ -23,6 +25,7 @@ export default function LinkTransparentButton(
     props: LinkTransparentButtonProps
 ) {
     const router = useRouter();
+    const [isPending, startTransition] = useTransition();
     const [isUserAuthenticated, setIsUserAuthenticated] = useState(
         authService.state.user
     );
@@ -41,6 +44,7 @@ export default function LinkTransparentButton(
             href={props.to}
             className={clsx(styles.container, props.utilityClasses)}
             onClick={(e) => {
+                e.preventDefault();
                 if (props.isProtected && !isUserAuthenticated) {
                     if (
                         !document.cookie.includes(
@@ -49,15 +53,24 @@ export default function LinkTransparentButton(
                     ) {
                         document.cookie = `${PENDING_REDIRECT_PATH_NAME}=${props.to}`;
                     }
-
-                    e.preventDefault();
-                    router.push(
-                        `/${locale}?modal_content=${ModalContentMapping.SIGN_IN}`
-                    );
+                    startTransition(() => {
+                        return router.push(
+                            `/${locale}?modal_content=${ModalContentMapping.SIGN_IN}`
+                        );
+                    });
+                } else {
+                    startTransition(() => {
+                        return router.push(props.to);
+                    });
                 }
             }}
         >
             {props.children}
+            {isPending && (
+                <div className={styles.transitioning}>
+                    <LoadingIndicator />
+                </div>
+            )}
         </Link>
     );
 }

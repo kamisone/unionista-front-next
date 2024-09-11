@@ -9,9 +9,7 @@ export default function Notifier() {
     const [toasts, setToasts] = useState<Toast[]>([]);
 
     useEffect(() => {
-        console.log('notifier useeffect');
         snackbarService.addNotifier((options) => {
-            console.log('called: ', toasts);
             if (!options || !options.state.toast) return;
             setToasts((toasts) => [...toasts, options.state.toast as Toast]);
             snackbarService.state = {

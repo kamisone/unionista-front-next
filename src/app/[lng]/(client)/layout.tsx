@@ -14,24 +14,16 @@ interface ClientLayoutProps {
 
 async function ClientLayout({ children, params: { lng } }: ClientLayoutProps) {
     const headersList = headers();
-
     const isMobileDevice = isMobile(headersList.get('user-agent'));
 
     return (
         <main
-            className={clsx(lng, styles.app_container, {
+            className={clsx(lng, styles.container, {
                 [UthmanicFont.className]: lng === SupportedLanguagesEnum.AR,
             })}
         >
-            <div className={styles.mobile_container}>
-                {/* <UserHeader isMobile={isMobileDevice} lng={lng} /> */}
-                {children}
-                <UserFooter isMobile={isMobileDevice} lng={lng} />
-                {/* <FlexModal
-                    lng={lng}
-                    isMobileDevice={isMobileDevice}
-                /> */}
-            </div>
+            {children}
+            <UserFooter isMobile={isMobileDevice} lng={lng} />
         </main>
     );
 }

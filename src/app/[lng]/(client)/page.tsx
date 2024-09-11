@@ -2,9 +2,7 @@ import FlexModal from '@/components/Modal/FlexModal';
 import UserHeader from '@/components/header/UserHeader';
 import UserHome from '@/components/user-home/UserHome';
 import {
-    languages,
-    SupportedLanguages,
-    SupportedLanguagesEnum,
+    SupportedLanguages
 } from '@/i18n/settings';
 import { CURRENT_USER_HEADER_NAME } from '@/utils/constants';
 import { isMobile } from '@/utils/is-browser';
@@ -24,7 +22,7 @@ interface HomeProps {
 
 function Home({ params: { lng }, searchParams }: HomeProps) {
     const headersList = headers();
-    
+
     const user = headersList.get(CURRENT_USER_HEADER_NAME) || null;
 
     const isMobileDevice = isMobile(headersList.get('user-agent'));
@@ -36,7 +34,6 @@ function Home({ params: { lng }, searchParams }: HomeProps) {
                 isMobile={isMobile(headersList.get('user-agent'))}
                 lng={lng}
             />
-
             <FlexModal
                 lng={lng}
                 isMobileDevice={isMobileDevice}
@@ -45,9 +42,5 @@ function Home({ params: { lng }, searchParams }: HomeProps) {
         </>
     );
 }
-
-// export function generateStaticParams() {
-//     languages.map((lng) => ({ lng }));
-// }
 
 export default Home;

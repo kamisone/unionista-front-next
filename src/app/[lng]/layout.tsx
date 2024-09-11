@@ -1,13 +1,11 @@
-import React from 'react';
 import '@/app/[lng]/globals.css';
-import { ReactNode } from 'react';
+import Notifier from '@/components/notifier/Notifier';
 import {
     SupportedLanguages,
     SupportedLanguagesEnum,
     languages,
 } from '@/i18n/settings';
-import SkeletonLoader from '@/shared/skeleton-loader/SkeletonLoader';
-import Notifier from '@/components/notifier/Notifier';
+import { ReactNode } from 'react';
 
 interface RootLayoutProps {
     children: ReactNode;
@@ -28,7 +26,6 @@ function RootLayout({ children, params: { lng } }: RootLayoutProps) {
         >
             <body>
                 {children}
-                {/* <SkeletonLoader /> */}
                 <Notifier />
             </body>
         </html>
