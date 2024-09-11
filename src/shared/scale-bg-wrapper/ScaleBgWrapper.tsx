@@ -1,22 +1,15 @@
-import React, { ReactNode } from 'react';
-import PropTypes from 'prop-types';
+import styles from '@/shared/scale-bg-wrapper/ScaleBgWrapper.module.css';
 import clsx from 'clsx';
-import '@/shared/scale-bg-wrapper/ScaleBgWrapper.css';
+import { ReactNode } from 'react';
 
 interface ScaleBgWrapperProps {
-    Icon: ReactNode;
-    onClick?: () => void;
+    Icon?: ReactNode;
+    children?: ReactNode;
 }
 
 const ScaleBgWrapper = (props: ScaleBgWrapperProps) => {
-    const { Icon, onClick } = props;
-    return (
-        <button 
-        // onClick={onClick} 
-        className={clsx('sbw_container')}>
-            {Icon}
-        </button>
-    );
+    const { Icon, children } = props;
+    return <div className={clsx(styles.container)}>{Icon || children}</div>;
 };
 
 export default ScaleBgWrapper;

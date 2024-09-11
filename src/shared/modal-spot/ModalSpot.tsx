@@ -1,11 +1,12 @@
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import CloseIcon from '@/icons/close-icon/CloseIcon';
+import styles from '@/shared/modal-spot/ModalSpot.module.css';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 import LinkTransparentButton from '../link-transparent-button/LinkTransparentButton';
-import './ModalSpot.css';
+import ScaleBgWrapper from '../scale-bg-wrapper/ScaleBgWrapper';
+import Link from 'next/link';
 
 interface ModalSpotProps {
     children: ReactNode[] | ReactNode | string;
@@ -26,13 +27,18 @@ function ModalSpot({
     isDesktop = false,
 }: ModalSpotProps) {
     return (
-        <div
-            className={clsx('ms_container', animationDirection, {
-                is_desktop: isDesktop,
+        <Link
+            href='.'
+            className={clsx(styles.container, styles[animationDirection], {
+                [styles.is_desktop]: isDesktop,
             })}
         >
-            <div className={clsx('ms_content')}>
-                <div className={clsx({ ms_title_container: !!headingTitle })}>
+            <div className={clsx(styles.content)}>
+                <div
+                    className={clsx({
+                        [styles.title_container]: !!headingTitle,
+                    })}
+                >
                     {headingTitle && (
                         <>
                             <span>{/*placeholder*/}</span>
@@ -48,17 +54,19 @@ function ModalSpot({
                         </>
                     )}
                     <LinkTransparentButton to={`/${lng}`}>
-                        <CloseIcon />
+                        {isDesktop ? (
+                            <ScaleBgWrapper>
+                                <CloseIcon />
+                            </ScaleBgWrapper>
+                        ) : (
+                            <CloseIcon />
+                        )}
                     </LinkTransparentButton>
                 </div>
                 {children}
             </div>
-        </div>
+        </Link>
     );
 }
-
-ModalSpot.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-};
 
 export default ModalSpot;

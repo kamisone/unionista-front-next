@@ -1,11 +1,10 @@
-.sbw_container {
-    /* border: 1px solid red; */
+.container {
     position: relative;
     isolation: isolate;
     color: inherit;
 }
 
-.sbw_container::before {
+.container::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -17,6 +16,6 @@
     transform: scale(0);
     transition: transform 0.2s;
 }
-.sbw_container:hover::before {
+.container:hover::before {
     transform: scale(1);
 }

@@ -15,6 +15,7 @@ import Hamburger from '../../Hamburger/Hamburger';
 import SwitchLanguage from '../../switch-language/SwitchLanguage';
 import { i18nTranslation } from '@/i18n';
 import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
+import ScaleBgWrapper from '@/shared/scale-bg-wrapper/ScaleBgWrapper';
 
 interface DesktopHeaderProps {
     lng: SupportedLanguages;
@@ -26,7 +27,7 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
 
     return (
         <>
-            <header className={clsx(styles.container, lng)}>
+            <header className={clsx(styles.container, styles[lng])}>
                 <div className={styles.logo}>
                     <LinkTransparentButton to="/">
                         <div className={styles.logo_link}>
@@ -106,12 +107,14 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                         }}
                     >
                         <LinkTransparentButton to={`/${lng}/admin`}>
-                            <BoSettingsIcon />
+                            <ScaleBgWrapper>
+                                <BoSettingsIcon />
+                            </ScaleBgWrapper>
                         </LinkTransparentButton>
                     </li>
                     <li className={clsx(styles.h_nav_item)}>
                         <LinkTransparentButton to={`/${lng}/notifications`}>
-                            <div
+                            {/* <div
                                 style={{
                                     // @ts-ignore
                                     '--nav-icon-title': `"${t(
@@ -120,12 +123,15 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                                 }}
                             >
                                 <NotificationIcon />
-                            </div>
+                            </div> */}
+                            <ScaleBgWrapper>
+                                <NotificationIcon />
+                            </ScaleBgWrapper>
                         </LinkTransparentButton>
                     </li>
                     <li className={clsx(styles.h_nav_item)}>
                         <LinkTransparentButton to={`/${lng}/cart`}>
-                            <div
+                            {/* <div
                                 style={{
                                     // @ts-ignore
                                     '--nav-icon-title': `"${t(
@@ -134,7 +140,10 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                                 }}
                             >
                                 <CartIcon />
-                            </div>
+                            </div> */}
+                            <ScaleBgWrapper>
+                                <CartIcon />
+                            </ScaleBgWrapper>
                         </LinkTransparentButton>
                     </li>
                     {user && (

@@ -10,14 +10,12 @@ import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 interface SnackbarContentProps {
     lng: SupportedLanguages;
     message: string;
-    onClose: () => void;
     severity: string;
 }
 
 const SnackbarContent = ({
     lng,
     message,
-    onClose,
     severity,
 }: SnackbarContentProps) => {
     return (
@@ -32,7 +30,7 @@ const SnackbarContent = ({
         >
             <p>{message}</p>
             <div style={{ color: 'white' }}>
-                <ScaleBgWrapper Icon={<CloseIcon />} onClick={onClose} />
+                <ScaleBgWrapper Icon={<CloseIcon />} />
             </div>
         </div>
     );

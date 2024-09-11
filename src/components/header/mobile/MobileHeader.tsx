@@ -23,7 +23,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
     const t = i18nTranslation(lng, 'header');
 
     return (
-        <div className={clsx(styles.container, lng)}>
+        <div className={clsx(styles.container, styles[lng])}>
             <div className={styles.top_part}>
                 <figure className={styles.logo}>
                     <img src="/assets/icons/unionista-logo2.png" alt="logo" />

@@ -28,11 +28,6 @@ interface INotifyOptions {
     state: AuthState;
 }
 
-// export interface UserNotificationToSignIn {
-//     isNotified: boolean;
-//     time: number;
-// }
-
 export class AuthService extends ComponentsStateNotify<
     AuthState,
     INotifyOptions
@@ -69,32 +64,8 @@ export class AuthService extends ComponentsStateNotify<
 
     static checkUserAuth() {
         const cookies = getCookies();
-        console.log(JSON.parse(decodeURIComponent(cookies.user)));
         return JSON.parse(decodeURIComponent(cookies.user));
     }
-
-    // static get endpoints() {
-    //     return {
-    //         REFRESH_TOKEN: 'auth/refresh',
-    //         SIGN_IN: 'auth/signin',
-    //         SIGN_UP: 'auth/signup',
-    //     };
-    // }
-
-    // static get localStorageKeys() {
-    //     return {
-    //         // local storage
-    //         ACCESS_TOKEN_ID: 'access-token-id',
-    //         REFRESH_TOKEN_ID: 'refresh-token-id',
-    //         USER_NOTIFIED_TO_SIGN_IN_ID: 'user-notified-to-signin',
-    //     };
-    // }
-
-    // static get routerSegments() {
-    //     return {
-    //         SIGN_IN: '?modal_content=signin',
-    //     };
-    // }
 }
 
 export interface UserWithTokens {

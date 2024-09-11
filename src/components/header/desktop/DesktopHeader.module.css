@@ -1,5 +1,4 @@
 .container {
-    border: solid green;
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-template-areas: 'logo hamburger_search nav_bar';
@@ -17,7 +16,6 @@
 }
 .logo_link {
     display: inline-block;
-    border: solid blue;
 }
 .hamburger_search {
     grid-area: hamburger_search;
@@ -43,7 +41,6 @@
 }
 
 .search_input {
-    /* grid-area: hamburger_search; */
     flex-grow: 1;
 }
 
@@ -78,20 +75,6 @@
     width: 1.5rem;
     height: 1.5rem;
 }
-.h_nav_item::before {
-    content: '';
-    position: absolute;
-    inset: clamp(-0.75rem, -1.25vw, -0.25rem);
-    background-color: var(--clr-light-grey-overlay);
-    border-radius: 100vmax;
-    transform: scale(0);
-    transition: transform 0.15s ease;
-    z-index: -1;
-}
-.h_nav_item:hover::before {
-    transform: scale(1);
-}
-
 .h_nav_item a {
     display: inline-block;
     text-decoration: none;

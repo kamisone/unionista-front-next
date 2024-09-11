@@ -1,16 +1,16 @@
-.ms_container {
-    border: solid red;
+.container {
+    /* border: solid red; */
     position: fixed;
     z-index: 3;
     inset: 0;
     animation: ms_container_in_animate 0.5s forwards;
 }
 
-.ms_container.ms_quitting {
+.container.ms_quitting {
     animation: ms_container_out_animate 0.5s;
 }
 
-.ms_container > input {
+.container > input {
     display: none;
 }
 
@@ -31,16 +31,14 @@
     }
 }
 
-.ms_container .ms_content {
+.container .content {
     position: absolute;
     display: grid;
     grid-template-rows: 0fr;
-    /* padding-inline: 1rem; */
 
     inset: auto 0 0 0;
     width: 100%;
     height: 85%;
-    /* border: solid green; */
     background-color: white;
     color: var(--clr-secondary);
     border-radius: 20px 20px 0 0;
@@ -50,13 +48,13 @@
     animation: 0.25s forwards
         cubic-bezier(0.74, 2.01, 0.69, 0.86);
 }
-.ms_container.animate_to_top .ms_content {
+.container.animate_to_top .content {
     animation-name: content_top_animation_in;
 }
-.ms_container.animate_to_center .ms_content {
+.container.animate_to_center .content {
     animation-name: content_center_animation_in;
 }
-.ms_container.is_desktop .ms_content { 
+.container.is_desktop .content { 
     width: clamp(25rem, 40%, 30rem);
     inset: 0;
     margin: auto;
@@ -65,46 +63,30 @@
 }
 
 
-.ms_container input:checked + .ms_content,
-.ms_container.ms_quitting .ms_content {
+.container input:checked + .content,
+.container.ms_quitting .content {
     animation: 0.1s linear;
 }
-.ms_container.ms_quitting.animate_to_top .ms_content {
+.container.ms_quitting.animate_to_top .content {
     animation-name: content_top_animation_out;
 }
-.ms_containe.animate_to_centerr.ms_quitting .ms_content {
+.container.animate_to_centerr.ms_quitting .content {
     animation-name: content_center_animation_out;
 }
 
-.ms_container .ms_title_container {
+.container .title_container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding-block: 1rem 1.5rem;
     padding-inline: 1rem;
 }
-.ms_container .ms_title_container h2 {
+.container .title_container h2 {
     font-weight: 400;
     font-size: 1.2rem;
     text-transform: capitalize;
 }
 
-.ms_container .ms_title_container .ms_close_icon {
-    opacity: 0;
-    animation: fade_in_animate 0.75s forwards 0.45s;
-}
-.ms_container .ms_close_icon.floating {
-    position: absolute;
-    right: 0;
-    transform-origin: 0 100%;
-    transform: translateY(-100%);
-    color: white;
-}
-@media screen and (min-width: 900px){
-    .ms_container .ms_close_icon.floating {
-        transform: translateY(-100%) translateX(100%) rotateZ(90deg);
-    }
-}
 
 @keyframes content_top_animation_in {
     0% {
