@@ -24,6 +24,7 @@ import clsx from 'clsx';
 import { cookies, headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
+import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
 
 const authService = AuthService.instance;
 
@@ -319,12 +320,11 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                                 : t('sign-up.receive-newsletter.title')}
                         </label>
                     </div>
-                    <Link
-                        className={styles['forgot-password']}
-                        href={`/${lng}/forgot_password`}
-                    >
-                        {t('sign-in.forgot-password')}
-                    </Link>
+                    <LinkTransparentButton to={`/${lng}/forgot-password`}>
+                        <span className={styles['forgot-password']}>
+                            {t('sign-in.forgot-password')}
+                        </span>
+                    </LinkTransparentButton>
                 </div>
                 <ClientActionButton
                     lng={lng}

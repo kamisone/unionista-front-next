@@ -57,13 +57,13 @@
     text-align: start;
 }
 
-.rememberme-container > .forgot-password {
+.rememberme-container .forgot-password {
     color: var(--clr-neutral-grey);
     font-weight: 350;
     font-size: clamp(var(--fs-200), 4vw, var(--fs-400));
-    /* border: solid; */
     text-align: end;
     text-wrap: nowrap;
+    text-decoration: underline;
 }
 
 .container .divider {
