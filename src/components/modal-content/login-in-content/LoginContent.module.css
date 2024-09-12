@@ -39,6 +39,14 @@
     text-transform: capitalize;
 }
 
+.eye-switch {
+    position: relative;
+}
+.eye-switch > :nth-child(2) {
+    position: absolute;
+    inset: 0;
+}
+
 .rememberme-container {
     display: flex;
     align-items: flex-start;

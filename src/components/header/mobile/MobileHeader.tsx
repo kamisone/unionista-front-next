@@ -131,6 +131,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                         size="medium"
                         placeholder={t('search-input-placeholder')}
                         name=""
+                        isIconBgActive
                     >
                         <SearchIcon />
                     </TextInput>

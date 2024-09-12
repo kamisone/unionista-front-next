@@ -2,7 +2,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* gap: 1rem; */
 }
 
 .ti_container.icon_gap_tiny {
@@ -37,34 +36,41 @@
 
 .ti_container .ti_input_icon {
     position: relative;
+    isolation: isolate;
     line-height: 0;
     aspect-ratio: 1;
     color: var(--clr-white);
     margin-right: 0.5rem;
+    cursor: pointer;
 }
 .ti_container.ar .ti_input_icon {
     margin-right: revert;
     margin-left: 0.5rem;
 }
 
-.ti_container .ti_input_icon::before {
+.ti_container.bg_icon_active .ti_input_icon::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
-
+    transform: scale(1.4);
     border-radius: 100%;
     transition:
         border-radius 125ms ease,
-        box-shadow 125ms ease;
+        transform 125ms ease;
+    background-color: var(--clr-vibrant-orange);
 }
 
 .ti_container.bg_icon_active .ti_input_icon::before {
-    background-color: var(--clg-color-sem-text-brand);
-    box-shadow: 0 0 0 5px var(--clg-color-sem-text-brand);
+    background-color: var(--clr-vibrant-orange);
 }
 .ti_container.bg_icon_active:focus-within .ti_input_icon::before,
 .ti_container.bg_icon_active:hover .ti_input_icon::before {
     border-radius: 0;
-    box-shadow: 0 0 0 10px var(--clg-color-sem-text-brand);
+    transform: scale(2);
+}
+
+.ti_container.bg_icon_active
+    .ti_input_icon.ti_input_icon.ti_input_icon:hover::before {
+    filter: brightness(1.5);
 }

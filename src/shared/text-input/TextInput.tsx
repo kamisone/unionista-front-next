@@ -1,35 +1,38 @@
-import React, { ReactNode } from 'react';
-import './TextInput.css';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+'use client';
+
 import { SupportedLanguages } from '@/i18n/settings';
+import clsx from 'clsx';
+import { ReactNode, useState } from 'react';
+import './TextInput.css';
 
 interface TextInputProps {
     lng: SupportedLanguages;
     name: string;
     placeholder?: string;
     children?: ReactNode[] | ReactNode | string;
+    switch?: ReactNode[] | ReactNode | string;
     size?: 'small' | 'medium' | 'large';
     labelId?: string;
-    type?: 'text' | 'password';
+    type?: 'text' | 'password' | 'switchable';
     isIconBgActive?: boolean;
     iconGap?: 'tiny' | 'medium' | 'large';
-    register?: any;
-    isError?: boolean;
+    isSubmit?: boolean;
 }
 
 const TextInput = (props: TextInputProps) => {
     const {
         children: Icon,
+        switch: Switch,
         type = 'text',
         size = 'small',
         labelId,
         placeholder,
-        isIconBgActive = true,
+        isIconBgActive = false,
         iconGap = 'tiny',
-        register,
-        isError,
+        isSubmit = false,
     } = props;
+
+    const [currentType, setCurrentType] = useState('password');
 
     return (
         <>
@@ -44,33 +47,33 @@ const TextInput = (props: TextInputProps) => {
                 )}
             >
                 <input
-                    className={clsx(size, { error: isError })}
+                    className={clsx(size)}
                     id={labelId}
-                    type={type}
+                    type={type === 'switchable' ? currentType : type}
                     placeholder={placeholder}
-                    {...register}
                     name={props.name}
                 />
                 {Icon && (
-                    <label htmlFor={labelId} className="ti_input_icon">
-                        {Icon}
-                    </label>
+                    <button
+                        type={isSubmit ? 'submit' : 'button'}
+                        className="ti_input_icon"
+                        onClick={() => {
+                            if (isSubmit || type !== 'switchable') return;
+                            setCurrentType((value) =>
+                                value === 'password' ? 'text' : 'password'
+                            );
+                        }}
+                    >
+                        {type !== 'switchable'
+                            ? Icon
+                            : currentType === 'text'
+                              ? Icon
+                              : Switch}
+                    </button>
                 )}
             </div>
         </>
     );
-};
-
-TextInput.propTypes = {
-    placeholder: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    size: PropTypes.oneOf(['small', 'medium', 'large']),
-    labelId: PropTypes.string,
-    type: PropTypes.oneOf(['text', 'password']),
-    isIconBgActive: PropTypes.bool,
-    iconGap: PropTypes.oneOf(['tiny', 'medium', 'large']),
-    register: PropTypes.object,
-    isError: PropTypes.bool,
 };
 
 export default TextInput;

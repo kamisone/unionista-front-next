@@ -68,6 +68,7 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                                 size="medium"
                                 placeholder={t('search-input-placeholder')}
                                 name="search"
+                                isIconBgActive
                             >
                                 <SearchIcon />
                             </TextInput>

@@ -25,6 +25,7 @@ import { cookies, headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
 import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
+import TraitIcon from '@/icons/eye/trait/TraitIcon';
 
 const authService = AuthService.instance;
 
@@ -225,22 +226,13 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                         <TextInput
                             lng={lng}
                             name="password"
-                            isIconBgActive={false}
+                            isIconBgActive={true}
                             labelId="text-input-password"
                             size="medium"
-                            // type={isPassDiscovered ? 'text' : 'password'}
+                            type="switchable"
+                            switch={<div className={styles['eye-switch']}><EyeIcon/><TraitIcon/></div>}
                         >
-                            <div
-                                style={{ color: 'grey' }}
-                                // onClick={() =>
-                                //     setIsPassDiscovered(!isPassDiscovered)
-                                // }
-                            >
-                                <EyeIcon
-                                    // isPassDiscovered={isPassDiscovered}
-                                    isPassDiscovered={false}
-                                />
-                            </div>
+                            <EyeIcon />
                         </TextInput>
                     </InputControl>
                 </div>
