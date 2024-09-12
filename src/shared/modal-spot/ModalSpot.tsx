@@ -27,8 +27,7 @@ function ModalSpot({
     isDesktop = false,
 }: ModalSpotProps) {
     return (
-        <Link
-            href='.'
+        <div
             className={clsx(styles.container, styles[animationDirection], {
                 [styles.is_desktop]: isDesktop,
             })}
@@ -65,7 +64,7 @@ function ModalSpot({
                 </div>
                 {children}
             </div>
-        </Link>
+        </div>
     );
 }
 

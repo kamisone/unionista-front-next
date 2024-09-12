@@ -130,6 +130,9 @@ input.error:-webkit-autofill:focus,
 input.error:-webkit-autofill {
     -webkit-box-shadow: inset 0 0 0 100vmax var(--clr-blush-pink);
 }
+a {
+    -webkit-tap-highlight-color: transparent;
+}
 .onhover_bg_grey::before {
     content: '';
     position: absolute;
