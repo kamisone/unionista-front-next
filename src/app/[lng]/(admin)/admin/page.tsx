@@ -17,7 +17,7 @@ const AdminHome = () => {
     return (
         <>
             <AdminHeader />
-            <h2>admin</h2>
+            <h2 className=''>admin</h2>
             <AdminFooter />
         </>
     );

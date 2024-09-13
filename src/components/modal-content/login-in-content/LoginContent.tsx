@@ -10,8 +10,10 @@ import TextInput from '@/shared/text-input/TextInput';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
+import TraitIcon from '@/icons/eye/trait/TraitIcon';
 import { SnackbarSeverity } from '@/services/snackbar.service';
 import ClientActionButton from '@/shared/client-action-button/ClientActionButton';
+import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
 import {
     accessTokenNames,
     CURRENT_USER_COOKIE_NAME,
@@ -22,14 +24,9 @@ import {
 import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
 import { cookies, headers } from 'next/headers';
-import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
-import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
-import TraitIcon from '@/icons/eye/trait/TraitIcon';
 
 const authService = AuthService.instance;
-
-const FADE_IN_ANIMATE_MS = 700; // 700ms;
 
 export type FormValues = {
     email: string;
@@ -144,14 +141,16 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
         <div
             className={clsx(
                 styles.container,
-                lng,
+                'overflow-y-scroll p-4 grid content-start gap-4',
                 lng === SupportedLanguagesEnum.AR
                     ? UthmanicFont.className
                     : Graphik.className
             )}
         >
-            <div className={styles.head}>
-                <h2>{isSignin ? t('sign-in.title') : t('sign-up.title')}</h2>
+            <div className={'flex items-center justify-between'}>
+                <h2 className="text-lg font-normal first-letter:uppercase">
+                    {isSignin ? t('sign-in.title') : t('sign-up.title')}
+                </h2>
 
                 <LinkTransparentButton
                     to={`/${lng}?modal_content=${
@@ -172,9 +171,12 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     </ActionButton>
                 </LinkTransparentButton>
             </div>
-            <form noValidate action={submit}>
-                <div className={styles['input-container']}>
-                    <label htmlFor="text-input-email">
+            <form noValidate action={submit} className="grid gap-4">
+                <div className={'input-container'}>
+                    <label
+                        className="block text-sm mb-1 first-letter:uppercase"
+                        htmlFor="text-input-email"
+                    >
                         {t('sign-in.email-label')}
                     </label>
                     <InputControl
@@ -192,8 +194,11 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     </InputControl>
                 </div>
                 {!isSignin && (
-                    <div className={styles['input-container']}>
-                        <label htmlFor="text-input-full_name">
+                    <div className={''}>
+                        <label
+                            className="block text-sm mb-1 first-letter:uppercase"
+                            htmlFor="text-input-full_name"
+                        >
                             {t('sign-up.full_name')}
                         </label>
                         <InputControl
@@ -213,8 +218,11 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                         </InputControl>
                     </div>
                 )}
-                <div className={styles['input-container']}>
-                    <label htmlFor="text-input-password">
+                <div className={''}>
+                    <label
+                        className="block text-sm mb-1 first-letter:uppercase"
+                        htmlFor="text-input-password"
+                    >
                         {t('sign-in.password-label')}
                     </label>
                     <InputControl
@@ -230,15 +238,27 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                             labelId="text-input-password"
                             size="medium"
                             type="switchable"
-                            switch={<div className={styles['eye-switch']}><EyeIcon/><TraitIcon/></div>}
+                            switch={
+                                <div
+                                    className={
+                                        'relative [&>*:nth-child(2)]:absolute [&>*:nth-child(2)]:inset-0'
+                                    }
+                                >
+                                    <EyeIcon />
+                                    <TraitIcon />
+                                </div>
+                            }
                         >
                             <EyeIcon />
                         </TextInput>
                     </InputControl>
                 </div>
                 {!isSignin && (
-                    <div className={styles['input-container']}>
-                        <label htmlFor="avatar-uploader-id">
+                    <div className={''}>
+                        <label
+                            className="block text-sm mb-1 first-letter:uppercase"
+                            htmlFor="avatar-uploader-id"
+                        >
                             {t('sign-up.avatar-label')}
                         </label>
                         <input type="file" name="avatar" />
@@ -256,8 +276,8 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                         /> */}
                     </div>
                 )}
-                <div className={styles['rememberme-container']}>
-                    <div className={styles['rememberme-checkbox-container']}>
+                <div className={'flex items-center justify-between'}>
+                    <div className={'flex items-start gap-2'}>
                         <CheckboxInput
                             size="medium"
                             variant="secondary"
@@ -265,14 +285,21 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                             labelId="sic_checkbox_id"
                             checked
                         />
-                        <label htmlFor="sic_checkbox_id">
+                        <label
+                            className="block text-sm mb-1 first-letter:uppercase font-light text-[clamp(0.5rem,4vw,1rem)]"
+                            htmlFor="sic_checkbox_id"
+                        >
                             {isSignin
                                 ? t('sign-in.remember-me')
                                 : t('sign-up.receive-newsletter.title')}
                         </label>
                     </div>
                     <LinkTransparentButton to={`/${lng}/forgot-password`}>
-                        <span className={styles['forgot-password']}>
+                        <span
+                            className={
+                                'text-neutral-grey font-light text-[clamp(0.5rem,4vw,1rem)] text-end text-nowrap underline'
+                            }
+                        >
                             {t('sign-in.forgot-password')}
                         </span>
                     </LinkTransparentButton>
@@ -288,12 +315,15 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 >
                     {isSignin ? t('sign-in.title') : t('sign-up.action-title')}
                 </ClientActionButton>
-
-                {/* <button type="submit">
-                    {isSignin ? t('sign-in.title') : t('sign-up.action-title')}
-                </button> */}
             </form>
-            <p className={styles.divider}>{t('sign-in.divider-title')}</p>
+            <span
+                className={clsx(
+                    'relative my-8 w-fit mx-auto px-2 text-charcoal-grey uppercase ',
+                    styles.divider
+                )}
+            >
+                {t('sign-in.divider-title')}
+            </span>
             <ActionButton
                 lng={lng}
                 variant="secondary"
@@ -301,7 +331,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 radius="pilled"
                 animationOnHover
             >
-                <span className={styles['sso-google']}>
+                <span className={'flex items-center justify-center gap-2'}>
                     <GoogleIcon />
                     {t('sign-in.sso-google-title')}
                 </span>

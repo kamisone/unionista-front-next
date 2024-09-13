@@ -1,5 +1,6 @@
 import styles from '@/components/header/desktop/DesktopHeader.module.css';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
+import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import BoSettingsIcon from '@/icons/bo-settings/BoSettingsIcon';
 import CartIcon from '@/icons/cart/CartIcon';
@@ -7,15 +8,13 @@ import NotificationIcon from '@/icons/notification/NotificationIcon';
 import SearchIcon from '@/icons/search-icon/SearchIcon';
 import AvatarSlot from '@/shared/avatar-slot/AvatarSlot';
 import InputControl from '@/shared/input-control/InputControl';
+import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
+import ScaleBgWrapper from '@/shared/scale-bg-wrapper/ScaleBgWrapper';
 import TextInput from '@/shared/text-input/TextInput';
 import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
-import Link from 'next/link';
 import Hamburger from '../../Hamburger/Hamburger';
 import SwitchLanguage from '../../switch-language/SwitchLanguage';
-import { i18nTranslation } from '@/i18n';
-import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
-import ScaleBgWrapper from '@/shared/scale-bg-wrapper/ScaleBgWrapper';
 
 interface DesktopHeaderProps {
     lng: SupportedLanguages;
@@ -27,36 +26,46 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
 
     return (
         <>
-            <header className={clsx(styles.container, styles[lng])}>
+            <header
+                className={clsx(
+                    styles.container,
+                    'grid grid-cols-[auto_1fr_auto] gap-[clamp(1rem,2vw,2rem)]'
+                )}
+            >
                 <div className={styles.logo}>
                     <LinkTransparentButton to="/">
-                        <div className={styles.logo_link}>
+                        <div className={'inline-block'}>
                             <img
-                                className={styles.logo_picture}
+                                className={'max-w-24'}
                                 src="/assets/icons/unionista-logo2.png"
                                 alt="logo"
                             />
                         </div>
                     </LinkTransparentButton>
                 </div>
-                <div className={clsx(styles.hamburger_search)}>
+                <div
+                    className={clsx(
+                        styles['hamburger-search'],
+                        'flex items-center gap-[clamp(1rem,2vw,2rem)]'
+                    )}
+                >
                     <LinkTransparentButton
                         isProtected
                         to={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
                     >
                         <div
                             className={clsx(
-                                styles.hamburger,
+                                'flex items-center relative',
                                 'onhover_bg_grey'
                             )}
                         >
                             <Hamburger />
-                            <span className={styles.hamburger_label}>
+                            <span className={'first-letter:uppercase'}>
                                 {t('hamburger.label')}
                             </span>
                         </div>
                     </LinkTransparentButton>
-                    <div className={clsx(styles.search_input)}>
+                    <div className={'grow-[1]'}>
                         <InputControl
                             lng={lng}
                             radius="pilled"
@@ -77,9 +86,10 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                 </div>
                 <ul
                     className={clsx(
-                        styles.h_nav_bar,
+                        styles['nav-bar'],
+                        'flex items-center justify-between gap-[clamp(0.5rem,2vw,1.5rem)] ml-auto list-none',
                         lng === SupportedLanguagesEnum.AR
-                            ? UthmanicFont.className
+                            ? `${UthmanicFont.className} ml-[revert] mr-auto`
                             : Graphik.className
                     )}
                 >
@@ -87,34 +97,35 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                         <LinkTransparentButton
                             to={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
                         >
-                            <div
-                                className={clsx(
-                                    styles.h_nav_item_text,
-                                    'onhover_bg_grey'
-                                )}
-                            >
-                                <button>{t('sign-in.title')}</button>
-                            </div>
+                            <button className="py-2 px-3 onhover_bg_grey hover:cursor-pointer">
+                                {t('sign-in.title')}
+                            </button>
                         </LinkTransparentButton>
                     )}
-                    <li className={clsx(styles.switch_lng)}>
+                    <li>
                         <SwitchLanguage lng={lng} />
                     </li>
                     <li
-                        className={clsx(styles.h_nav_item)}
+                        className={'grid place-content-center relative'}
                         style={{
                             // @ts-ignore
                             '--nav-icon-title': `"${t('icons.hover.admin')}"`,
                         }}
                     >
-                        <LinkTransparentButton to={`/${lng}/admin`}>
+                        <LinkTransparentButton
+                            to={`/${lng}/admin`}
+                            utilityClasses="leading-[0]"
+                        >
                             <ScaleBgWrapper>
                                 <BoSettingsIcon />
                             </ScaleBgWrapper>
                         </LinkTransparentButton>
                     </li>
-                    <li className={clsx(styles.h_nav_item)}>
-                        <LinkTransparentButton to={`/${lng}/notifications`}>
+                    <li className={'grid place-content-center relative'}>
+                        <LinkTransparentButton
+                            to={`/${lng}/notifications`}
+                            utilityClasses="leading-[0]"
+                        >
                             {/* <div
                                 style={{
                                     // @ts-ignore
@@ -130,8 +141,11 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                             </ScaleBgWrapper>
                         </LinkTransparentButton>
                     </li>
-                    <li className={clsx(styles.h_nav_item)}>
-                        <LinkTransparentButton to={`/${lng}/cart`}>
+                    <li className={'grid place-content-center relative'}>
+                        <LinkTransparentButton
+                            to={`/${lng}/cart`}
+                            utilityClasses="leading-[0]"
+                        >
                             {/* <div
                                 style={{
                                     // @ts-ignore

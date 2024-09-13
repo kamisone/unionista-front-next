@@ -1,14 +1,9 @@
 import { fetchProductsCategories } from '@/actions';
-import '@/components/modal-content/menu-drawer-nav-content/MenuDrawerNavContent.css';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import DropListArrowIcon from '@/icons/drop-list-arrow/DropListArrowIcon';
-import {
-    ProductCategoryService
-} from '@/services/product-category.service';
 import clsx from 'clsx';
 import Link from 'next/link';
-
 
 interface MenuDrawerNavItem {
     id: string;
@@ -25,7 +20,6 @@ interface MenuDrawerNavContentProps {
 const MenuDrawerNavContent = async (props: MenuDrawerNavContentProps) => {
     const { lng } = props;
 
-
     const menuItems = (await new Promise(function (res) {
         setTimeout(async () => {
             res(await fetchProductsCategories(lng));
@@ -35,8 +29,7 @@ const MenuDrawerNavContent = async (props: MenuDrawerNavContentProps) => {
     return (
         <ul
             className={clsx(
-                'mdc_container',
-                lng,
+                'grid content-start overflow-y-scroll px-4',
                 lng === SupportedLanguagesEnum.AR
                     ? UthmanicFont.className
                     : Graphik.className
@@ -44,7 +37,10 @@ const MenuDrawerNavContent = async (props: MenuDrawerNavContentProps) => {
         >
             {menuItems.map((menuItem) => {
                 return (
-                    <li key={menuItem.id}>
+                    <li
+                        key={menuItem.id}
+                        className="flex items-center justify-between text-sm capitalize"
+                    >
                         {menuItem.hasChildren ? (
                             <Link href={`/${lng}/${menuItem.id}`}>
                                 {menuItem.translations.name}

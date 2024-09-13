@@ -16,7 +16,6 @@ const NotFound = ({ lng }: NotFoundProps) => {
     return (
         <div
             className={clsx(
-                'nf_container',
                 lng === SupportedLanguagesEnum.AR
                     ? UthmanicFont.className
                     : Graphik.className
@@ -30,7 +29,7 @@ const NotFound = ({ lng }: NotFoundProps) => {
             </div>
 
             <ActionButton lng={lng} radius="pilled" boxShadow={true}>
-                <p className="nf_go_back_btn">{t('page-not-found.go-back')}</p>
+                <span>{t('page-not-found.go-back')}</span>
             </ActionButton>
         </div>
     );

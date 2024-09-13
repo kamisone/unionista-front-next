@@ -1,4 +1,3 @@
-import styles from '@/components/footer/desktop/DesktopFooter.module.css';
 import { SupportedLanguages } from '@/i18n/settings';
 
 interface DesktopHeaderProps {
@@ -7,7 +6,7 @@ interface DesktopHeaderProps {
 
 const DesktopFooter = ({ lng }: DesktopHeaderProps) => {
     return (
-        <div className={styles.container}>
+        <div>
             <h2>Desktop footer</h2>
         </div>
     );

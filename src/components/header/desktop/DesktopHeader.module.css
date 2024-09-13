@@ -1,8 +1,5 @@
 .container {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
     grid-template-areas: 'logo hamburger_search nav_bar';
-    gap: clamp(1rem, 2vw, 2rem);
 }
 @media (max-width: 786px) {
     .container {
@@ -14,70 +11,11 @@
 .logo {
     grid-area: logo;
 }
-.logo_link {
-    display: inline-block;
-}
-.hamburger_search {
+
+.hamburger-search {
     grid-area: hamburger_search;
-    display: flex;
-    align-items: center;
-    gap: clamp(1rem, 2vw, 2rem);
-}
-.hamburger_search:hover {
-    cursor: pointer;
-}
-.hamburger {
-    display: flex;
-    align-items: center;
-    position: relative;
 }
 
-.logo_picture {
-    max-width: 7rem;
-}
-
-.hamburger_label::first-letter {
-    text-transform: uppercase;
-}
-
-.search_input {
-    flex-grow: 1;
-}
-
-.h_nav_bar {
+.nav-bar {
     grid-area: nav_bar;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: clamp(0.5rem, 2vw, var(--size-1200));
-    margin-left: auto;
-    list-style: none;
-}
-
-.container.ar .h_nav_bar {
-    margin-left: revert;
-    margin-right: auto;
-}
-
-.h_nav_item {
-    display: grid;
-    place-items: center;
-    position: relative;
-}
-.h_nav_item_text {
-    position: relative;
-    padding: 0.5rem 0.75rem;
-}
-.h_nav_item_text:hover {
-    cursor: pointer;
-}
-.h_nav_item svg {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-.h_nav_item a {
-    display: inline-block;
-    text-decoration: none;
-    color: var(--clr-secondary);
-    line-height: 0;
 }

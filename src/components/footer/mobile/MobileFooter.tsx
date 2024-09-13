@@ -1,4 +1,3 @@
-// import { Trans } from 'react-i18next/TransWithoutContext';
 import { SupportedLanguages, languages } from '@/i18n/settings';
 import { PATHNAME_HEADER_NAME } from '@/utils/constants';
 import { headers } from 'next/headers';

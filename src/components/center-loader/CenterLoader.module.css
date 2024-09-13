@@ -1,7 +1,0 @@
-.container {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    inset: 0;
-    background-color: var(--clr-neutral-grey);
-}

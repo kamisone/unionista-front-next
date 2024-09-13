@@ -1,5 +1,4 @@
 import Hamburger from '@/components/Hamburger/Hamburger';
-import styles from '@/components/header/mobile/MobileHeader.module.css';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
@@ -23,16 +22,20 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
     const t = i18nTranslation(lng, 'header');
 
     return (
-        <div className={clsx(styles.container, styles[lng])}>
-            <div className={styles.top_part}>
-                <figure className={styles.logo}>
-                    <img src="/assets/icons/unionista-logo2.png" alt="logo" />
+        <div className={'relative z-[1]'}>
+            <div className={'flex justify-between items-center flex-wrap'}>
+                <figure>
+                    <img
+                        className={'max-w-20'}
+                        src="/assets/icons/unionista-logo2.png"
+                        alt="logo"
+                    />
                 </figure>
                 <ul
                     className={clsx(
-                        styles.nav_bar,
+                        'flex items-center justify-between ml-auto list-none',
                         lng === SupportedLanguagesEnum.AR
-                            ? UthmanicFont.className
+                            ? `${UthmanicFont.className} ml-[revert] mr-auto`
                             : Graphik.className
                     )}
                 >
@@ -42,16 +45,15 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                         >
                             <span
                                 className={clsx(
-                                    styles.nav_item,
-                                    styles.text,
-                                    styles.signin
+                                    'p-2',
+                                    'text-[clamp(0.65rem,3.5vw,1rem)]'
                                 )}
                             >
                                 {t('sign-in.title')}
                             </span>
                         </LinkTransparentButton>
                     )}
-                    <li className={clsx(styles.nav_item, styles.country_icon)}>
+                    <li className={clsx('relative p-2')}>
                         <SwitchLanguage lng={lng} />
                     </li>
                     <li
@@ -59,64 +61,30 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             // @ts-ignore
                             '--nav-icon-title': `"${t('icons.hover.admin')}"`,
                         }}
-                        className={clsx(
-                            styles.nav_item,
-                            styles.icon,
-                            styles.bo_icon
-                        )}
+                        className={clsx('relative p-2')}
                     >
-                        <LinkTransparentButton isProtected to={`/${lng}/admin`}>
+                        <LinkTransparentButton isProtected to={`/${lng}/admin`} utilityClasses='inline-block leading-[0]'>
                             <BoSettingsIcon />
                         </LinkTransparentButton>
                     </li>
-                    <li
-                        className={clsx(
-                            styles.nav_item,
-                            styles.icon,
-                            styles.notif
-                        )}
-                    >
-                        {/* <Link
-                            href={`/${lng}/notifications`}
-                            style={{
-                                // @ts-ignore
-                                '--nav-icon-title': `"${t(
-                                    'icons.hover.notifications'
-                                )}"`,
-                            }}
-                        >
-                            <NotificationIcon />
-                        </Link> */}
-                        <LinkTransparentButton to={`/${lng}/notifications`}>
+                    <li className={clsx('relative p-2')}>
+                        <LinkTransparentButton to={`/${lng}/notifications`} utilityClasses='inline-block leading-[0]'>
                             <NotificationIcon />
                         </LinkTransparentButton>
                     </li>
-                    <li
-                        className={clsx(
-                            styles.nav_item,
-                            styles.icon,
-                            styles.cart_icon
-                        )}
-                    >
-                        {/* <Link
-                            href={`/${lng}/cart`}
-                            style={{
-                                // @ts-ignore
-                                '--nav-icon-title': `"${t(
-                                    'icons.hover.cart'
-                                )}"`,
-                            }}
-                        >
-                            <CartIcon />
-                        </Link> */}
-                        <LinkTransparentButton to={`/${lng}/cart`}>
+                    <li className={clsx('relative p-2')}>
+                        <LinkTransparentButton to={`/${lng}/cart`} utilityClasses='inline-block leading-[0]'>
                             <CartIcon />
                         </LinkTransparentButton>
                     </li>
                 </ul>
             </div>
             {/* sub part */}
-            <div className={clsx(styles.sub_part)}>
+            <div
+                className={
+                    'grid grid-cols-[auto_1fr] content-center gap-[clamp(0rem,1.2vw,1rem)]'
+                }
+            >
                 <LinkTransparentButton
                     isProtected
                     to={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
