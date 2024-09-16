@@ -6,8 +6,10 @@ import {
     accessTokenNames,
     CURRENT_USER_COOKIE_NAME,
     CURRENT_USER_HEADER_NAME,
+    modalContentNames,
     PENDING_REDIRECT_PATH_NAME,
 } from '@/utils/constants';
+import { ModalContentMapping } from '@/utils/modal';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function setAuthMiddleware(
@@ -72,13 +74,15 @@ export async function setAuthMiddleware(
             }
         ) as unknown as SubMiddlewareReturnType;
     } else {
-        const path = req.nextUrl.pathname + req.nextUrl.search;
-        if (getProtectedPaths(lng).some((p) => path.includes(p))) {
+        const pathWithSearch = req.nextUrl.pathname + req.nextUrl.search;
+        if (getProtectedPaths(lng).some((p) => pathWithSearch.includes(p))) {
             const response = NextResponse.redirect(
-                new URL(`/${lng}?modal_content=signin`, req.url)
+                new URL(
+                    `/${lng}?${modalContentNames.QUERY_NAME}=${ModalContentMapping.SIGN_IN}`,
+                    req.url
+                )
             );
-            console.log('yesss: ', path);
-            response.cookies.set(PENDING_REDIRECT_PATH_NAME, path);
+            response.cookies.set(PENDING_REDIRECT_PATH_NAME, pathWithSearch);
             response.cookies.set(
                 CURRENT_USER_COOKIE_NAME,
                 JSON.stringify(null)

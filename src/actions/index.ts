@@ -18,5 +18,4 @@ export async function fetchProductsCategories(lng: SupportedLanguages) {
 //         isModalOpen: true,
 //         currentModalContent: content,
 //     };
-//     console.log('modal: ', modalService.state);
 // }

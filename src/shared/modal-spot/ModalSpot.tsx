@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { ReactNode } from 'react';
 import LinkTransparentButton from '../link-transparent-button/LinkTransparentButton';
 import ScaleBgWrapper from '../scale-bg-wrapper/ScaleBgWrapper';
-import Link from 'next/link';
+import { modalContentNames } from '@/utils/constants';
 
 interface ModalSpotProps {
     children: ReactNode[] | ReactNode | string;
@@ -28,6 +28,7 @@ function ModalSpot({
 }: ModalSpotProps) {
     return (
         <div
+            data-modal-spot
             className={clsx(styles.container, styles[animationDirection], {
                 [styles.is_desktop]: isDesktop,
             })}
@@ -52,7 +53,9 @@ function ModalSpot({
                             </h2>
                         </>
                     )}
-                    <LinkTransparentButton to={`/${lng}`}>
+                    <LinkTransparentButton
+                        deleteQuerySearch={modalContentNames.QUERY_NAME}
+                    >
                         {isDesktop ? (
                             <ScaleBgWrapper>
                                 <CloseIcon />

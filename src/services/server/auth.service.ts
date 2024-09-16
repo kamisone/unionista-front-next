@@ -58,20 +58,20 @@ export class AuthService extends ComponentsStateNotify<
         };
     }
 
-    static get localStorageKeys() {
-        return {
-            // local storage
-            ACCESS_TOKEN_ID: 'access-token-id',
-            REFRESH_TOKEN_ID: 'refresh-token-id',
-            USER_NOTIFIED_TO_SIGN_IN_ID: 'user-notified-to-signin',
-        };
-    }
+    // static get localStorageKeys() {
+    //     return {
+    //         // local storage
+    //         ACCESS_TOKEN_ID: 'access-token-id',
+    //         REFRESH_TOKEN_ID: 'refresh-token-id',
+    //         USER_NOTIFIED_TO_SIGN_IN_ID: 'user-notified-to-signin',
+    //     };
+    // }
 
-    static get routerSegments() {
-        return {
-            SIGN_IN: '?modal_content=signin',
-        };
-    }
+    // static get routerSegments() {
+    //     return {
+    //         SIGN_IN: '?modal_content=signin',
+    //     };
+    // }
 
     async signinUser(
         data: Record<string, unknown> | FormData,

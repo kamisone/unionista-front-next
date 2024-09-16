@@ -12,6 +12,7 @@ import TextInput from '@/shared/text-input/TextInput';
 import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
 import SwitchLanguage from '../../switch-language/SwitchLanguage';
+import { modalContentNames } from '@/utils/constants';
 
 interface HeaderProps {
     lng: SupportedLanguages;
@@ -41,7 +42,10 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                 >
                     {!user && (
                         <LinkTransparentButton
-                            to={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
+                            addQuerySearch={{
+                                key: modalContentNames.QUERY_NAME,
+                                value: ModalContentMapping.SIGN_IN,
+                            }}
                         >
                             <span
                                 className={clsx(
@@ -63,17 +67,27 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                         }}
                         className={clsx('relative p-2')}
                     >
-                        <LinkTransparentButton isProtected to={`/${lng}/admin`} utilityClasses='inline-block leading-[0]'>
+                        <LinkTransparentButton
+                            isProtected
+                            to={`/${lng}/admin`}
+                            utilityClasses="inline-block leading-[0]"
+                        >
                             <BoSettingsIcon />
                         </LinkTransparentButton>
                     </li>
                     <li className={clsx('relative p-2')}>
-                        <LinkTransparentButton to={`/${lng}/notifications`} utilityClasses='inline-block leading-[0]'>
+                        <LinkTransparentButton
+                            to={`/${lng}/notifications`}
+                            utilityClasses="inline-block leading-[0]"
+                        >
                             <NotificationIcon />
                         </LinkTransparentButton>
                     </li>
                     <li className={clsx('relative p-2')}>
-                        <LinkTransparentButton to={`/${lng}/cart`} utilityClasses='inline-block leading-[0]'>
+                        <LinkTransparentButton
+                            to={`/${lng}/cart`}
+                            utilityClasses="inline-block leading-[0]"
+                        >
                             <CartIcon />
                         </LinkTransparentButton>
                     </li>
@@ -87,7 +101,10 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
             >
                 <LinkTransparentButton
                     isProtected
-                    to={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
+                    addQuerySearch={{
+                        key: modalContentNames.QUERY_NAME,
+                        value: ModalContentMapping.MENU_DRAWER,
+                    }}
                 >
                     <Hamburger />
                 </LinkTransparentButton>

@@ -11,6 +11,7 @@ import InputControl from '@/shared/input-control/InputControl';
 import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
 import ScaleBgWrapper from '@/shared/scale-bg-wrapper/ScaleBgWrapper';
 import TextInput from '@/shared/text-input/TextInput';
+import { modalContentNames } from '@/utils/constants';
 import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
 import Hamburger from '../../Hamburger/Hamburger';
@@ -51,7 +52,10 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                 >
                     <LinkTransparentButton
                         isProtected
-                        to={`/${lng}?modal_content=${ModalContentMapping.MENU_DRAWER}`}
+                        addQuerySearch={{
+                            key: modalContentNames.QUERY_NAME,
+                            value: ModalContentMapping.MENU_DRAWER,
+                        }}
                     >
                         <div
                             className={clsx(
@@ -95,7 +99,10 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                 >
                     {!user && (
                         <LinkTransparentButton
-                            to={`/${lng}?modal_content=${ModalContentMapping.SIGN_IN}`}
+                            addQuerySearch={{
+                                key: modalContentNames.QUERY_NAME,
+                                value: ModalContentMapping.SIGN_IN,
+                            }}
                         >
                             <button className="py-2 px-3 onhover_bg_grey hover:cursor-pointer">
                                 {t('sign-in.title')}

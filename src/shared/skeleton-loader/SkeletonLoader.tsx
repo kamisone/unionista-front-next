@@ -18,7 +18,6 @@ export default class SkeletonLoader extends React.Component<
     };
     componentDidMount(): void {
         // loadingService.addNotifier((options) => {
-        //     console.log('callled: ', options?.state.isLoading);
         //     options &&
         //         this.setState({
         //             isLoading: options.state.isLoading,

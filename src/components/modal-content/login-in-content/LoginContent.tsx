@@ -18,6 +18,7 @@ import {
     accessTokenNames,
     CURRENT_USER_COOKIE_NAME,
     modalContentNames,
+    PATHNAME_HEADER_NAME,
     PENDING_REDIRECT_PATH_NAME,
     TOAST_COOKIE_NAME,
 } from '@/utils/constants';
@@ -25,6 +26,7 @@ import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
 import { cookies, headers } from 'next/headers';
 import { redirect, RedirectType } from 'next/navigation';
+import { stripQueryParamFromUrl } from '@/utils/query-params';
 
 const authService = AuthService.instance;
 
@@ -46,6 +48,8 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
     const currentModalContent = headers().get(
         modalContentNames.HEADER_NAME
     ) as ModalContentMapping | null;
+
+    const pathWithSearch = headers().get(PATHNAME_HEADER_NAME) || '';
 
     const isSignin = currentModalContent == ModalContentMapping.SIGN_IN;
 
@@ -120,7 +124,13 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 cookies().set(PENDING_REDIRECT_PATH_NAME, '', { maxAge: 0 });
                 return redirect(redirectTo.value, RedirectType.replace);
             }
-            return redirect(`/${lng}`, RedirectType.replace);
+            return redirect(
+                stripQueryParamFromUrl(
+                    pathWithSearch,
+                    modalContentNames.QUERY_NAME
+                ),
+                RedirectType.replace
+            );
         }
 
         // Error notification
@@ -132,9 +142,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
             })
         );
 
-        return redirect(
-            `/${lng}?modal_content=${isSignin ? 'signin' : 'signup'}`
-        );
+        return redirect(pathWithSearch);
     }
 
     return (
@@ -153,11 +161,13 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                 </h2>
 
                 <LinkTransparentButton
-                    to={`/${lng}?modal_content=${
-                        currentModalContent === ModalContentMapping.SIGN_IN
-                            ? ModalContentMapping.SIGN_UP
-                            : ModalContentMapping.SIGN_IN
-                    }`}
+                    addQuerySearch={{
+                        key: modalContentNames.QUERY_NAME,
+                        value:
+                            currentModalContent === ModalContentMapping.SIGN_IN
+                                ? ModalContentMapping.SIGN_UP
+                                : ModalContentMapping.SIGN_IN,
+                    }}
                 >
                     <ActionButton
                         variant="secondary"

@@ -1,4 +1,5 @@
 import '@/app/[lng]/globals.css';
+import ExternalRouter from '@/components/ExternalRouter/ExternalRouter';
 import Notifier from '@/components/notifier/Notifier';
 import {
     SupportedLanguages,
@@ -27,6 +28,7 @@ function RootLayout({ children, params: { lng } }: RootLayoutProps) {
             <body>
                 {children}
                 <Notifier />
+                <ExternalRouter />
             </body>
         </html>
     );

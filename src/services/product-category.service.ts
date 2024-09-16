@@ -63,7 +63,6 @@ export class ProductCategoryService extends ComponentsStateNotify<
     }): Promise<ProductCategory[]> {
         try {
             const user = headers().get(CURRENT_USER_HEADER_NAME);
-            console.log('user : ', user && JSON.parse(user));
             const response = await httpService.get<ProductCategory[]>({
                 path: ProductCategoryService.endpoints.ALL_PRODUCT_CATEGORIES,
                 queryParams: {

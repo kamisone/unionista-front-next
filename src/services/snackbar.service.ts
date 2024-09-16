@@ -1,10 +1,12 @@
 // import 'client-only';
+'use client';
 
+import { Toast } from '@/components/notifier/Notifier';
+import { TOAST_COOKIE_NAME } from '@/utils/constants';
 import { isBrowser } from '@/utils/is-browser';
 import { deleteCookie, getCookies } from '@/utils/query-params';
 import { ComponentsStateNotify } from './components-state-notify.service';
-import { TOAST_COOKIE_NAME } from '@/utils/constants';
-import { Toast } from '@/components/notifier/Notifier';
+import { RouterService } from './router.service';
 
 export interface INotifyOptions {
     state: SnackbarState;
@@ -22,6 +24,8 @@ export enum SnackbarSeverity {
 }
 
 export const SNACKBAR_DURATION = 5000;
+
+const routerService = RouterService.instance;
 
 export class SnackbarService extends ComponentsStateNotify<
     SnackbarState,
