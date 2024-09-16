@@ -63,5 +63,6 @@ jobs:
                   --from-literal JWT_ACCESS_KEY=${{ secrets.JWT_ACCESS_KEY }} \
                   --from-literal JWT_REFRESH_KEY=${{ secrets.JWT_REFRESH_KEY }}
                   kubectl apply -f /srv/k8s/front
-    
+                  echo y | docker exec -i minikube docker image prune -a
+                  echo y | docker exec -i minikube docker volume prune -a
     
