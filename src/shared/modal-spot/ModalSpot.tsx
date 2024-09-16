@@ -11,33 +11,37 @@ import { modalContentNames } from '@/utils/constants';
 interface ModalSpotProps {
     children: ReactNode[] | ReactNode | string;
     lng: SupportedLanguages;
-    animationDirection?:
-        | 'animate_to_top'
-        | 'animate_to_bottom'
-        | 'animate_to_center';
+    isMobile?: boolean;
     headingTitle?: string;
-    isDesktop?: boolean;
+    type: 'bottom' | 'center' | 'side';
 }
 
 function ModalSpot({
     children,
     headingTitle,
     lng,
-    animationDirection = 'animate_to_top',
-    isDesktop = false,
+    type,
+    isMobile = false,
 }: ModalSpotProps) {
     return (
         <div
             data-modal-spot
-            className={clsx(styles.container, styles[animationDirection], {
-                [styles.is_desktop]: isDesktop,
-            })}
+            className={clsx(
+                styles.container,
+                styles[type],
+                'fixed z-[3] inset-0'
+            )}
         >
-            <div className={clsx(styles.content)}>
+            <div
+                className={clsx(
+                    styles.content,
+                    'absolute grid grid-rows-[0fr] w-full bg-white text-secondary'
+                )}
+            >
                 <div
-                    className={clsx({
-                        [styles.title_container]: !!headingTitle,
-                    })}
+                    className={clsx(
+                        'flex items-center justify-between pt-4 pb-6 px-4'
+                    )}
                 >
                     {headingTitle && (
                         <>
@@ -46,7 +50,8 @@ function ModalSpot({
                                 className={clsx(
                                     lng === SupportedLanguagesEnum.AR
                                         ? UthmanicFont.className
-                                        : Graphik.className
+                                        : Graphik.className,
+                                    'font-normal text-xl first-letter:uppercase'
                                 )}
                             >
                                 {headingTitle}
@@ -56,12 +61,12 @@ function ModalSpot({
                     <LinkTransparentButton
                         deleteQuerySearch={modalContentNames.QUERY_NAME}
                     >
-                        {isDesktop ? (
+                        {isMobile ? (
+                            <CloseIcon />
+                        ) : (
                             <ScaleBgWrapper>
                                 <CloseIcon />
                             </ScaleBgWrapper>
-                        ) : (
-                            <CloseIcon />
                         )}
                     </LinkTransparentButton>
                 </div>

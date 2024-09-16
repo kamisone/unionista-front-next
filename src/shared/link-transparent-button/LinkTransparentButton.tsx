@@ -46,8 +46,6 @@ export default function LinkTransparentButton(
         });
     }, []);
 
-    const locale = getLocale();
-
     const pathWithSearch = `${pathname}?${searchParams.toString()}`;
     const href =
         props.to ??
@@ -71,10 +69,10 @@ export default function LinkTransparentButton(
                 if (props.isProtected && !isUserAuthenticated) {
                     if (
                         !document.cookie.includes(
-                            `${PENDING_REDIRECT_PATH_NAME}=${props.to}`
+                            `${PENDING_REDIRECT_PATH_NAME}=${href}`
                         )
                     ) {
-                        document.cookie = `${PENDING_REDIRECT_PATH_NAME}=${props.to}`;
+                        document.cookie = `${PENDING_REDIRECT_PATH_NAME}=${href}`;
                     }
                     startTransition(() => {
                         return router.push(

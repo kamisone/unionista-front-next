@@ -9,11 +9,13 @@ import MenuDrawerNavContent from '../modal-content/menu-drawer-nav-content/MenuD
 interface CenterModalProps {
     lng: SupportedLanguages;
     currentModalContent: ModalContentMapping;
+    isMobile?: boolean;
 }
 
 const CenterModal = async function ({
     lng,
     currentModalContent,
+    isMobile = false,
 }: CenterModalProps) {
     let Content: FC | null = null;
     switch (currentModalContent) {
@@ -33,7 +35,8 @@ const CenterModal = async function ({
         <ModalSpot
             lng={lng}
             headingTitle={getModalTitle(currentModalContent, lng)}
-            isDesktop
+            type="center"
+            isMobile={isMobile}
         >
             <Suspense key={currentModalContent} fallback={<LoadingIndicator />}>
                 <Content />

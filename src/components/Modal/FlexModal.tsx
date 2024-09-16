@@ -4,6 +4,7 @@ import { modalContentNames } from '@/utils/constants';
 import { ModalContentMapping } from '@/utils/modal';
 import { headers } from 'next/headers';
 import CenterModal from '../center-modal/CenterModal';
+import SideModal from '../side-modal/SideModal';
 
 interface FlexModalProps {
     isMobileDevice: boolean;
@@ -16,17 +17,31 @@ async function FlexModal(props: FlexModalProps) {
         modalContentNames.HEADER_NAME
     ) as ModalContentMapping | null;
     if (currentModalContent) {
-        return props.isMobileDevice ? (
-            <BottomModal
-                lng={props.lng}
-                currentModalContent={currentModalContent}
-            />
-        ) : (
-            <CenterModal
-                lng={props.lng}
-                currentModalContent={currentModalContent}
-            />
-        );
+        if (currentModalContent === ModalContentMapping.MENU_DRAWER) {
+            return (
+                <SideModal
+                    lng={props.lng}
+                    currentModalContent={currentModalContent}
+                    isMobile={props.isMobileDevice}
+                />
+            );
+        } else if (props.isMobileDevice) {
+            return (
+                <BottomModal
+                    lng={props.lng}
+                    currentModalContent={currentModalContent}
+                    isMobile={props.isMobileDevice}
+                />
+            );
+        } else {
+            return (
+                <CenterModal
+                    lng={props.lng}
+                    currentModalContent={currentModalContent}
+                    isMobile={props.isMobileDevice}
+                />
+            );
+        }
     }
 }
 

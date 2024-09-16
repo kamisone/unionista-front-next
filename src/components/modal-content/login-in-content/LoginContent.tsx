@@ -119,6 +119,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
               ));
 
         if (response.success) {
+            
             const redirectTo = cookies().get(PENDING_REDIRECT_PATH_NAME);
             if (redirectTo) {
                 cookies().set(PENDING_REDIRECT_PATH_NAME, '', { maxAge: 0 });
