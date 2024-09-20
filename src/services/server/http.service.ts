@@ -68,10 +68,15 @@ export class HttpService {
             headers[httpHeadersNames.CONTENT_TYPE] =
                 httpHeadersValues.APPLICATION_JSON;
         }
+        const accessToken =
+            cookies().get(accessTokenNames.ACCESS_TOKEN) || null;
         return fetch(`${process.env.API_BASE_URL_SERVER}/${path}`, {
             method: httpMethods.POST,
             body: isFormData ? body : JSON.stringify(body),
-            headers,
+            headers: {
+                ...headers,
+                Authorization: `bearer ${accessToken && accessToken.value}`,
+            },
         }).then(async (headers) => {
             if (headers.status >= 200 && headers.status < 300) {
                 return headers.json();
