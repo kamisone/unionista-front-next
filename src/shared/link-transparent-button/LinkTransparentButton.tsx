@@ -122,6 +122,20 @@ export default function LinkTransparentButton({
             )}
             onClick={(e) => {
                 e.preventDefault();
+                let href =
+                    to ??
+                    (addQuerySearch
+                        ? addQueryParamToUrl(
+                              pathWithSearch,
+                              addQuerySearch.key,
+                              addQuerySearch.value
+                          )
+                        : deleteQuerySearch
+                          ? stripQueryParamFromUrl(
+                                pathWithSearch,
+                                deleteQuerySearch
+                            )
+                          : '');
                 if (isProtected && !isUserAuthenticated) {
                     if (
                         !document.cookie.includes(
