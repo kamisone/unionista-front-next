@@ -17,6 +17,7 @@ import {
     ReactNode,
     useEffect,
     useId,
+    useLayoutEffect,
     useRef,
     useState,
     useTransition,
@@ -63,7 +64,7 @@ export default function LinkTransparentButton({
         });
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (isInitialMount.current) {
             isInitialMount.current = false;
         } else {
@@ -86,9 +87,12 @@ export default function LinkTransparentButton({
                 };
             }
         }
+    }, [isPending]);
+
+    useEffect(() => {
         return () => {
+            console.log('is unmounting: ', loaderService.state.isLoadingIds);
             if (loaderService.state.isLoadingIds.includes(instanceId)) {
-                console.log('is unmounting');
                 loaderService.state = {
                     isLoadingIds: loaderService.state.isLoadingIds.filter(
                         (id) => id !== instanceId
@@ -96,7 +100,7 @@ export default function LinkTransparentButton({
                 };
             }
         };
-    }, [isPending]);
+    }, []);
 
     const pathWithSearch = `${pathname}?${searchParams.toString()}`;
     const href =
@@ -122,20 +126,6 @@ export default function LinkTransparentButton({
             )}
             onClick={(e) => {
                 e.preventDefault();
-                let href =
-                    to ??
-                    (addQuerySearch
-                        ? addQueryParamToUrl(
-                              pathWithSearch,
-                              addQuerySearch.key,
-                              addQuerySearch.value
-                          )
-                        : deleteQuerySearch
-                          ? stripQueryParamFromUrl(
-                                pathWithSearch,
-                                deleteQuerySearch
-                            )
-                          : '');
                 if (isProtected && !isUserAuthenticated) {
                     if (
                         !document.cookie.includes(
@@ -154,7 +144,6 @@ export default function LinkTransparentButton({
                         );
                     });
                 } else {
-                    console.log('href: ', href);
                     startTransition(() => {
                         return router.push(href);
                     });
