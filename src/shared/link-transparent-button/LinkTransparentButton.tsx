@@ -154,6 +154,7 @@ export default function LinkTransparentButton({
                         );
                     });
                 } else {
+                    console.log('href: ', href);
                     startTransition(() => {
                         return router.push(href);
                     });
