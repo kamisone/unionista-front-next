@@ -12,7 +12,7 @@ const DesktopHome = ({ lng }: DesktopHomeProps) => {
         <div className={clsx(styles.container)}>
             <nav className={styles.category_nav}>
                 <ul>
-                    <li>
+                    {/* <li>
                         <Link href={`/${lng}/home-favorites`} />
                         Home Favorites
                     </li>
@@ -23,7 +23,8 @@ const DesktopHome = ({ lng }: DesktopHomeProps) => {
                     <li>
                         <Link href={`/${lng}/gifts`} />
                         Gifts
-                    </li>
+                    </li> */}
+                    
                 </ul>
             </nav>
             <span></span>

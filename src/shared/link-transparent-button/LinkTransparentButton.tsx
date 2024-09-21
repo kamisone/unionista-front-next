@@ -42,7 +42,7 @@ export default function LinkTransparentButton({
     addQuerySearch,
     deleteQuerySearch,
     isProtected,
-    prefetch = true,
+    prefetch,
     utilityClasses,
     active,
 }: LinkTransparentButtonProps) {
