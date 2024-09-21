@@ -3,19 +3,15 @@ import React from 'react';
 const SearchIcon = () => {
     return (
         <svg
-            width="24"
-            height="24"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
+            width="20"
+            height="20"
             aria-hidden="true"
             focusable="false"
         >
-            <path
-                fill="currentColor"
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M10.5 19a8.464 8.464 0 0 0 5.262-1.824l4.864 4.864 1.415-1.414-4.865-4.865A8.5 8.5 0 1 0 10.5 19Zm0-2a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Z"
-            />
+            <path fill="currentColor" d="M10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18ZM10,4a6,6,0,1,0,6,6A6.007,6.007,0,0,0,10,4Z"></path>
+            <path fill="currentColor" d="M21,22a1,1,0,0,1-.707-0.293l-4-4a1,1,0,0,1,1.414-1.414l4,4A1,1,0,0,1,21,22Z"></path>
         </svg>
     );
 };

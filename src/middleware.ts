@@ -5,6 +5,7 @@ import { getLocaleMiddleware } from './middlewares/get-locale.middleware';
 import { modalMiddleware } from './middlewares/modal.middleware';
 import { setAuthMiddleware } from './middlewares/set-auth.middleware';
 import { setPathnameMiddleware } from './middlewares/set-pathname.middleware';
+import { rolesMiddleware } from './middlewares/roles.middleware';
 
 export const config = {
     matcher: [
@@ -17,7 +18,10 @@ export const config = {
 export async function middleware(req: NextRequest) {
     // Sub middlewares can return NextResponse only for redirecting.
     const cbs = [];
-
+    console.log(
+        'request: ',
+        req.method + ' -- ' + req.nextUrl.pathname + req.nextUrl.search
+    );
     const getLocaleResult = getLocaleMiddleware(req);
     if (getLocaleResult instanceof NextResponse) {
         return getLocaleResult;
@@ -28,9 +32,8 @@ export async function middleware(req: NextRequest) {
 
     const lng = getLocaleResult.lng as SupportedLanguages;
 
-    // exclude prefetch requests from other middlewares
-    //@ts-ignore
-    const headers = req.headers;
+    // exclude prefetch requests from other middlewares (only in PROD)
+    const headers = getLocaleResult.request.headers;
     const isPrefetch =
         headers.get('x-next-router-prefetch') ||
         headers.get('x-purpose') === 'prefetch';
@@ -55,7 +58,7 @@ export async function middleware(req: NextRequest) {
     }
 
     // I18n middleware
-    const i18Result = i18nMiddleware(req, lng);
+    const i18Result = i18nMiddleware(getLocaleResult.request, lng);
     if (i18Result instanceof NextResponse) {
         return i18Result;
     }
@@ -72,8 +75,17 @@ export async function middleware(req: NextRequest) {
         cbs.push(authResult.cb);
     }
 
+    // Roles middleware
+    const rolesResult = await rolesMiddleware(authResult.request, lng);
+    if (rolesResult instanceof NextResponse) {
+        return rolesResult;
+    }
+    if (rolesResult.cb) {
+        cbs.push(rolesResult.cb);
+    }
+
     // Modal middleware
-    const modalResult = modalMiddleware(i18Result.request);
+    const modalResult = modalMiddleware(rolesResult.request);
     if (modalResult instanceof NextResponse) {
         return modalResult;
     }
@@ -99,6 +111,14 @@ export async function middleware(req: NextRequest) {
     });
 
     response.cookies.set(lngCookieName, lng);
+
+    console.log(
+        'arrived here: ',
+        pathnameResult.request.method +
+            ' ... ' +
+            pathnameResult.request.nextUrl.pathname +
+            pathnameResult.request.nextUrl.search
+    );
 
     return response;
 }

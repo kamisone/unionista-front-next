@@ -5,12 +5,14 @@ import * as jose from 'jose';
 
 type CBType = typeof Function;
 
+export type Role = 'admin' | 'user';
 export interface JwtPayload {
     email: string;
     sub: string;
     iat: number;
     exp: number;
     iss: string;
+    role: Role;
 }
 
 export interface AuthState {
@@ -159,7 +161,7 @@ export class AuthService extends ComponentsStateNotify<
             ? new TextEncoder().encode(process.env.JWT_REFRESH_KEY)
             : new TextEncoder().encode(process.env.JWT_ACCESS_KEY);
         try {
-            const result = await jose.jwtVerify(token, secret);
+            const result = await jose.jwtVerify<JwtPayload>(token, secret);
             return {
                 success: true,
                 payload: result.payload,
@@ -196,6 +198,6 @@ export interface AuthTokens {
 
 export interface JwtResponse {
     success: boolean;
-    payload?: jose.JWTPayload;
+    payload?: JwtPayload;
     message?: string;
 }

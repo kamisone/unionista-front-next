@@ -16,6 +16,9 @@ async function FlexModal(props: FlexModalProps) {
     const currentModalContent = headers().get(
         modalContentNames.HEADER_NAME
     ) as ModalContentMapping | null;
+
+    console.log('currentModal: ', currentModalContent)
+
     if (currentModalContent) {
         if (currentModalContent === ModalContentMapping.MENU_DRAWER) {
             return (

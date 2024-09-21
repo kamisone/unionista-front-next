@@ -17,14 +17,10 @@ interface MenuDrawerNavContentProps {
     lng: SupportedLanguages;
 }
 
-const MenuDrawerNavContent = async (props: MenuDrawerNavContentProps) => {
+async function MenuDrawerNavContent(props: MenuDrawerNavContentProps) {
     const { lng } = props;
 
-    const menuItems = (await new Promise(function (res) {
-        setTimeout(async () => {
-            res(await fetchProductsCategories(lng));
-        }, 8000);
-    })) as MenuDrawerNavItem[];
+    const menuItems = await fetchProductsCategories(lng);
 
     return (
         <ul
@@ -54,6 +50,6 @@ const MenuDrawerNavContent = async (props: MenuDrawerNavContentProps) => {
             })}
         </ul>
     );
-};
+}
 
 export default MenuDrawerNavContent;

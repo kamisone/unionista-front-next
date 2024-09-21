@@ -1,6 +1,7 @@
 import '@/app/[lng]/globals.css';
 import ExternalRouter from '@/components/ExternalRouter/ExternalRouter';
 import Notifier from '@/components/notifier/Notifier';
+import TransitionLoader from '@/components/transition-loader/TransitionLoader';
 import {
     SupportedLanguages,
     SupportedLanguagesEnum,
@@ -25,10 +26,11 @@ function RootLayout({ children, params: { lng } }: RootLayoutProps) {
             lang={lng}
             dir={lng === SupportedLanguagesEnum.AR ? 'rtl' : 'ltr'}
         >
-            <body>
+            <body className='relative'>
                 {children}
                 <Notifier />
                 <ExternalRouter />
+                <TransitionLoader />
             </body>
         </html>
     );

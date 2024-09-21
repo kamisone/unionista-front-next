@@ -1,8 +1,7 @@
-import { AxiosError } from 'axios';
-import { HttpService } from '@/services/server/http.service';
 import { SupportedLanguages } from '@/i18n/settings';
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
-import { headers } from 'next/headers';
+import { HttpService } from '@/services/server/http.service';
+import { HttpException } from '@/shared/http-exception/HttpException';
 
 const httpService = HttpService.instance;
 
@@ -55,13 +54,13 @@ export class ProductCategoryService extends ComponentsStateNotify<
         };
     }
 
-    async list({
-        locale,
-    }: {
-        locale: SupportedLanguages;
-    }): Promise<ProductCategory[]> {
-        try {
-            const response = await httpService.get<ProductCategory[]>({
+    async list({ locale }: { locale: SupportedLanguages }): Promise<{
+        success: boolean;
+        data?: ProductCategory[];
+        message?: string;
+    }> {
+        return httpService
+            .get<ProductCategory[]>({
                 path: ProductCategoryService.endpoints.ALL_PRODUCT_CATEGORIES,
                 queryParams: {
                     locale,
@@ -72,24 +71,17 @@ export class ProductCategoryService extends ComponentsStateNotify<
                         },
                     ],
                 },
+            })
+            .then((data) => ({
+                success: true,
+                data,
+            }))
+            .catch((error: HttpException) => {
+                return {
+                    success: false,
+                    message: error.message,
+                };
             });
-
-            return response;
-        } catch (error: unknown) {
-            if (error instanceof AxiosError && error.response) {
-                if (error.response.status >= 500) {
-                    // snackbarService.openSnackbar({
-                    //     message: `Error: ${
-                    //         error.response.data?.message ?? error.message
-                    //     }`,
-                    //     severity: SnackbarSeverity.ERROR,
-                    // });
-                } else {
-                    throw error;
-                }
-            }
-            return [];
-        }
     }
 }
 

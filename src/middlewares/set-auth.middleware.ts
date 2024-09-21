@@ -1,4 +1,4 @@
-import { getProtectedPaths } from '@/config';
+import { getAdminPaths } from '@/config';
 import { SupportedLanguages } from '@/i18n/settings';
 import { SubMiddlewareReturnType } from '@/middleware';
 import { AuthService, JwtResponse } from '@/services/server/auth.service';
@@ -19,6 +19,7 @@ export async function setAuthMiddleware(
     const cookies = req.cookies;
     const accessToken = cookies.get(accessTokenNames.ACCESS_TOKEN);
     const refreshToken = cookies.get(accessTokenNames.REFRESH_TOKEN);
+    const pathWithSearch = req.nextUrl.pathname + req.nextUrl.search;
     let res: JwtResponse;
     if (
         accessToken &&
@@ -48,7 +49,7 @@ export async function setAuthMiddleware(
     ) {
         return AuthService.refreshToken(
             refreshToken.value,
-            async (data: any) => {
+            async (data: { accessToken: string }) => {
                 const res = await AuthService.verifyJwt(data.accessToken);
                 req.headers.set(
                     CURRENT_USER_HEADER_NAME,
@@ -74,8 +75,7 @@ export async function setAuthMiddleware(
             }
         ) as unknown as SubMiddlewareReturnType;
     } else {
-        const pathWithSearch = req.nextUrl.pathname + req.nextUrl.search;
-        if (getProtectedPaths(lng).some((p) => pathWithSearch.includes(p))) {
+        if (getAdminPaths().some((p) => pathWithSearch.includes(p))) {
             const response = NextResponse.redirect(
                 new URL(
                     `/${lng}?${modalContentNames.QUERY_NAME}=${ModalContentMapping.SIGN_IN}`,

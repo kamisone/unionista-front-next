@@ -21,6 +21,8 @@ module.exports = {
                 'translucent-black': 'rgba(0, 0, 0, 0.75)',
                 'primary-orange': 'orange',
                 'neon-green': 'rgb(125, 251, 125)',
+                'light-sage': 'rgb(225, 227, 223)',
+                'sky-blue': '#68e',
             },
         },
     },

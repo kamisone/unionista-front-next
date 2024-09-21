@@ -1,21 +1,19 @@
 'use server';
 
 import { SupportedLanguages } from '@/i18n/settings';
+import { ProductCategory } from '@/services/product-category.service';
 import { ProductCategoryService } from '@/services/server/product-category.service';
 
 const productCategoryService = ProductCategoryService.instance;
-// const modalService = ModalService.instance;
 
 export async function fetchProductsCategories(lng: SupportedLanguages) {
-    const productCategories = await productCategoryService.list({
+    const response = await productCategoryService.list({
         locale: lng,
     });
-    return productCategories;
-}
 
-// export async function openModal(content: ModalContentMapping) {
-//     modalService.state = {
-//         isModalOpen: true,
-//         currentModalContent: content,
-//     };
-// }
+    if (response.success) {
+        return response.data as ProductCategory[];
+    }
+
+    return [];
+}

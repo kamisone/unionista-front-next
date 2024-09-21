@@ -3,13 +3,12 @@ import clsx from 'clsx';
 import { ReactNode } from 'react';
 
 interface ScaleBgWrapperProps {
-    Icon?: ReactNode;
-    children?: ReactNode;
+    children: ReactNode;
 }
 
 const ScaleBgWrapper = (props: ScaleBgWrapperProps) => {
-    const { Icon, children } = props;
-    return <div className={clsx(styles.container)}>{Icon || children}</div>;
+    const { children } = props;
+    return <div className={clsx(styles.container)}>{children}</div>;
 };
 
 export default ScaleBgWrapper;

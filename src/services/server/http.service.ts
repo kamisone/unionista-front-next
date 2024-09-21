@@ -38,7 +38,13 @@ export class HttpService {
             headers: {
                 Authorization: `bearer ${user && user.accessToken}`,
             },
-        }).then((headers) => headers.json());
+        }).then(async (headers) => {
+            if (headers.status >= 200 && headers.status < 300) {
+                return headers.json() as T;
+            }
+            const error = await headers.json();
+            throw new HttpException(error.message, error.status);
+        });
     }
 
     async post<T>({

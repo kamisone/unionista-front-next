@@ -3,6 +3,18 @@ const nextConfig = {
     env: {
         API_BASE_URL_BROWSER: process.env.API_BASE_URL_BROWSER,
     },
+
+    // async redirects() {
+    //     return [
+    //         {
+    //             source: '/admin',
+    //             destination: '/admin/dashboard',
+    //             permanent: true,
+    //             locale: false
+    //         },
+    //     ];
+    // },
+
     // i18n: {
     //     // localeDetection: true,
     //     locales: ['en', 'fr', 'es'],

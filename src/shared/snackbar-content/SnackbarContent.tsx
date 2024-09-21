@@ -30,7 +30,9 @@ const SnackbarContent = ({
         >
             <p>{message}</p>
             <div style={{ color: 'white' }}>
-                <ScaleBgWrapper Icon={<CloseIcon />} />
+                <ScaleBgWrapper>
+                    <CloseIcon />
+                </ScaleBgWrapper>
             </div>
         </div>
     );

@@ -1,0 +1,5 @@
+{
+    "unauthorized": {
+        "role": "access denied. Insufficient permissions."
+    }
+}

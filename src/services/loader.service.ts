@@ -5,7 +5,7 @@ export interface INotifyOptions {
 }
 
 export interface LoaderState {
-    isLoading: boolean;
+    isLoadingIds: string[];
 }
 
 export class LoaderService extends ComponentsStateNotify<
@@ -17,7 +17,7 @@ export class LoaderService extends ComponentsStateNotify<
     static get instance() {
         if (!this._instance) {
             this._instance = new LoaderService({
-                isLoading: false,
+                isLoadingIds: [],
             });
         }
         return this._instance;

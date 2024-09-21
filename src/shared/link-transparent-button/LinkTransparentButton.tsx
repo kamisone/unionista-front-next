@@ -1,6 +1,6 @@
 'use client';
-import { getLocale } from '@/i18n';
 import { AuthService } from '@/services/auth.service';
+import { LoaderService } from '@/services/loader.service';
 import {
     modalContentNames,
     PENDING_REDIRECT_PATH_NAME,
@@ -13,9 +13,14 @@ import {
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ReactNode, useEffect, useState, useTransition } from 'react';
-import LoadingIndicator from '../loading-indicator/LoadingIndicator';
-import styles from './LinkTransparentButton.module.css';
+import {
+    ReactNode,
+    useEffect,
+    useId,
+    useRef,
+    useState,
+    useTransition
+} from 'react';
 
 interface LinkTransparentButtonProps {
     children: ReactNode;
@@ -25,26 +30,64 @@ interface LinkTransparentButtonProps {
     isProtected?: boolean;
     prefetch?: boolean;
     utilityClasses?: string;
+    active?: string;
 }
 
 const authService = AuthService.instance;
+const loaderService = LoaderService.instance;
 
-export default function LinkTransparentButton(
-    props: LinkTransparentButtonProps
-) {
+export default function LinkTransparentButton(props: LinkTransparentButtonProps) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
+
     const [isPending, startTransition] = useTransition();
     const [isUserAuthenticated, setIsUserAuthenticated] = useState(
         authService.state.user
     );
+    const isInitialMount = useRef(true);
+    const instanceId = useId();
 
     useEffect(() => {
         authService.addNotifier((options) => {
             options && setIsUserAuthenticated(!!options.state.user);
         });
     }, []);
+
+    useEffect(() => {
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+        } else {
+            console.log('isPending: ', isPending);
+            if (
+                isPending &&
+                !loaderService.state.isLoadingIds.includes(instanceId)
+            ) {
+                loaderService.state = {
+                    isLoadingIds: [
+                        ...loaderService.state.isLoadingIds,
+                        instanceId,
+                    ],
+                };
+            } else if (loaderService.state.isLoadingIds.includes(instanceId)) {
+                loaderService.state = {
+                    isLoadingIds: loaderService.state.isLoadingIds.filter(
+                        (id) => id !== instanceId
+                    ),
+                };
+            }
+        }
+        return () => {
+            if (loaderService.state.isLoadingIds.includes(instanceId)) {
+                console.log('is unmounting');
+                loaderService.state = {
+                    isLoadingIds: loaderService.state.isLoadingIds.filter(
+                        (id) => id !== instanceId
+                    ),
+                };
+            }
+        };
+    }, [isPending]);
 
     const pathWithSearch = `${pathname}?${searchParams.toString()}`;
     const href =
@@ -63,7 +106,11 @@ export default function LinkTransparentButton(
         <Link
             prefetch={props.prefetch}
             href={href}
-            className={clsx(styles.container, props.utilityClasses)}
+            className={clsx(
+                'relative no-underline text-inherit',
+                props.utilityClasses,
+                pathWithSearch.includes(href) && props.active
+            )}
             onClick={(e) => {
                 e.preventDefault();
                 if (props.isProtected && !isUserAuthenticated) {
@@ -91,11 +138,6 @@ export default function LinkTransparentButton(
             }}
         >
             {props.children}
-            {isPending && (
-                <div className={styles.transitioning}>
-                    <LoadingIndicator />
-                </div>
-            )}
         </Link>
     );
 }
