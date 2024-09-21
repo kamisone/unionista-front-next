@@ -8,10 +8,9 @@ interface AdminLayoutProps {
     params: { lng: SupportedLanguages };
 }
 const AdminLayout = ({ children, params: { lng } }: AdminLayoutProps) => {
-    
     return (
         <main className={styles.container}>
-            <SidePanel />
+            <SidePanel lng={lng} />
             <section className="p-4">{children}</section>
         </main>
     );

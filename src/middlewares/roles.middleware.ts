@@ -22,7 +22,7 @@ export async function rolesMiddleware(
         user &&
         user.role !== 'admin'
     ) {
-        const response = NextResponse.rewrite(new URL(`/${lng}`, req.url));
+        const response = NextResponse.redirect(new URL(`/${lng}`, req.url));
         response.cookies.set(
             TOAST_COOKIE_NAME,
             JSON.stringify({

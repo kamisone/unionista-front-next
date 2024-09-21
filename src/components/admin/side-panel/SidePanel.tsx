@@ -1,16 +1,22 @@
+import { SupportedLanguages } from '@/i18n/settings';
 import HomeIcon from '@/icons/home/HomeIcon';
 import ItemsIcon from '@/icons/items/ItemsIcon';
 import SearchIcon from '@/icons/search-icon/SearchIcon';
 import SettingsIcon from '@/icons/settings/SettingsIcon';
 import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
 
-export default function SidePanel() {
+interface SidePanelProps {
+    lng: SupportedLanguages;
+}
+
+export default function SidePanel({ lng }: SidePanelProps) {
     const routes = [
         { label: 'search', Icon: SearchIcon },
         { label: 'dashboard', Icon: HomeIcon },
         { label: 'listings', Icon: ItemsIcon },
         { label: 'settings', Icon: SettingsIcon },
     ];
+
     return (
         <section
             role="navigation"
@@ -24,7 +30,7 @@ export default function SidePanel() {
                 {routes.map((route) => (
                     <LinkTransparentButton
                         key={route.label}
-                        to={'/admin/' + route.label}
+                        to={`/${lng}/admin/${route.label}`}
                         utilityClasses="flex items-center gap-2"
                         active="bg-primary"
                     >
