@@ -19,7 +19,7 @@ import {
     useId,
     useRef,
     useState,
-    useTransition
+    useTransition,
 } from 'react';
 
 interface LinkTransparentButtonProps {
@@ -36,7 +36,16 @@ interface LinkTransparentButtonProps {
 const authService = AuthService.instance;
 const loaderService = LoaderService.instance;
 
-export default function LinkTransparentButton(props: LinkTransparentButtonProps) {
+export default function LinkTransparentButton({
+    children,
+    to,
+    addQuerySearch,
+    deleteQuerySearch,
+    isProtected,
+    prefetch = true,
+    utilityClasses,
+    active,
+}: LinkTransparentButtonProps) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -91,29 +100,29 @@ export default function LinkTransparentButton(props: LinkTransparentButtonProps)
 
     const pathWithSearch = `${pathname}?${searchParams.toString()}`;
     const href =
-        props.to ??
-        (props.addQuerySearch
+        to ??
+        (addQuerySearch
             ? addQueryParamToUrl(
                   pathWithSearch,
-                  props.addQuerySearch.key,
-                  props.addQuerySearch.value
+                  addQuerySearch.key,
+                  addQuerySearch.value
               )
-            : props.deleteQuerySearch
-              ? stripQueryParamFromUrl(pathWithSearch, props.deleteQuerySearch)
+            : deleteQuerySearch
+              ? stripQueryParamFromUrl(pathWithSearch, deleteQuerySearch)
               : '');
 
     return (
         <Link
-            prefetch={props.prefetch}
+            prefetch={prefetch}
             href={href}
             className={clsx(
                 'relative no-underline text-inherit',
-                props.utilityClasses,
-                pathWithSearch.includes(href) && props.active
+                utilityClasses,
+                pathWithSearch.includes(href) && active
             )}
             onClick={(e) => {
                 e.preventDefault();
-                if (props.isProtected && !isUserAuthenticated) {
+                if (isProtected && !isUserAuthenticated) {
                     if (
                         !document.cookie.includes(
                             `${PENDING_REDIRECT_PATH_NAME}=${href}`
@@ -137,7 +146,7 @@ export default function LinkTransparentButton(props: LinkTransparentButtonProps)
                 }
             }}
         >
-            {props.children}
+            {children}
         </Link>
     );
 }
