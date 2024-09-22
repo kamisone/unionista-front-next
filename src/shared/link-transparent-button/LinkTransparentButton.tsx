@@ -17,6 +17,7 @@ import {
     ReactNode,
     useEffect,
     useId,
+    useMemo,
     useRef,
     useState,
     useTransition,
@@ -51,7 +52,6 @@ export default function LinkTransparentButton({
     const searchParams = useSearchParams();
 
     const [isPending, startTransition] = useTransition();
-    const [isPending2, startTransition2] = useTransition();
     const [isUserAuthenticated, setIsUserAuthenticated] = useState(
         !!authService.state.user
     );
@@ -90,31 +90,6 @@ export default function LinkTransparentButton({
     }, [isPending]);
 
     useEffect(() => {
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
-        } else {
-            console.log('isPending: ', isPending2);
-            if (
-                isPending2 &&
-                !loaderService.state.isLoadingIds.includes(instanceId)
-            ) {
-                loaderService.state = {
-                    isLoadingIds: [
-                        ...loaderService.state.isLoadingIds,
-                        instanceId,
-                    ],
-                };
-            } else if (loaderService.state.isLoadingIds.includes(instanceId)) {
-                loaderService.state = {
-                    isLoadingIds: loaderService.state.isLoadingIds.filter(
-                        (id) => id !== instanceId
-                    ),
-                };
-            }
-        }
-    }, [isPending2]);
-
-    useEffect(() => {
         return () => {
             console.log('is unmounting: ', loaderService.state.isLoadingIds);
             if (loaderService.state.isLoadingIds.includes(instanceId)) {
@@ -128,17 +103,20 @@ export default function LinkTransparentButton({
     }, []);
 
     const pathWithSearch = `${pathname}?${searchParams.toString()}`;
-    const href =
-        to ??
-        (addQuerySearch
-            ? addQueryParamToUrl(
-                  pathWithSearch,
-                  addQuerySearch.key,
-                  addQuerySearch.value
-              )
-            : deleteQuerySearch
-              ? stripQueryParamFromUrl(pathWithSearch, deleteQuerySearch)
-              : '');
+    const href = useMemo(
+        () =>
+            to ??
+            (addQuerySearch
+                ? addQueryParamToUrl(
+                      pathWithSearch,
+                      addQuerySearch.key,
+                      addQuerySearch.value
+                  )
+                : deleteQuerySearch
+                  ? stripQueryParamFromUrl(pathWithSearch, deleteQuerySearch)
+                  : ''),
+        [to, addQuerySearch, deleteQuerySearch, pathWithSearch]
+    );
 
     return (
         <Link
@@ -150,16 +128,16 @@ export default function LinkTransparentButton({
                 pathWithSearch.includes(href) && active
             )}
             onClick={(e) => {
-                e.preventDefault();
-                if (isProtected && !isUserAuthenticated) {
-                    if (
-                        !document.cookie.includes(
-                            `${PENDING_REDIRECT_PATH_NAME}=${href}`
-                        )
-                    ) {
-                        document.cookie = `${PENDING_REDIRECT_PATH_NAME}=${href}`;
-                    }
-                    startTransition(() => {
+                startTransition(function () {
+                    e.preventDefault();
+                    if (isProtected && !isUserAuthenticated) {
+                        if (
+                            !document.cookie.includes(
+                                `${PENDING_REDIRECT_PATH_NAME}=${href}`
+                            )
+                        ) {
+                            document.cookie = `${PENDING_REDIRECT_PATH_NAME}=${href}`;
+                        }
                         return router.push(
                             addQueryParamToUrl(
                                 pathWithSearch,
@@ -167,12 +145,10 @@ export default function LinkTransparentButton({
                                 ModalContentMapping.SIGN_IN
                             )
                         );
-                    });
-                } else {
-                    startTransition2(() => {
+                    } else {
                         return router.push(href);
-                    });
-                }
+                    }
+                });
             }}
         >
             {children}
