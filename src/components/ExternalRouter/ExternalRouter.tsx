@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const routerService = RouterService.instance;
+ModalService.instance;
 
 export default function ExternalRouter() {
     const router = useRouter();
