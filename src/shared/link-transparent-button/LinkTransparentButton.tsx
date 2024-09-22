@@ -131,38 +131,40 @@ export default function LinkTransparentButton({
                 pathWithSearch.includes(href) && active
             )}
             onClick={(e) => {
-                startTransition(function () {
-                    e.preventDefault();
-                    if (isProtected && !user) {
-                        if (
-                            !document.cookie.includes(
-                                `${PENDING_REDIRECT_PATH_NAME}=${href}`
-                            )
-                        ) {
-                            document.cookie = `${PENDING_REDIRECT_PATH_NAME}=${href}`;
-                        }
-                        return router.push(
-                            addQueryParamToUrl(
-                                pathWithSearch,
-                                modalContentNames.QUERY_NAME,
-                                ModalContentMapping.SIGN_IN
-                            )
-                        );
-                    } else if (user) {
-                        if (isUserAuthorized(user, href)) {
-                            return router.push(href);
-                        } else {
-                            snackbarService.state = {
-                                toast: {
-                                    message: t('unauthorized.role'),
-                                    severity: SnackbarSeverity.ERROR,
-                                },
-                            };
-                        }
-                    } else {
-                        return router.push(href);
+                e.preventDefault();
+                if (isProtected && !user) {
+                    if (
+                        !document.cookie.includes(
+                            `${PENDING_REDIRECT_PATH_NAME}=${href}`
+                        )
+                    ) {
+                        document.cookie = `${PENDING_REDIRECT_PATH_NAME}=${href}`;
                     }
-                });
+                    return router.push(
+                        addQueryParamToUrl(
+                            pathWithSearch,
+                            modalContentNames.QUERY_NAME,
+                            ModalContentMapping.SIGN_IN
+                        )
+                    );
+                } else if (user) {
+                    if (isUserAuthorized(user, href)) {
+                        startTransition(() => {
+                            return router.push(href);
+                        });
+                    } else {
+                        snackbarService.state = {
+                            toast: {
+                                message: t('unauthorized.role'),
+                                severity: SnackbarSeverity.ERROR,
+                            },
+                        };
+                    }
+                } else {
+                    startTransition(() => {
+                        return router.push(href);
+                    });
+                }
             }}
         >
             {children}

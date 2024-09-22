@@ -3,6 +3,7 @@ import { HttpService } from '@/services/http.service';
 import { isBrowser } from '@/utils/is-browser';
 import { getCookies } from '@/utils/query-params';
 import { Role } from './server/auth.service';
+import { shallowCompareObjs } from '@/utils';
 
 type CBType = typeof Function;
 
@@ -39,7 +40,7 @@ export class AuthService extends ComponentsStateNotify<
         if (isBrowser()) {
             AuthService._auth_check_interval_id = setInterval(() => {
                 const user = AuthService.checkUserAuth();
-                if (!!user !== !!this.state.user) {
+                if (!shallowCompareObjs(user, this.state.user)) {
                     this.state = {
                         user: user,
                     };
