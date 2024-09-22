@@ -146,6 +146,7 @@ export default function LinkTransparentButton({
                             )
                         );
                     } else {
+                        console.log('href: ', href)
                         return router.push(href);
                     }
                 });

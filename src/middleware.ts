@@ -11,6 +11,10 @@ export const config = {
     matcher: [
         {
             source: '/((?!api|_next|assets|favicon.ico|sw.js|sitemap.xml|robots.txt).*)',
+            // missing: [
+            //     { type: 'header', key: 'next-router-prefetch' },
+            //     { type: 'header', key: 'purpose', value: 'prefetch' },
+            // ],
         },
     ],
 };
@@ -47,9 +51,27 @@ export async function middleware(req: NextRequest) {
             cbs.push(modalResult.cb);
         }
 
+        // Auth middleware
+        const authResult = await setAuthMiddleware(modalResult.request, lng);
+        if (authResult instanceof NextResponse) {
+            return authResult;
+        }
+        if (authResult.cb) {
+            cbs.push(authResult.cb);
+        }
+
+        // Roles middleware
+        const rolesResult = await rolesMiddleware(authResult.request, lng);
+        if (rolesResult instanceof NextResponse) {
+            return rolesResult;
+        }
+        if (rolesResult.cb) {
+            cbs.push(rolesResult.cb);
+        }
+
         // Prepare response
         const response = NextResponse.next({
-            request: modalResult.request,
+            request: rolesResult.request,
         });
         cbs.forEach((cb) => {
             cb(response);
