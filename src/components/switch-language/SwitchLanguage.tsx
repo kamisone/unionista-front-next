@@ -16,6 +16,7 @@ import ArabeFlagIcon from '@/icons/country/ArabeFlagIcon';
 import { usePathname } from 'next/navigation';
 
 import { i18nTranslation } from '@/i18n';
+import { setCookie } from '@/utils/query-params';
 
 interface SwitchLanguageProps {
     lng: SupportedLanguages;
@@ -59,7 +60,7 @@ const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
                                 <Link
                                     href={`/${l}${pathname.slice(3)}`}
                                     onClick={() => {
-                                        document.cookie = `lng=${l}`;
+                                        setCookie('lng', l);
                                     }}
                                 >
                                     <div className={styles.icon}>

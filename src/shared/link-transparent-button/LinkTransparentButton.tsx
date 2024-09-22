@@ -11,6 +11,7 @@ import {
 import { ModalContentMapping } from '@/utils/modal';
 import {
     addQueryParamToUrl,
+    setCookie,
     stripQueryParamFromUrl,
 } from '@/utils/query-params';
 import clsx from 'clsx';
@@ -139,7 +140,7 @@ export default function LinkTransparentButton({
                                 `${PENDING_REDIRECT_PATH_NAME}=${href}`
                             )
                         ) {
-                            document.cookie = `${PENDING_REDIRECT_PATH_NAME}=${href}`;
+                            setCookie(PENDING_REDIRECT_PATH_NAME, href, true);
                         }
                         return router.push(
                             addQueryParamToUrl(

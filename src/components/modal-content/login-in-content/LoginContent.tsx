@@ -87,7 +87,12 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     JSON.stringify(
                         (await AuthService.verifyJwt(response.accessToken))
                             .payload
-                    )
+                    ),
+                    {
+                        path: '/',
+                        secure: true,
+                        maxAge: 99999999,
+                    }
                 );
 
                 cookies().set(

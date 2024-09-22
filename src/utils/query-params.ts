@@ -36,3 +36,11 @@ export function getCookies() {
 export function deleteCookie(key: string) {
     document.cookie = `${key}=; Max-Age=0;`;
 }
+
+export function setCookie(
+    key: string,
+    value: string,
+    session: boolean = false
+) {
+    document.cookie = `${key}=${value}; ${session ? '' : 'Max-Age=99999999'}`;
+}

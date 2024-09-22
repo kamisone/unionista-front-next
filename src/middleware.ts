@@ -114,7 +114,11 @@ export async function middleware(req: NextRequest) {
         response = cb(response);
     });
 
-    response.cookies.set(lngCookieName, lng);
+    response.cookies.set(lngCookieName, lng, {
+        path: '/',
+        secure: true,
+        maxAge: 99999999,
+    });
 
     console.log(
         'arrived here: ',

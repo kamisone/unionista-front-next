@@ -38,7 +38,12 @@ export async function setAuthMiddleware(
             cb: (response: NextResponse) => {
                 response.cookies.set(
                     CURRENT_USER_COOKIE_NAME,
-                    JSON.stringify(res.payload)
+                    JSON.stringify(res.payload),
+                    {
+                        path: '/',
+                        secure: true,
+                        maxAge: 99999999,
+                    }
                 );
                 return response;
             },
@@ -63,11 +68,22 @@ export async function setAuthMiddleware(
                     cb: (response: NextResponse) => {
                         response.cookies.set(
                             accessTokenNames.ACCESS_TOKEN,
-                            data.accessToken
+                            data.accessToken,
+                            {
+                                httpOnly: true,
+                                path: '/',
+                                secure: true,
+                                maxAge: 99999999,
+                            }
                         );
                         response.cookies.set(
                             CURRENT_USER_COOKIE_NAME,
-                            JSON.stringify(res.payload)
+                            JSON.stringify(res.payload),
+                            {
+                                path: '/',
+                                secure: true,
+                                maxAge: 99999999,
+                            }
                         );
                         return response;
                     },
@@ -85,7 +101,12 @@ export async function setAuthMiddleware(
             response.cookies.set(PENDING_REDIRECT_PATH_NAME, pathWithSearch);
             response.cookies.set(
                 CURRENT_USER_COOKIE_NAME,
-                JSON.stringify(null)
+                JSON.stringify(null),
+                {
+                    path: '/',
+                    secure: true,
+                    maxAge: 99999999,
+                }
             );
             return response;
         }
@@ -96,7 +117,12 @@ export async function setAuthMiddleware(
         cb: (response: NextResponse) => {
             response.cookies.set(
                 CURRENT_USER_COOKIE_NAME,
-                JSON.stringify(null)
+                JSON.stringify(null),
+                {
+                    path: '/',
+                    secure: true,
+                    maxAge: 99999999,
+                }
             );
             return response;
         },
