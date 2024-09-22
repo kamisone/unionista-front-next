@@ -2,15 +2,16 @@ import { ComponentsStateNotify } from '@/services/components-state-notify.servic
 import { HttpService } from '@/services/http.service';
 import { isBrowser } from '@/utils/is-browser';
 import { getCookies } from '@/utils/query-params';
+import { Role } from './server/auth.service';
 
 type CBType = typeof Function;
 
 export interface JwtPayload {
     email: string;
+    fullName: string;
+    avatarUrl: string;
     sub: string;
-    iat: number;
-    exp: number;
-    iss: string;
+    role: Role;
 }
 
 // constants
@@ -21,7 +22,7 @@ const AUTH_CHECK_INTERVAL_TIME = 2000;
 //     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export interface AuthState {
-    user: any;
+    user: JwtPayload | null;
 }
 
 interface INotifyOptions {

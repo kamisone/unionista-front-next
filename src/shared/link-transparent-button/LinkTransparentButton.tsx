@@ -1,6 +1,9 @@
 'use client';
+import { isUserAuthorized } from '@/config';
+import { getLocale, i18nTranslation } from '@/i18n';
 import { AuthService } from '@/services/auth.service';
 import { LoaderService } from '@/services/loader.service';
+import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
 import {
     modalContentNames,
     PENDING_REDIRECT_PATH_NAME,
@@ -36,6 +39,7 @@ interface LinkTransparentButtonProps {
 
 const authService = AuthService.instance;
 const loaderService = LoaderService.instance;
+const snackbarService = SnackbarService.instance;
 
 export default function LinkTransparentButton({
     children,
@@ -52,15 +56,14 @@ export default function LinkTransparentButton({
     const searchParams = useSearchParams();
 
     const [isPending, startTransition] = useTransition();
-    const [isUserAuthenticated, setIsUserAuthenticated] = useState(
-        !!authService.state.user
-    );
+    const [user, setUser] = useState(authService.state.user);
     const isInitialMount = useRef(true);
     const instanceId = useId();
+    const t = i18nTranslation(getLocale(), 'error');
 
     useEffect(() => {
         authService.addNotifier((options) => {
-            options && setIsUserAuthenticated(!!options.state.user);
+            options && setUser(options.state.user);
         });
     }, []);
 
@@ -130,7 +133,7 @@ export default function LinkTransparentButton({
             onClick={(e) => {
                 startTransition(function () {
                     e.preventDefault();
-                    if (isProtected && !isUserAuthenticated) {
+                    if (isProtected && !user) {
                         if (
                             !document.cookie.includes(
                                 `${PENDING_REDIRECT_PATH_NAME}=${href}`
@@ -145,8 +148,18 @@ export default function LinkTransparentButton({
                                 ModalContentMapping.SIGN_IN
                             )
                         );
+                    } else if (user) {
+                        if (isUserAuthorized(user, href)) {
+                            return router.push(href);
+                        } else {
+                            snackbarService.state = {
+                                toast: {
+                                    message: t('unauthorized.role'),
+                                    severity: SnackbarSeverity.ERROR,
+                                },
+                            };
+                        }
                     } else {
-                        console.log('href: ', href)
                         return router.push(href);
                     }
                 });

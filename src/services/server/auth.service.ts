@@ -1,4 +1,3 @@
-// import { FormValues } from '@/app/components/modal-content/login-in-content/LoginContent';
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
 import { HttpService } from '@/services/server/http.service';
 import * as jose from 'jose';
@@ -8,10 +7,9 @@ type CBType = typeof Function;
 export type Role = 'admin' | 'user';
 export interface JwtPayload {
     email: string;
+    fullName: string;
+    avatarUrl: string;
     sub: string;
-    iat: number;
-    exp: number;
-    iss: string;
     role: Role;
 }
 

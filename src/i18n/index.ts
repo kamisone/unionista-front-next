@@ -1,5 +1,5 @@
 import { isBrowser } from '@/utils/is-browser';
-import { SupportedLanguages } from './settings';
+import { fallbackLng, SupportedLanguages } from './settings';
 import { getCookies } from '@/utils/query-params';
 
 const DEFAULT_NAME_SPACE = 'translation';
@@ -25,10 +25,10 @@ export function i18nTranslation(lng: SupportedLanguages, namespace?: string) {
     };
 }
 
-export function getLocale() {
-    if (!isBrowser()) return null;
+export function getLocale(): SupportedLanguages {
+    if (!isBrowser()) return fallbackLng;
 
     const cookies = getCookies();
 
-    return cookies.lng || null;
+    return (cookies.lng || fallbackLng) as SupportedLanguages;
 }
