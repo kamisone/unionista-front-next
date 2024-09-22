@@ -17,7 +17,6 @@ import {
     ReactNode,
     useEffect,
     useId,
-    useLayoutEffect,
     useRef,
     useState,
     useTransition,
@@ -52,8 +51,9 @@ export default function LinkTransparentButton({
     const searchParams = useSearchParams();
 
     const [isPending, startTransition] = useTransition();
+    const [isPending2, startTransition2] = useTransition();
     const [isUserAuthenticated, setIsUserAuthenticated] = useState(
-        authService.state.user
+        !!authService.state.user
     );
     const isInitialMount = useRef(true);
     const instanceId = useId();
@@ -64,7 +64,7 @@ export default function LinkTransparentButton({
         });
     }, []);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (isInitialMount.current) {
             isInitialMount.current = false;
         } else {
@@ -88,6 +88,31 @@ export default function LinkTransparentButton({
             }
         }
     }, [isPending]);
+
+    useEffect(() => {
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+        } else {
+            console.log('isPending: ', isPending2);
+            if (
+                isPending2 &&
+                !loaderService.state.isLoadingIds.includes(instanceId)
+            ) {
+                loaderService.state = {
+                    isLoadingIds: [
+                        ...loaderService.state.isLoadingIds,
+                        instanceId,
+                    ],
+                };
+            } else if (loaderService.state.isLoadingIds.includes(instanceId)) {
+                loaderService.state = {
+                    isLoadingIds: loaderService.state.isLoadingIds.filter(
+                        (id) => id !== instanceId
+                    ),
+                };
+            }
+        }
+    }, [isPending2]);
 
     useEffect(() => {
         return () => {
@@ -144,7 +169,7 @@ export default function LinkTransparentButton({
                         );
                     });
                 } else {
-                    startTransition(() => {
+                    startTransition2(() => {
                         return router.push(href);
                     });
                 }
