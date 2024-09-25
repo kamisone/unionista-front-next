@@ -2,18 +2,8 @@ import { ComponentsStateNotify } from '@/services/components-state-notify.servic
 import { HttpService } from '@/services/http.service';
 import { isBrowser } from '@/utils/is-browser';
 import { getCookies } from '@/utils/query-params';
-import { Role } from './server/auth.service';
 import { shallowCompareObjs } from '@/utils';
-
-type CBType = typeof Function;
-
-export interface JwtPayload {
-    email: string;
-    fullName: string;
-    avatarUrl: string;
-    sub: string;
-    role: Role;
-}
+import { JwtPayload } from '@/services/types/auth';
 
 // constants
 const ONE_DAY_MS = 8.64e7;
@@ -39,10 +29,10 @@ export class AuthService extends ComponentsStateNotify<
 
         if (isBrowser()) {
             AuthService._auth_check_interval_id = setInterval(() => {
-                const user = AuthService.checkUserAuth();
-                if (!shallowCompareObjs(user, this.state.user)) {
+                const userPayload = AuthService.checkUserAuth();
+                if (!shallowCompareObjs(userPayload, this.state.user)) {
                     this.state = {
-                        user: user,
+                        user: userPayload,
                     };
                 }
             }, AUTH_CHECK_INTERVAL_TIME) as unknown as number;
@@ -64,29 +54,10 @@ export class AuthService extends ComponentsStateNotify<
         return this._instance;
     }
 
-    static checkUserAuth() {
+    static checkUserAuth(): JwtPayload | null {
         const cookies = getCookies();
-        return JSON.parse(decodeURIComponent(cookies.user));
+        return cookies.user
+            ? JSON.parse(decodeURIComponent(cookies.user))
+            : null;
     }
-}
-
-export interface UserWithTokens {
-    user: User;
-    accessToken: string;
-    refreshToken: string;
-}
-
-export interface User {
-    id: string;
-
-    fullName: string;
-
-    emailAddress: string;
-
-    phoneNumber: string;
-}
-
-export interface AuthTokens {
-    accessToken: string;
-    refreshToken: string;
 }

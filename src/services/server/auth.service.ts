@@ -1,30 +1,12 @@
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
 import { HttpService } from '@/services/server/http.service';
 import * as jose from 'jose';
+import { JwtPayload, JwtResponse, UserWithTokens } from '@/services/types/auth';
 
-type CBType = typeof Function;
-
-export type Role = 'admin' | 'user';
-export interface JwtPayload {
-    email: string;
-    fullName: string;
-    avatarUrl: string;
-    sub: string;
-    role: Role;
-}
-
-export interface AuthState {
-    isUserAuthenticated: boolean;
-    isUserNotifiedToSignin: boolean;
-}
+export interface AuthState {}
 
 interface INotifyOptions {
     state: AuthState;
-}
-
-export interface UserNotificationToSignIn {
-    isNotified: boolean;
-    time: number;
 }
 
 export class AuthService extends ComponentsStateNotify<
@@ -41,10 +23,7 @@ export class AuthService extends ComponentsStateNotify<
 
     static get instance() {
         if (!this._instance) {
-            this._instance = new AuthService({
-                isUserAuthenticated: true,
-                isUserNotifiedToSignin: false,
-            });
+            this._instance = new AuthService({});
         }
 
         return this._instance;
@@ -57,21 +36,6 @@ export class AuthService extends ComponentsStateNotify<
             SIGN_UP: 'auth/signup',
         };
     }
-
-    // static get localStorageKeys() {
-    //     return {
-    //         // local storage
-    //         ACCESS_TOKEN_ID: 'access-token-id',
-    //         REFRESH_TOKEN_ID: 'refresh-token-id',
-    //         USER_NOTIFIED_TO_SIGN_IN_ID: 'user-notified-to-signin',
-    //     };
-    // }
-
-    // static get routerSegments() {
-    //     return {
-    //         SIGN_IN: '?modal_content=signin',
-    //     };
-    // }
 
     async signinUser(
         data: Record<string, unknown> | FormData,
@@ -95,7 +59,7 @@ export class AuthService extends ComponentsStateNotify<
                 };
             }) as Promise<{ success: boolean; message?: string }>;
     }
-    async signupUser(
+    async signupClient(
         data: Record<string, any>,
         onSuccess: (...args: any[]) => unknown
     ): Promise<{ success: boolean }> {
@@ -171,31 +135,4 @@ export class AuthService extends ComponentsStateNotify<
             };
         }
     }
-}
-
-export interface UserWithTokens {
-    user: User;
-    accessToken: string;
-    refreshToken: string;
-}
-
-export interface User {
-    id: string;
-
-    fullName: string;
-
-    emailAddress: string;
-
-    phoneNumber: string;
-}
-
-export interface AuthTokens {
-    accessToken: string;
-    refreshToken: string;
-}
-
-export interface JwtResponse {
-    success: boolean;
-    payload?: JwtPayload;
-    message?: string;
 }

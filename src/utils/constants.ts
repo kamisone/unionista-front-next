@@ -11,7 +11,7 @@ export enum modalContentNames {
 
 export const PENDING_REDIRECT_PATH_NAME = 'pending_redirect_path';
 
-export const CURRENT_USER_HEADER_NAME = 'x-user';
+export const CURRENT_USER_PAYLOAD_HEADER_NAME = 'x-user-payload';
 
 export const CURRENT_USER_COOKIE_NAME = 'user';
 

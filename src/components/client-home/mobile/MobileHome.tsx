@@ -1,6 +1,6 @@
 import { SupportedLanguages } from '@/i18n/settings';
 import React from 'react';
-import styles from '@/components/user-home/mobile/MobileHome.module.css';
+import styles from '@/components/client-home/mobile/MobileHome.module.css';
 import clsx from 'clsx';
 import { i18nTranslation } from '@/i18n';
 

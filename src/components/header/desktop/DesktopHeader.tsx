@@ -16,13 +16,14 @@ import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
 import Hamburger from '../../Hamburger/Hamburger';
 import SwitchLanguage from '../../switch-language/SwitchLanguage';
+import { JwtPayload } from '@/services/types/auth';
 
 interface DesktopHeaderProps {
     lng: SupportedLanguages;
-    user: any;
+    userPayload: JwtPayload | null;
 }
 
-async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
+async function DesktopHeader({ lng, userPayload }: DesktopHeaderProps) {
     const t = i18nTranslation(lng, 'header');
 
     return (
@@ -97,7 +98,7 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                             : Graphik.className
                     )}
                 >
-                    {!user && (
+                    {!userPayload && (
                         <LinkTransparentButton
                             addQuerySearch={{
                                 key: modalContentNames.QUERY_NAME,
@@ -168,7 +169,7 @@ async function DesktopHeader({ lng, user }: DesktopHeaderProps) {
                             </ScaleBgWrapper>
                         </LinkTransparentButton>
                     </li>
-                    {user && (
+                    {userPayload && (
                         <li>
                             <AvatarSlot
                                 content={

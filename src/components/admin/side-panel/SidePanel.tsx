@@ -15,6 +15,7 @@ export default function SidePanel({ lng }: SidePanelProps) {
         { label: 'dashboard', Icon: HomeIcon },
         { label: 'listings', Icon: ItemsIcon },
         { label: 'settings', Icon: SettingsIcon },
+        { label: 'users', Icon: SettingsIcon },
     ];
 
     return (

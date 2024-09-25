@@ -1,5 +1,5 @@
 import { SupportedLanguages } from '@/i18n/settings';
-import { JwtPayload } from '@/services/server/auth.service';
+import { JwtPayload } from '@/services/types/auth';
 import { modalContentNames } from '@/utils/constants';
 import { ModalContentMapping } from '@/utils/modal';
 
@@ -14,7 +14,7 @@ export function isUserAuthorized(user: JwtPayload | null, path: string) {
     switch (user?.role) {
         case 'admin':
             return true;
-        case 'user':
+        case 'client':
             return !getAdminPaths().some((p) => path.includes(p));
         default:
             return false;

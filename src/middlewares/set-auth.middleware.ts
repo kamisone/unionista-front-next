@@ -1,11 +1,12 @@
 import { getAdminPaths } from '@/config';
 import { SupportedLanguages } from '@/i18n/settings';
 import { SubMiddlewareReturnType } from '@/middleware';
-import { AuthService, JwtResponse } from '@/services/server/auth.service';
+import { AuthService } from '@/services/server/auth.service';
+import { JwtResponse } from '@/services/types/auth';
 import {
     accessTokenNames,
     CURRENT_USER_COOKIE_NAME,
-    CURRENT_USER_HEADER_NAME,
+    CURRENT_USER_PAYLOAD_HEADER_NAME,
     modalContentNames,
     PENDING_REDIRECT_PATH_NAME,
 } from '@/utils/constants';
@@ -26,11 +27,8 @@ export async function setAuthMiddleware(
         (res = await AuthService.verifyJwt(accessToken.value)).success
     ) {
         req.headers.set(
-            CURRENT_USER_HEADER_NAME,
-            JSON.stringify({
-                ...res.payload,
-                accessToken: accessToken.value,
-            })
+            CURRENT_USER_PAYLOAD_HEADER_NAME,
+            JSON.stringify(res.payload)
         );
 
         return {
@@ -57,11 +55,8 @@ export async function setAuthMiddleware(
             async (data: { accessToken: string }) => {
                 const res = await AuthService.verifyJwt(data.accessToken);
                 req.headers.set(
-                    CURRENT_USER_HEADER_NAME,
-                    JSON.stringify({
-                        ...res.payload,
-                        accessToken: data.accessToken,
-                    })
+                    CURRENT_USER_PAYLOAD_HEADER_NAME,
+                    JSON.stringify(res.payload)
                 );
                 return {
                     request: req,

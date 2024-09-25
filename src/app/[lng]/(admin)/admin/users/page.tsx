@@ -1,5 +1,50 @@
+import { AdminService } from '@/services/server/admin.service';
+import { ClientService } from '@/services/server/client.service';
+
 export const dynamic = 'force-dynamic';
 
-export default function UsersPage() {
-    return <p>Users sdf dsf ds Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia fuga beatae quos animi veritatis possimus tempora accusamus enim nihil exercitationem ducimus, sit facere, similique saepe soluta architecto in. Fuga ex quis et blanditiis earum labore, inventore asperiores at iusto? Modi accusamus, nemo aspernatur delectus aut molestiae voluptatum ea asperiores alias iusto! Ipsa, vel perspiciatis exercitationem repellendus dolorum itaque nemo sit quod et ratione illo maxime rerum ad doloribus cupiditate! Excepturi numquam repellat molestias labore qui eligendi praesentium soluta fuga odio animi quis esse eveniet accusantium earum veritatis rem enim amet facilis neque rerum fugit, asperiores possimus. Quos recusandae tenetur voluptatibus qui aspernatur nemo eligendi, voluptatum officia sed quisquam eveniet vel exercitationem minus dolorum dignissimos? Sunt asperiores cumque ipsum! Placeat omnis nobis delectus fuga porro nam magni laboriosam distinctio quos at sunt iure consequatur cupiditate, dicta veritatis quidem dignissimos eligendi, quasi rerum qui et, nesciunt ipsam commodi atque? Optio minus beatae perspiciatis fugit exercitationem delectus iusto tenetur, laudantium, repellendus vitae voluptas, molestiae doloremque? Perferendis dsfdfsdlfjsdofljdsfldsjfldsfjdslfjdsmhfdsfrfdjfhsdfmsdojfsdhsdmfjpasofkjpaphfsdmfpfazeoziwmdfsdfpraesentium eaque omnis temporibus dolore natus? Ea laborum omnis culpa debitis illo nam officiis blanditiis, id sapiente mollitia modi similique fugit distinctio illum ipsa optio asperiores, alias impedit dolorem, sint dolores odio nobis ullam ducimus. Dolore, asperiores?</p>;
+const clientService = ClientService.instance;
+const adminService = AdminService.instance;
+export default async function UsersPage() {
+    const clientsRes = await clientService.findAll();
+    const adminsRes = await adminService.findAll();
+
+    const errors = [];
+    if (!clientsRes.success) {
+        errors.push(clientsRes.message);
+    }
+    if (!adminsRes.success) {
+        errors.push(adminsRes.message);
+    }
+
+    if(errors.length) {
+        return (
+            <div>
+                <p>Error occured:</p>
+                {
+                    errors.map((message) => <p key={message}>{message}</p>)
+                }
+            </div>
+        )
+    }
+
+    return [
+        <h1 key="clients">clients</h1>,
+        clientsRes.data!.map((client) => (
+            <div key={client.id}>
+                <p>{client.fullName}</p>
+                <p>{client.email}</p>
+            </div>
+        )),
+        <br key="br"></br>,
+        <h1 key="admins">admins</h1>,
+        adminsRes.data!.map((admin) => (
+            <div key={admin.id}>
+                <p>
+                    {admin.firstName} {admin.lastName}
+                </p>
+                <p>{admin.email}</p>
+            </div>
+        )),
+    ];
 }

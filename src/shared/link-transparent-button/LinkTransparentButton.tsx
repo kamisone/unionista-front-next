@@ -57,14 +57,14 @@ export default function LinkTransparentButton({
     const searchParams = useSearchParams();
 
     const [isPending, startTransition] = useTransition();
-    const [user, setUser] = useState(authService.state.user);
+    const [userPayload, setUserPayload] = useState(authService.state.user);
     const isInitialMount = useRef(true);
     const instanceId = useId();
     const t = i18nTranslation(getLocale(), 'error');
 
     useEffect(() => {
         authService.addNotifier((options) => {
-            options && setUser(options.state.user);
+            options && setUserPayload(options.state.user);
         });
     }, []);
 
@@ -134,7 +134,7 @@ export default function LinkTransparentButton({
             onClick={(e) => {
                 startTransition(() => {
                     e.preventDefault();
-                    if (isProtected && !user) {
+                    if (isProtected && !userPayload) {
                         if (
                             !document.cookie.includes(
                                 `${PENDING_REDIRECT_PATH_NAME}=${href}`
@@ -149,8 +149,8 @@ export default function LinkTransparentButton({
                                 ModalContentMapping.SIGN_IN
                             )
                         );
-                    } else if (user) {
-                        if (isUserAuthorized(user, href)) {
+                    } else if (userPayload) {
+                        if (isUserAuthorized(userPayload, href)) {
                             return router.push(href);
                         } else {
                             snackbarService.state = {

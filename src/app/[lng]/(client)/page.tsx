@@ -1,10 +1,9 @@
 import FlexModal from '@/components/Modal/FlexModal';
-import UserHeader from '@/components/header/UserHeader';
-import UserHome from '@/components/user-home/UserHome';
-import {
-    SupportedLanguages
-} from '@/i18n/settings';
-import { CURRENT_USER_HEADER_NAME } from '@/utils/constants';
+import ClientHome from '@/components/client-home/ClientHome';
+import ClientHeader from '@/components/header/ClientHeader';
+import { SupportedLanguages } from '@/i18n/settings';
+import { JwtPayload } from '@/services/types/auth';
+import { CURRENT_USER_PAYLOAD_HEADER_NAME } from '@/utils/constants';
 import { isMobile } from '@/utils/is-browser';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
@@ -23,14 +22,21 @@ interface HomeProps {
 function Home({ params: { lng }, searchParams }: HomeProps) {
     const headersList = headers();
 
-    const user = headersList.get(CURRENT_USER_HEADER_NAME) || null;
+    const userPayload: JwtPayload | null =
+        (headersList.get(CURRENT_USER_PAYLOAD_HEADER_NAME) &&
+            JSON.parse(headersList.get(CURRENT_USER_PAYLOAD_HEADER_NAME)!)) ||
+        null;
 
     const isMobileDevice = isMobile(headersList.get('user-agent'));
 
     return (
         <>
-            <UserHeader isMobile={isMobileDevice} lng={lng} user={user} />
-            <UserHome
+            <ClientHeader
+                isMobile={isMobileDevice}
+                lng={lng}
+                userPayload={userPayload}
+            />
+            <ClientHome
                 isMobile={isMobile(headersList.get('user-agent'))}
                 lng={lng}
             />

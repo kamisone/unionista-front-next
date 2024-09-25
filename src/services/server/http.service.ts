@@ -1,13 +1,13 @@
 import { IWhere } from '@/services/product-category.service';
 import { HttpException } from '@/shared/http-exception/HttpException';
 import {
-    CURRENT_USER_HEADER_NAME,
+    accessTokenNames,
     httpHeadersNames,
     httpHeadersValues,
     httpMethods,
 } from '@/utils/constants';
 import { AxiosHeaders } from 'axios';
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 
 export class HttpService {
     private static _instance: HttpService;
@@ -32,11 +32,12 @@ export class HttpService {
             path = this._addQueryParams(path, queryParams);
         }
 
-        const user = JSON.parse(headers().get(CURRENT_USER_HEADER_NAME) || '');
+        const accessToken =
+            cookies().get(accessTokenNames.ACCESS_TOKEN) || null;
         return fetch(process.env.API_BASE_URL_SERVER + '/' + path, {
             method: httpMethods.GET,
             headers: {
-                Authorization: `bearer ${user && user.accessToken}`,
+                Authorization: `bearer ${accessToken && accessToken.value}`,
             },
         }).then(async (headers) => {
             if (headers.status >= 200 && headers.status < 300) {

@@ -2,12 +2,12 @@ import DesktopFooter from '@/components/footer/desktop/DesktopFooter';
 import MobileFooter from '@/components/footer/mobile/MobileFooter';
 import { SupportedLanguages } from '@/i18n/settings';
 
-interface UserFooterProps {
+interface ClientFooterProps {
     lng: SupportedLanguages;
     isMobile?: boolean;
 }
 
-const UserFooter = ({ lng, isMobile = false }: UserFooterProps) => {
+const ClientFooter = ({ lng, isMobile = false }: ClientFooterProps) => {
     return isMobile ? (
         <MobileFooter lng={lng} />
     ) : (
@@ -15,4 +15,4 @@ const UserFooter = ({ lng, isMobile = false }: UserFooterProps) => {
     );
 };
 
-export default UserFooter;
+export default ClientFooter;

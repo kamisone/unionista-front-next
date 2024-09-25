@@ -1,4 +1,4 @@
-import styles from '@/components/user-home/desktop/DesktopHome.module.css';
+import styles from '@/components/client-home/desktop/DesktopHome.module.css';
 import { SupportedLanguages } from '@/i18n/settings';
 import clsx from 'clsx';
 import Link from 'next/link';

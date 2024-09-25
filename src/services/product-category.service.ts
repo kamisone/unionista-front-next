@@ -1,8 +1,6 @@
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
 import { HttpService } from '@/services/http.service';
-import { CURRENT_USER_HEADER_NAME } from '@/utils/constants';
 import { AxiosError } from 'axios';
-import { headers } from 'next/headers';
 import { SupportedLanguages } from '../i18n/settings';
 
 const httpService = HttpService.instance;
@@ -62,7 +60,6 @@ export class ProductCategoryService extends ComponentsStateNotify<
         locale: SupportedLanguages;
     }): Promise<ProductCategory[]> {
         try {
-            const user = headers().get(CURRENT_USER_HEADER_NAME);
             const response = await httpService.get<ProductCategory[]>({
                 path: ProductCategoryService.endpoints.ALL_PRODUCT_CATEGORIES,
                 queryParams: {

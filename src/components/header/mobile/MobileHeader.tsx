@@ -13,13 +13,14 @@ import { ModalContentMapping } from '@/utils/modal';
 import clsx from 'clsx';
 import SwitchLanguage from '../../switch-language/SwitchLanguage';
 import { modalContentNames } from '@/utils/constants';
+import { JwtPayload } from '@/services/types/auth';
 
 interface HeaderProps {
     lng: SupportedLanguages;
-    user: any;
+    userPayload: JwtPayload | null;
 }
 
-const MobileHeader = ({ lng, user }: HeaderProps) => {
+const MobileHeader = ({ lng, userPayload }: HeaderProps) => {
     const t = i18nTranslation(lng, 'header');
 
     return (
@@ -40,7 +41,7 @@ const MobileHeader = ({ lng, user }: HeaderProps) => {
                             : Graphik.className
                     )}
                 >
-                    {!user && (
+                    {!userPayload && (
                         <LinkTransparentButton
                             addQuerySearch={{
                                 key: modalContentNames.QUERY_NAME,

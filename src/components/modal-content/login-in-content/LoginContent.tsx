@@ -1,7 +1,7 @@
 import styles from '@/components/modal-content/login-in-content/LoginContent.module.css';
 import EyeIcon from '@/icons/eye/EyeIcon';
 import GoogleIcon from '@/icons/google/GoogleIcon';
-import { AuthService, UserWithTokens } from '@/services/server/auth.service';
+import { AuthService} from '@/services/server/auth.service';
 import ActionButton from '@/shared/action-button/ActionButton';
 import CheckboxInput from '@/shared/checkbox-input/CheckboxInput';
 import InputControl from '@/shared/input-control/InputControl';
@@ -27,6 +27,7 @@ import clsx from 'clsx';
 import { cookies, headers } from 'next/headers';
 import { redirect, RedirectType } from 'next/navigation';
 import { stripQueryParamFromUrl } from '@/utils/query-params';
+import { UserWithTokens } from '@/services/types/auth';
 
 const authService = AuthService.instance;
 
@@ -113,7 +114,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                   },
                   onSignSuccess
               )
-            : authService.signupUser(
+            : authService.signupClient(
                   {
                       email,
                       password,

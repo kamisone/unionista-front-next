@@ -1,5 +1,5 @@
 import styles from '@/app/[lng]/(client)/layout.module.css';
-import UserFooter from '@/components/footer/UserFooter';
+import ClientFooter from '@/components/footer/ClientFooter';
 import { UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import { isMobile } from '@/utils/is-browser';
@@ -23,7 +23,7 @@ async function ClientLayout({ children, params: { lng } }: ClientLayoutProps) {
             })}
         >
             {children}
-            <UserFooter isMobile={isMobileDevice} lng={lng} />
+            <ClientFooter isMobile={isMobileDevice} lng={lng} />
         </main>
     );
 }
