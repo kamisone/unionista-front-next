@@ -1,4 +1,16 @@
+import { Metadata } from "next";
+
 export const dynamic = 'force-dynamic';
+
+
+
+export const metadata: Metadata = {
+    title: 'Admin | Listings',
+    description:
+        'Admin panel for managing products. View, edit, and manage all product listings. Update details, adjust inventory, and perform bulk actions to ensure seamless product management on Unionistashop.',
+};
+
+
 export default function ListingsPage() {
     return (
         <p>

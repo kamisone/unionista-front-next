@@ -1,7 +1,15 @@
 import { AdminService } from '@/services/server/admin.service';
 import { ClientService } from '@/services/server/client.service';
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+
+export const metadata: Metadata = {
+    title: 'Admin | Users',
+    description:
+        'Admin panel for managing users. View, update, and manage user profiles efficiently. Edit user details, adjust roles, and ensure smooth user management on Unionistashop.',
+};
 
 const clientService = ClientService.instance;
 const adminService = AdminService.instance;

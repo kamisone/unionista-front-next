@@ -7,7 +7,8 @@ import { Metadata } from 'next';
 import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
-    title: 'UnionistaShop | Admin',
+    title: 'Admin',
+    description: 'Admin dashboard for managing the website. View, edit, and delete users, manage product listings, and monitor site activity. Ensure smooth operation and user management on Unionistashop.'
 };
 
 const AdminHome = () => {

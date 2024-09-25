@@ -9,7 +9,9 @@ import { Metadata } from 'next';
 import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
-    title: 'UnionistaShop | Home',
+    title: 'UnionistaShop',
+    description:
+        'Explore a wide range of unique and personalized products from independent sellers. Find the perfect item for every occasion on Unionistashop.com, with easy shopping and secure transactions.',
 };
 
 interface HomeProps {

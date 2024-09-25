@@ -1,4 +1,12 @@
+import { Metadata } from "next";
+
 export const dynamic = 'force-dynamic';
+
+
+export const metadata: Metadata = {
+    title: 'Forgot-Password',
+    description: 'Manage and configure website settings from the admin panel. Customize site preferences, adjust user permissions, and update key configurations on Unionistashop.'
+};
 export default function SettingsPage() {
     return (
         <p>
