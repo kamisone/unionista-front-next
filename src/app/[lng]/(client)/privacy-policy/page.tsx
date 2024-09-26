@@ -1,12 +1,17 @@
 import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages } from '@/i18n/settings';
-import { Metadata } from 'next';
-import React from 'react';
 
-export const metadata: Metadata = {
-    title: 'Privacy-Policy',
-    description: 'Read the privacy policy of Unionistashop. Learn how we collect, use, and protect your personal data and information. Your privacy is important to us.'
-};
+export async function generateMetadata({
+    params: { lng },
+}: {
+    params: { lng: SupportedLanguages };
+}) {
+    const t = i18nTranslation(lng, 'metadata');
+    return {
+        title: t('privacy-policy-home.title'),
+        description: t('privacy-policy-home.description'),
+    };
+}
 
 interface PrivacyPolicyProps {
     params: {
@@ -17,8 +22,10 @@ interface PrivacyPolicyProps {
 const PrivacyPolicy = async ({ params: { lng } }: PrivacyPolicyProps) => {
     const t = i18nTranslation(lng, 'privacy-policy');
     return (
-        <main>
-            <h1>{t('title', { brandTitle: 'UnionistaShop' })}</h1>
+        <main className="py-4 px-12">
+            <h1 className="text-center mb-8">
+                {t('title', { brandTitle: 'UnionistaShop' })}
+            </h1>
             <p>
                 {t('introduction.last-updated', {
                     lastUpdatedDate: new Date(),

@@ -1,12 +1,29 @@
-import { Metadata } from "next";
+import { i18nTranslation } from '@/i18n';
+import { SupportedLanguages } from '@/i18n/settings';
+import { Metadata } from 'next';
 
+export async function generateMetadata({
+    params: { lng },
+}: {
+    params: { lng: SupportedLanguages };
+}) {
+    const t = i18nTranslation(lng, 'metadata');
+    return {
+        title: t('forgot-password.title'),
+        description: t('forgot-password.description'),
+    };
+}
 
-export const metadata: Metadata = {
-    title: 'Forgot-Password',
-    description: 'Reset your password for Unionistashop. Enter your email to receive a password reset link and regain access to your account.'
-};
+interface ForgotPasswordPageProps {
+    params: { lng: SupportedLanguages };
+}
 
-
-export default function ForgotPasswordPage() {
-    return <p>reset password</p>;
+export default function ForgotPasswordPage({
+    params: { lng },
+}: ForgotPasswordPageProps) {
+    return (
+        <main>
+            <h1>Reset your password</h1>
+        </main>
+    );
 }

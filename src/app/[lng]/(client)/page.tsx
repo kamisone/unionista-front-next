@@ -1,18 +1,24 @@
 import FlexModal from '@/components/Modal/FlexModal';
 import ClientHome from '@/components/client-home/ClientHome';
 import ClientHeader from '@/components/header/ClientHeader';
+import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages } from '@/i18n/settings';
 import { JwtPayload } from '@/services/types/auth';
 import { CURRENT_USER_PAYLOAD_HEADER_NAME } from '@/utils/constants';
 import { isMobile } from '@/utils/is-browser';
-import { Metadata } from 'next';
 import { headers } from 'next/headers';
 
-export const metadata: Metadata = {
-    title: 'UnionistaShop',
-    description:
-        'Explore a wide range of unique and personalized products from independent sellers. Find the perfect item for every occasion on Unionistashop.com, with easy shopping and secure transactions.',
-};
+export async function generateMetadata({
+    params: { lng },
+}: {
+    params: { lng: SupportedLanguages };
+}) {
+    const t = i18nTranslation(lng, 'metadata');
+    return {
+        title: t('client-home.title'),
+        description: t('client-home.description'),
+    };
+}
 
 interface HomeProps {
     params: {

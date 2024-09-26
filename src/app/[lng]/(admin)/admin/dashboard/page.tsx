@@ -1,13 +1,20 @@
-import { Metadata } from "next";
+import { i18nTranslation } from "@/i18n";
+import { SupportedLanguages } from "@/i18n/settings";
 
 export const dynamic = 'force-dynamic';
 
 
-export const metadata: Metadata = {
-    title: 'Admin | Dashboard',
-    description:
-        'Admin dashboard providing an overview of key metrics and performance. View charts, statistics, and important data to monitor website activity and performance at a glance on Unionistashop.',
-};
+export async function generateMetadata({
+    params: { lng },
+}: {
+    params: { lng: SupportedLanguages };
+}) {
+    const t = i18nTranslation(lng, 'metadata');
+    return {
+        title: t('admin-dashboard-home.title'),
+        description: t('admin-dashboard-home.description'),
+    };
+}
 
 export default function DashboardPage() {
     return (

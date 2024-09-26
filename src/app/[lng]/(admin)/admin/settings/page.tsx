@@ -1,12 +1,20 @@
-import { Metadata } from "next";
+import { i18nTranslation } from '@/i18n';
+import { SupportedLanguages } from '@/i18n/settings';
 
 export const dynamic = 'force-dynamic';
 
+export async function generateMetadata({
+    params: { lng },
+}: {
+    params: { lng: SupportedLanguages };
+}) {
+    const t = i18nTranslation(lng, 'metadata');
+    return {
+        title: t('admin-settings-home.title'),
+        description: t('admin-settings-home.description'),
+    };
+}
 
-export const metadata: Metadata = {
-    title: 'Forgot-Password',
-    description: 'Manage and configure website settings from the admin panel. Customize site preferences, adjust user permissions, and update key configurations on Unionistashop.'
-};
 export default function SettingsPage() {
     return (
         <p>

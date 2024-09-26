@@ -1,15 +1,19 @@
-import { Metadata } from "next";
+import { i18nTranslation } from '@/i18n';
+import { SupportedLanguages } from '@/i18n/settings';
 
 export const dynamic = 'force-dynamic';
 
-
-
-export const metadata: Metadata = {
-    title: 'Admin | Listings',
-    description:
-        'Admin panel for managing products. View, edit, and manage all product listings. Update details, adjust inventory, and perform bulk actions to ensure seamless product management on Unionistashop.',
-};
-
+export async function generateMetadata({
+    params: { lng },
+}: {
+    params: { lng: SupportedLanguages };
+}) {
+    const t = i18nTranslation(lng, 'metadata');
+    return {
+        title: t('admin-listings-home.title'),
+        description: t('admin-listings-home.description'),
+    };
+}
 
 export default function ListingsPage() {
     return (

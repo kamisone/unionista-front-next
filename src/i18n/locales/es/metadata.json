@@ -1,0 +1,43 @@
+{
+    "forgot-password": {
+        "title": "Olvidaste tu Contraseña | Unionistashop",
+        "description": "Restablece tu contraseña para Unionistashop. Ingresa tu correo electrónico para recibir un enlace de restablecimiento de contraseña y recuperar el acceso a tu cuenta."
+    },
+    "client-home": {
+        "title": "Unionistashop | Inicio",
+        "description": "Descubre una gran variedad de productos únicos y personalizados de vendedores independientes. Encuentra el regalo perfecto para cada ocasión en UnionistaShop.com, con compras seguras y fáciles."
+    },
+    "admin-home": {
+        "title": "Unionistashop | Administrador",
+        "description": "Panel de administración para gestionar el sitio web. Visualiza, edita y elimina usuarios, gestiona los productos y monitorea la actividad del sitio. Garantiza un funcionamiento eficiente y una buena gestión de usuarios en UnionistaShop."
+    },
+    "admin-users-home": {
+        "title": "Administrador | Usuarios",
+        "description": "Panel de administración para gestionar usuarios. Visualiza, actualiza y administra los perfiles de los usuarios de manera eficiente. Edita los detalles, ajusta los roles y asegura una gestión fluida en UnionistaShop."
+    },
+    "admin-listings-home": {
+        "title": "Administrador | Productos",
+        "description": "Panel de administración para gestionar los productos. Visualiza, edita y administra todas las listas de productos. Actualiza los detalles, ajusta el inventario y realiza acciones masivas para garantizar una gestión fluida de los productos en UnionistaShop."
+    },
+    "admin-settings-home": {
+        "title": "Administrador | Configuración",
+        "description": "Gestiona y configura los ajustes del sitio web desde el panel de administración. Personaliza las preferencias del sitio, ajusta los permisos de usuarios y actualiza las configuraciones clave en UnionistaShop."
+    },
+    "admin-dashboard-home": {
+        "title": "Administrador | Tablero",
+        "description": "Panel de administración que proporciona una visión general de métricas clave y rendimiento. Visualiza gráficos, estadísticas y datos importantes para supervisar la actividad y el rendimiento del sitio web de un vistazo en UnionistaShop."
+    },
+    "cart-home": {
+        "title": "Unionistashop | Carrito de Compras",
+        "description": "Revisa los productos que has seleccionado antes de finalizar tu compra. Ajusta las cantidades, elimina artículos y completa tu pedido para una experiencia de compra sin complicaciones en UnionistaShop."
+    },
+    "notifications-home": {
+        "title": "UnionistaShop | Notificaciones",
+        "description": "Mantente al tanto de las últimas notificaciones en UnionistaShop. Consulta alertas, mensajes y actualizaciones importantes para seguir el rastro de las actividades de tu cuenta."
+    },
+
+    "privacy-policy-home": {
+        "title": "Política de Privacidad",
+        "description": "Lee la política de privacidad de UnionistaShop. Conoce cómo recopilamos, utilizamos y protegemos tus datos e información personal. Tu privacidad es importante para nosotros."
+    }
+}

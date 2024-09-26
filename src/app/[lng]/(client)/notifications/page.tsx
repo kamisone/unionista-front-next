@@ -1,11 +1,17 @@
-import { Metadata } from 'next';
-import React from 'react';
+import { i18nTranslation } from "@/i18n";
+import { SupportedLanguages } from "@/i18n/settings";
 
-export const metadata: Metadata = {
-    title: 'UnionistaShop | Notifications',
-    description: 'Stay updated with the latest notifications on Unionistashop. View alerts, messages, and important updates to keep track of your account activities.'
-};
-
+export async function generateMetadata({
+    params: { lng },
+}: {
+    params: { lng: SupportedLanguages };
+}) {
+    const t = i18nTranslation(lng, 'metadata');
+    return {
+        title: t('notifications-home.title'),
+        description: t('notifications-home.description'),
+    };
+}
 const NotificationsHome = () => {
     return <h2>Notifications home</h2>;
 };

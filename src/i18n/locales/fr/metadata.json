@@ -1,0 +1,43 @@
+{
+    "forgot-password": {
+        "title": "Mot de Passe Oublié | Unionistashop",
+        "description": "Réinitialisez votre mot de passe pour Unionistashop. Saisissez votre adresse e-mail pour recevoir un lien de réinitialisation et récupérer l'accès à votre compte."
+    },
+    "client-home": {
+        "title": "Unionistashop | Accueil",
+        "description": "Découvrez une vaste sélection de produits uniques et personnalisés de vendeurs indépendants. Trouvez l'article idéal pour chaque occasion sur UnionistaShop.com, avec une expérience d'achat simple et sécurisée."
+    },
+    "admin-home": {
+        "title": "Unionistashop | Administration",
+        "description": "Tableau de bord administrateur pour gérer le site web. Gérez les utilisateurs, modifiez ou supprimez des profils, administrez les produits et suivez l’activité du site. Assurez une gestion fluide et efficace sur UnionistaShop."
+    },
+    "admin-users-home": {
+        "title": "Administration | Utilisateurs",
+        "description": "Panneau d'administration pour gérer les utilisateurs. Consultez, modifiez et administrez les profils utilisateurs efficacement. Modifiez les informations, ajustez les rôles et assurez une gestion fluide des utilisateurs sur UnionistaShop."
+    },
+    "admin-listings-home": {
+        "title": "Administration | Produits",
+        "description": "Tableau de bord administrateur pour gérer les produits. Consultez, modifiez et administrez toutes les listes de produits. Mettez à jour les informations, ajustez les stocks et effectuez des actions en masse pour assurer une gestion fluide des produits sur UnionistaShop."
+    },
+    "admin-settings-home": {
+        "title": "Administration | Paramètres",
+        "description": "Gérez et configurez les paramètres du site web depuis le tableau d'administration. Personnalisez les préférences du site, ajustez les autorisations des utilisateurs et mettez à jour les configurations clés sur UnionistaShop."
+    },
+    "admin-dashboard-home": {
+        "title": "Administration | Tableau de bord",
+        "description": "Tableau de bord administrateur offrant un aperçu des indicateurs clés et de la performance. Consultez des graphiques, des statistiques et des données importantes pour suivre l'activité et la performance du site web en un coup d'œil sur UnionistaShop."
+    },
+    "cart-home": {
+        "title": "Unionistashop | Panier",
+        "description": "Consultez les articles que vous avez ajoutés à votre panier avant de passer à la caisse. Modifiez les quantités, retirez des produits et finalisez votre commande pour une expérience d'achat fluide sur UnionistaShop."
+    },
+    "notifications-home": {
+        "title": "UnionistaShop | Notifications",
+        "description": "Restez informé des dernières notifications sur UnionistaShop. Consultez les alertes, les messages et les mises à jour importantes pour suivre les activités de votre compte."
+    },
+
+    "privacy-policy-home": {
+        "title": "Politique de Confidentialité",
+        "description": "Lisez la politique de confidentialité de UnionistaShop. Découvrez comment nous collectons, utilisons et protégeons vos données personnelles et vos informations. Votre vie privée est importante pour nous."
+    }
+}

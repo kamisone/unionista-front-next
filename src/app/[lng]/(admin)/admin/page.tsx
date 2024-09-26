@@ -1,15 +1,23 @@
 export const dynamic = 'force-dynamic';
 import AdminFooter from '@/components/admin/footer/AdminFooter';
 import AdminHeader from '@/components/admin/header/AdminHeader';
+import { i18nTranslation } from '@/i18n';
+import { SupportedLanguages } from '@/i18n/settings';
 import { JwtPayload } from '@/services/types/auth';
 import { CURRENT_USER_PAYLOAD_HEADER_NAME } from '@/utils/constants';
-import { Metadata } from 'next';
 import { headers } from 'next/headers';
 
-export const metadata: Metadata = {
-    title: 'Admin',
-    description: 'Admin dashboard for managing the website. View, edit, and delete users, manage product listings, and monitor site activity. Ensure smooth operation and user management on Unionistashop.'
-};
+export async function generateMetadata({
+    params: { lng },
+}: {
+    params: { lng: SupportedLanguages };
+}) {
+    const t = i18nTranslation(lng, 'metadata');
+    return {
+        title: t('admin-home.title'),
+        description: t('admin-home.description'),
+    };
+}
 
 const AdminHome = () => {
     const headersList = headers();

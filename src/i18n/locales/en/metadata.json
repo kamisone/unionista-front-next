@@ -1,0 +1,44 @@
+{
+    "forgot-password": {
+        "title": "Forgot Password | Unionistashop",
+        "description": "Reset your password for Unionistashop. Enter your email to receive a password reset link and regain access to your account."
+    },
+    "client-home": {
+        "title": "Unionistashop | Home",
+        "description": "Explore a wide range of unique and personalized products from independent sellers. Find the perfect item for every occasion on UnionistaShop.com, with easy shopping and secure transactions."
+    },
+
+    "admin-home": {
+        "title": "Unionistashop | Admin",
+        "description": "Admin dashboard for managing the website. View, edit, and delete users, manage product listings, and monitor site activity. Ensure smooth operation and user management on UnionistaShop."
+    },
+    "admin-users-home": {
+        "title": "Admin | Users",
+        "description": "Admin panel for managing users. View, update, and manage user profiles efficiently. Edit user details, adjust roles, and ensure smooth user management on UnionistaShop."
+    },
+    "admin-listings-home": {
+        "title": "Admin | Listings",
+        "description": "Admin panel for managing products. View, edit, and manage all product listings. Update details, adjust inventory, and perform bulk actions to ensure seamless product management on UnionistaShop."
+    },
+    "admin-settings-home": {
+        "title": "Admin | Settings",
+        "description": "Manage and configure website settings from the admin panel. Customize site preferences, adjust user permissions, and update key configurations on UnionistaShop."
+    },
+    "admin-dashboard-home": {
+        "title": "Admin | Dashboard",
+        "description": "Admin dashboard providing an overview of key metrics and performance. View charts, statistics, and important data to monitor website activity and performance at a glance on UnionistaShop."
+    },
+    "cart-home": {
+        "title": "Unionistashop | Cart",
+        "description": "Review your selected products in the cart before proceeding to checkout. Adjust quantities, remove items, and finalize your purchase for a seamless shopping experience on UnionistaShop."
+    },
+    "notifications-home": {
+        "title": "UnionistaShop | Notifications",
+        "description": "Stay updated with the latest notifications on UnionistaShop. View alerts, messages, and important updates to keep track of your account activities."
+    },
+
+    "privacy-policy-home": {
+        "title": "Privacy Policy",
+        "description": "Read the privacy policy of UnionistaShop. Learn how we collect, use, and protect your personal data and information. Your privacy is important to us."
+    }
+}
