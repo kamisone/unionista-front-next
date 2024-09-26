@@ -72,7 +72,6 @@ export default function LinkTransparentButton({
         if (isInitialMount.current) {
             isInitialMount.current = false;
         } else {
-            console.log('isPending: ', isPending);
             if (
                 isPending &&
                 !loaderService.state.isLoadingIds.includes(instanceId)
@@ -95,7 +94,6 @@ export default function LinkTransparentButton({
 
     useEffect(() => {
         return () => {
-            console.log('is unmounting: ', loaderService.state.isLoadingIds);
             if (loaderService.state.isLoadingIds.includes(instanceId)) {
                 loaderService.state = {
                     isLoadingIds: loaderService.state.isLoadingIds.filter(

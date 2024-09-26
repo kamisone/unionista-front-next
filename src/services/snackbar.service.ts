@@ -40,11 +40,14 @@ export class SnackbarService extends ComponentsStateNotify<
                 setInterval(() => {
                     const cookies = getCookies();
                     if (cookies[TOAST_COOKIE_NAME]) {
-                        this._instance.state = {
-                            toast: JSON.parse(
-                                decodeURIComponent(cookies[TOAST_COOKIE_NAME])
-                            ) as Toast,
-                        };
+                        const toasts = JSON.parse(
+                            decodeURIComponent(cookies[TOAST_COOKIE_NAME])
+                        ) as Toast[];
+                        for (let toast of toasts) {
+                            this._instance.state = {
+                                toast,
+                            };
+                        }
                         deleteCookie(TOAST_COOKIE_NAME);
                     }
                 }, 1000);

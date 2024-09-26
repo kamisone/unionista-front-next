@@ -30,7 +30,7 @@ export interface Admin {
 }
 
 export interface UserWithTokens {
-    user: User;
+    userPayload: JwtPayload;
     accessToken: string;
     refreshToken: string;
 }

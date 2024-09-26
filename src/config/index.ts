@@ -10,7 +10,10 @@ export function getAdminPaths() {
     ];
 }
 
-export function isUserAuthorized(user: JwtPayload | null, path: string) {
+export function isUserAuthorized(
+    user: JwtPayload | null | undefined,
+    path: string
+) {
     switch (user?.role) {
         case 'admin':
             return true;

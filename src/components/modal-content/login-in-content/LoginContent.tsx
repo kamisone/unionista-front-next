@@ -1,7 +1,7 @@
 import styles from '@/components/modal-content/login-in-content/LoginContent.module.css';
 import EyeIcon from '@/icons/eye/EyeIcon';
 import GoogleIcon from '@/icons/google/GoogleIcon';
-import { AuthService} from '@/services/server/auth.service';
+import { AuthService } from '@/services/server/auth.service';
 import ActionButton from '@/shared/action-button/ActionButton';
 import CheckboxInput from '@/shared/checkbox-input/CheckboxInput';
 import InputControl from '@/shared/input-control/InputControl';
@@ -27,7 +27,9 @@ import clsx from 'clsx';
 import { cookies, headers } from 'next/headers';
 import { redirect, RedirectType } from 'next/navigation';
 import { stripQueryParamFromUrl } from '@/utils/query-params';
-import { UserWithTokens } from '@/services/types/auth';
+import { JwtPayload, UserWithTokens } from '@/services/types/auth';
+import { isUserAuthorized } from '@/config';
+import { addServerToastsCookie } from '@/utils/server';
 
 const authService = AuthService.instance;
 
@@ -96,17 +98,15 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     }
                 );
 
-                cookies().set(
-                    TOAST_COOKIE_NAME,
-                    JSON.stringify({
-                        message: 'successfully connected',
-                        severity: SnackbarSeverity.SUCCESS,
-                    })
-                );
+                addServerToastsCookie('successfully connected', SnackbarSeverity.SUCCESS)
             }
         }
 
-        const response: { success: boolean; message?: string } = await (isSignin
+        const response: {
+            success: boolean;
+            message?: string;
+            userPayload?: JwtPayload;
+        } = await (isSignin
             ? authService.signinUser(
                   {
                       email,
@@ -128,7 +128,15 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
             const redirectTo = cookies().get(PENDING_REDIRECT_PATH_NAME);
             if (redirectTo) {
                 cookies().set(PENDING_REDIRECT_PATH_NAME, '', { maxAge: 0 });
-                return redirect(redirectTo.value, RedirectType.replace);
+                if (isUserAuthorized(response.userPayload, redirectTo.value)) {
+                    return redirect(redirectTo.value, RedirectType.replace);
+                } else {
+                    const t = i18nTranslation(lng, 'error');
+                    addServerToastsCookie(
+                        t('unauthorized.role'),
+                        SnackbarSeverity.ERROR
+                    );
+                }
             }
             return redirect(
                 stripQueryParamFromUrl(
@@ -140,13 +148,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
         }
 
         // Error notification
-        cookies().set(
-            TOAST_COOKIE_NAME,
-            JSON.stringify({
-                message: response.message,
-                severity: SnackbarSeverity.ERROR,
-            })
-        );
+        addServerToastsCookie(response.message!, SnackbarSeverity.ERROR)
 
         return redirect(pathWithSearch);
     }

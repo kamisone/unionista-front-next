@@ -4,10 +4,8 @@ import { SupportedLanguages } from '@/i18n/settings';
 import { SubMiddlewareReturnType } from '@/middleware';
 import { SnackbarSeverity } from '@/services/snackbar.service';
 import { JwtPayload } from '@/services/types/auth';
-import {
-    CURRENT_USER_PAYLOAD_HEADER_NAME,
-    TOAST_COOKIE_NAME,
-} from '@/utils/constants';
+import { CURRENT_USER_PAYLOAD_HEADER_NAME } from '@/utils/constants';
+import { addServerToastsCookie } from '@/utils/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function rolesMiddleware(
@@ -26,14 +24,12 @@ export async function rolesMiddleware(
         userPayload.role !== 'admin'
     ) {
         const response = NextResponse.redirect(new URL(`/${lng}`, req.url));
-        response.cookies.set(
-            TOAST_COOKIE_NAME,
-            JSON.stringify({
-                message: t('unauthorized.role'),
-                severity: SnackbarSeverity.ERROR,
-            })
-        );
-        return response;
+
+        return addServerToastsCookie(
+            t('unauthorized.role'),
+            SnackbarSeverity.ERROR,
+            response
+        )!;
     }
     return {
         request: req,

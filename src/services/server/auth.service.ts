@@ -40,7 +40,11 @@ export class AuthService extends ComponentsStateNotify<
     async signinUser(
         data: Record<string, unknown> | FormData,
         onSuccess: (...args: any) => unknown
-    ): Promise<{ success: boolean }> {
+    ): Promise<{
+        success: boolean;
+        message?: string;
+        userPayload?: JwtPayload;
+    }> {
         return this.httpService
             .post<UserWithTokens>({
                 path: AuthService.endpoints.SIGN_IN,
@@ -50,6 +54,7 @@ export class AuthService extends ComponentsStateNotify<
                 onSuccess(response);
                 return {
                     success: true,
+                    userPayload: response.userPayload,
                 };
             })
             .catch((error) => {
@@ -62,7 +67,11 @@ export class AuthService extends ComponentsStateNotify<
     async signupClient(
         data: Record<string, any>,
         onSuccess: (...args: any[]) => unknown
-    ): Promise<{ success: boolean }> {
+    ): Promise<{
+        success: boolean;
+        message?: string;
+        userPayload?: JwtPayload;
+    }> {
         const formData = new FormData();
         for (let key in data) {
             formData.append(key, data[key]);
@@ -73,10 +82,11 @@ export class AuthService extends ComponentsStateNotify<
                 path: AuthService.endpoints.SIGN_UP,
                 body: formData,
             })
-            .then((response) => {
+            .then((response: UserWithTokens) => {
                 onSuccess(response);
                 return {
                     success: true,
+                    userPayload: response.userPayload,
                 };
             })
             .catch((error) => {
