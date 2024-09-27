@@ -40,11 +40,11 @@ function Home({ params: { lng }, searchParams }: HomeProps) {
 
     return (
         <>
-            <ClientHeader
+            {/* <ClientHeader
                 isMobile={isMobileDevice}
                 lng={lng}
                 userPayload={userPayload}
-            />
+            /> */}
             <ClientHome
                 isMobile={isMobile(headersList.get('user-agent'))}
                 lng={lng}

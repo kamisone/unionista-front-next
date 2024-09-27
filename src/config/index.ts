@@ -1,4 +1,3 @@
-import { SupportedLanguages } from '@/i18n/settings';
 import { JwtPayload } from '@/services/types/auth';
 import { modalContentNames } from '@/utils/constants';
 import { ModalContentMapping } from '@/utils/modal';
