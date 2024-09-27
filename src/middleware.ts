@@ -11,10 +11,6 @@ export const config = {
     matcher: [
         {
             source: '/((?!api|_next|assets|favicon.ico|sw.js|sitemap.xml|robots.txt).*)',
-            // missing: [
-            //     { type: 'header', key: 'next-router-prefetch' },
-            //     { type: 'header', key: 'purpose', value: 'prefetch' },
-            // ],
         },
     ],
 };

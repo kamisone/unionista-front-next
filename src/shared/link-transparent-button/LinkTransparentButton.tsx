@@ -17,7 +17,7 @@ import {
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import {
+import React, {
     ReactNode,
     useEffect,
     useId,
@@ -36,6 +36,8 @@ interface LinkTransparentButtonProps {
     prefetch?: boolean;
     utilityClasses?: string;
     active?: string;
+
+    handleClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 const authService = AuthService.instance;
@@ -51,6 +53,7 @@ export default function LinkTransparentButton({
     prefetch,
     utilityClasses,
     active,
+    handleClick
 }: LinkTransparentButtonProps) {
     const router = useRouter();
     const pathname = usePathname();
@@ -132,6 +135,7 @@ export default function LinkTransparentButton({
             onClick={(e) => {
                 startTransition(() => {
                     e.preventDefault();
+                    handleClick?.(e);
                     if (isProtected && !userPayload) {
                         if (
                             !document.cookie.includes(

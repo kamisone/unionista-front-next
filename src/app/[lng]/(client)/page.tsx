@@ -6,6 +6,7 @@ import { SupportedLanguages } from '@/i18n/settings';
 import { JwtPayload } from '@/services/types/auth';
 import { CURRENT_USER_PAYLOAD_HEADER_NAME } from '@/utils/constants';
 import { isMobile } from '@/utils/is-browser';
+import { Metadata } from 'next';
 import { headers } from 'next/headers';
 
 export async function generateMetadata({
@@ -17,7 +18,7 @@ export async function generateMetadata({
     return {
         title: t('client-home.title'),
         description: t('client-home.description'),
-    };
+    } as Metadata;
 }
 
 interface HomeProps {

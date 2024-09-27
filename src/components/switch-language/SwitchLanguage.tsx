@@ -13,10 +13,11 @@ import SpainFlagIcon from '@/icons/country/SpainFlagIcon';
 import clsx from 'clsx';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import ArabeFlagIcon from '@/icons/country/ArabeFlagIcon';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import { i18nTranslation } from '@/i18n';
 import { setCookie } from '@/utils/query-params';
+import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
 
 interface SwitchLanguageProps {
     lng: SupportedLanguages;
@@ -26,7 +27,7 @@ const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
     const [isSwitchOpened, setIsSwitchOpened] = useState(false);
     const buttonElement = useRef<HTMLButtonElement>(null);
     const t = i18nTranslation(lng, 'switch_language');
-    const pathname = usePathname();
+    const pathWithSearch = `${usePathname()}?${useSearchParams().toString()}`;
     return (
         <button
             ref={buttonElement}
@@ -57,9 +58,9 @@ const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
                     .map((l) => {
                         return (
                             <li className={styles.lng_option} key={l}>
-                                <Link
-                                    href={`/${l}${pathname.slice(3)}`}
-                                    onClick={() => {
+                                <LinkTransparentButton
+                                    to={`/${l}${pathWithSearch.slice(3)}`}
+                                    handleClick={() => {
                                         setCookie('lng', l);
                                     }}
                                 >
@@ -67,7 +68,7 @@ const SwitchLanguage = ({ lng }: SwitchLanguageProps) => {
                                         {LanguageIconsMapping[l]}
                                     </div>
                                     {t(`language.${l}.title`)}
-                                </Link>
+                                </LinkTransparentButton>
                             </li>
                         );
                     })}
