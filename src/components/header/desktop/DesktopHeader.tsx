@@ -35,7 +35,7 @@ async function DesktopHeader({ lng, userPayload }: DesktopHeaderProps) {
                 )}
             >
                 <div className={styles.logo}>
-                    <LinkTransparentButton to="/">
+                    <LinkTransparentButton to={`/${lng}`}>
                         <div className={'inline-block'}>
                             <img
                                 className={'max-w-24'}

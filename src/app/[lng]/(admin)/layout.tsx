@@ -11,7 +11,7 @@ interface AdminLayoutProps {
 const AdminLayout = ({ children, params: { lng } }: AdminLayoutProps) => {
     return (
         <main className={styles.container}>
-            <AdminHeader utilities="col-[1/-1]" />
+            <AdminHeader utilities="col-[1/-1]" lng={lng} />
             <SidePanel lng={lng} />
             <section className="p-4">{children}</section>
 

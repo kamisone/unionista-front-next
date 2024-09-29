@@ -26,7 +26,7 @@ const MobileHeader = ({ lng, userPayload }: HeaderProps) => {
     return (
         <div className={'relative z-[1]'}>
             <div className={'flex justify-between items-center flex-wrap'}>
-                <LinkTransparentButton to="/">
+                <LinkTransparentButton to={`/${lng}`}>
                     <img
                         className={'max-w-20'}
                         src="/assets/icons/unionista-logo2.png"
