@@ -26,13 +26,13 @@ const MobileHeader = ({ lng, userPayload }: HeaderProps) => {
     return (
         <div className={'relative z-[1]'}>
             <div className={'flex justify-between items-center flex-wrap'}>
-                <figure>
+                <LinkTransparentButton to="/">
                     <img
                         className={'max-w-20'}
                         src="/assets/icons/unionista-logo2.png"
                         alt="logo"
                     />
-                </figure>
+                </LinkTransparentButton>
                 <ul
                     className={clsx(
                         'flex items-center justify-between ml-auto list-none',

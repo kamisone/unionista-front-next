@@ -16,10 +16,10 @@ module.exports = {
 
                 'soft-coral': '#f9746b',
                 'vibrant-orange': '#f1641e',
+                'darker-orange': '#d4571a',
                 'blush-pink': '#f9e3e2',
                 'primary-green': 'green',
                 'translucent-black': 'rgba(0, 0, 0, 0.75)',
-                'primary-orange': 'orange',
                 'neon-green': 'rgb(125, 251, 125)',
                 'light-sage': 'rgb(225, 227, 223)',
                 'sky-blue': '#68e',

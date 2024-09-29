@@ -20,7 +20,7 @@ import { JwtPayload } from '@/services/types/auth';
 
 interface DesktopHeaderProps {
     lng: SupportedLanguages;
-    userPayload: JwtPayload | null;
+    userPayload: JwtPayload | null;
 }
 
 async function DesktopHeader({ lng, userPayload }: DesktopHeaderProps) {
@@ -125,7 +125,7 @@ async function DesktopHeader({ lng, userPayload }: DesktopHeaderProps) {
                             utilityClasses="leading-[0]"
                         >
                             <ScaleBgWrapper>
-                                <BoSettingsIcon />
+                                <BoSettingsIcon size={24} />
                             </ScaleBgWrapper>
                         </LinkTransparentButton>
                     </li>
@@ -134,18 +134,8 @@ async function DesktopHeader({ lng, userPayload }: DesktopHeaderProps) {
                             to={`/${lng}/notifications`}
                             utilityClasses="leading-[0]"
                         >
-                            {/* <div
-                                style={{
-                                    // @ts-ignore
-                                    '--nav-icon-title': `"${t(
-                                        'icons.hover.notifications'
-                                    )}"`,
-                                }}
-                            >
-                                <NotificationIcon />
-                            </div> */}
                             <ScaleBgWrapper>
-                                <NotificationIcon />
+                                <NotificationIcon size={24} />
                             </ScaleBgWrapper>
                         </LinkTransparentButton>
                     </li>
@@ -154,18 +144,8 @@ async function DesktopHeader({ lng, userPayload }: DesktopHeaderProps) {
                             to={`/${lng}/cart`}
                             utilityClasses="leading-[0]"
                         >
-                            {/* <div
-                                style={{
-                                    // @ts-ignore
-                                    '--nav-icon-title': `"${t(
-                                        'icons.hover.cart'
-                                    )}"`,
-                                }}
-                            >
-                                <CartIcon />
-                            </div> */}
                             <ScaleBgWrapper>
-                                <CartIcon />
+                                <CartIcon size={24} />
                             </ScaleBgWrapper>
                         </LinkTransparentButton>
                     </li>

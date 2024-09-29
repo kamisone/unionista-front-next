@@ -1,0 +1,19 @@
+.container {
+    border: 2px solid var(--clr-primary)
+}
+.container legend {
+    transform: translateY(1rem);
+    transition: transform 0.25s, color 0.5s;
+}
+
+.container:focus-within legend,
+.container.force-focus legend {
+    transform: translateY(0);
+    position: static;
+}
+.container.force-focus legend {
+    color: var(--clr-primary)
+}
+.container:focus-within legend {
+    color: var(--clr-sky-blue)
+}

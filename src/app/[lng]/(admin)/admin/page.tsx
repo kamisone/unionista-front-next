@@ -1,6 +1,5 @@
 export const dynamic = 'force-dynamic';
 import AdminFooter from '@/components/admin/footer/AdminFooter';
-import AdminHeader from '@/components/admin/header/AdminHeader';
 import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages } from '@/i18n/settings';
 import { JwtPayload } from '@/services/types/auth';
@@ -30,9 +29,7 @@ const AdminHome = () => {
     return (
         <>
             <div className="p-4">
-                <AdminHeader />
                 <h2 className="">admin</h2>
-                <AdminFooter />
             </div>
         </>
     );

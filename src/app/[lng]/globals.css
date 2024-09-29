@@ -21,6 +21,7 @@
     --clr-translucent-black: rgba(0, 0, 0, 0.75);
     --clr-primary-orange: orange;
     --clr-neon-green: rgb(125, 251, 125);
+    --clr-sky-blue: #6688ee;
 
     /* sizes */
 
@@ -152,3 +153,25 @@ a {
 .onhover_bg_grey:hover::before {
     transform: scale(1);
 }
+
+
+
+@keyframes fadeInTop {
+    0% {
+        opacity: 0;
+        transform: translateY(10px)
+    }    
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* screens 
+* 'sm': '640px'
+* 'md': '768px'
+* 'lg': '1024px'
+* 'xl': '1280px'
+* '2xl': '1536px'
+*/

@@ -33,8 +33,8 @@ export function getCookies() {
     return cookiesObj ?? {};
 }
 
-export function deleteCookie(key: string) {
-    document.cookie = `${key}=; Max-Age=0;`;
+export function deleteCookie(key: string, value: string) {
+    document.cookie = `${key}=;path=/;Max-Age=0;`;
 }
 
 export function setCookie(

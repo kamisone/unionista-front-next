@@ -1,0 +1,16 @@
+.container *:nth-child(2n) {
+    width: 0;
+    overflow-x: hidden;
+}
+
+.container.desktop *:nth-child(2n) {
+    width: auto;
+}
+
+.container.minimal-menu *:nth-child(2n) {
+    width: 0;
+}
+
+.container.minimal-menu *:nth-child(2n + 1) {
+    border-radius: 5px;
+}

@@ -4,6 +4,7 @@ import { getLocale, i18nTranslation } from '@/i18n';
 import { AuthService } from '@/services/auth.service';
 import { LoaderService } from '@/services/loader.service';
 import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
+import styles from '@/shared/link-transparent-button/LinkTransparentButton.module.css';
 import {
     modalContentNames,
     PENDING_REDIRECT_PATH_NAME,
@@ -18,7 +19,7 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, {
-    ReactNode,
+    ReactElement,
     useEffect,
     useId,
     useMemo,
@@ -28,7 +29,7 @@ import React, {
 } from 'react';
 
 interface LinkTransparentButtonProps {
-    children: ReactNode;
+    children: ReactElement | ReactElement[];
     to?: string;
     addQuerySearch?: { key: string; value: string };
     deleteQuerySearch?: string;
@@ -37,7 +38,7 @@ interface LinkTransparentButtonProps {
     utilityClasses?: string;
     active?: string;
 
-    handleClick?: (e: React.MouseEvent<HTMLElement>) => void
+    handleClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const authService = AuthService.instance;
@@ -53,7 +54,7 @@ export default function LinkTransparentButton({
     prefetch,
     utilityClasses,
     active,
-    handleClick
+    handleClick,
 }: LinkTransparentButtonProps) {
     const router = useRouter();
     const pathname = usePathname();
@@ -130,7 +131,7 @@ export default function LinkTransparentButton({
             className={clsx(
                 'relative no-underline text-inherit',
                 utilityClasses,
-                pathWithSearch.includes(href) && active
+                pathWithSearch.includes(href) && active && styles.active
             )}
             onClick={(e) => {
                 startTransition(() => {

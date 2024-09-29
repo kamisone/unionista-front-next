@@ -44,7 +44,7 @@ export default async function UsersPage() {
     }
 
     return [
-        <h1 key="clients">clients</h1>,
+        <h1 key="clients">clients ({clientsRes.data!.length})</h1>,
         clientsRes.data!.map((client) => (
             <div key={client.id}>
                 <p>{client.fullName}</p>
@@ -52,7 +52,7 @@ export default async function UsersPage() {
             </div>
         )),
         <br key="br"></br>,
-        <h1 key="admins">admins</h1>,
+        <h1 key="admins">admins ({adminsRes.data!.length})</h1>,
         adminsRes.data!.map((admin) => (
             <div key={admin.id}>
                 <p>

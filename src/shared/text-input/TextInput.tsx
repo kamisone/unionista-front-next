@@ -3,7 +3,7 @@
 import { SupportedLanguages } from '@/i18n/settings';
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
-import './TextInput.css';
+import styles from '@/shared/text-input/TextInput.module.css';
 
 interface TextInputProps {
     lng: SupportedLanguages;
@@ -38,16 +38,16 @@ const TextInput = (props: TextInputProps) => {
         <>
             <div
                 className={clsx(
-                    'ti_container',
-                    `icon_gap_${iconGap}`,
-                    props.lng,
+                    styles.container,
+                    styles[`icon_gap_${iconGap}`],
+                    styles[props.lng],
                     {
-                        bg_icon_active: isIconBgActive,
+                        [styles['bg_icon_active']]: isIconBgActive,
                     }
                 )}
             >
                 <input
-                    className={clsx(size)}
+                    className={clsx(styles[size])}
                     id={labelId}
                     type={type === 'switchable' ? currentType : type}
                     placeholder={placeholder}
@@ -56,7 +56,7 @@ const TextInput = (props: TextInputProps) => {
                 {Icon && (
                     <button
                         type={isSubmit ? 'submit' : 'button'}
-                        className="ti_input_icon"
+                        className={styles['input-icon']}
                         onClick={() => {
                             if (isSubmit || type !== 'switchable') return;
                             setCurrentType((value) =>

@@ -48,7 +48,10 @@ export class SnackbarService extends ComponentsStateNotify<
                                 toast,
                             };
                         }
-                        deleteCookie(TOAST_COOKIE_NAME);
+                        deleteCookie(
+                            TOAST_COOKIE_NAME,
+                            cookies[TOAST_COOKIE_NAME]
+                        );
                     }
                 }, 1000);
             }

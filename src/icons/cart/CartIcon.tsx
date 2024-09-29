@@ -1,10 +1,10 @@
 import React from 'react';
 
-const CartIcon = () => {
+const CartIcon = ({ size = 20 }) => {
     return (
         <svg
-            width="25"
-            height="25"
+            width={size}
+            height={size}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             aria-hidden="true"
