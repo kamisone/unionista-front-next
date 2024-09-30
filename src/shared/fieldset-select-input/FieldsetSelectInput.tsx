@@ -27,6 +27,7 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
 
     useEffect(() => {
         setIsFocused(false);
+        if (nativeSelectRef.current) nativeSelectRef.current.value = '';
     }, []);
 
     return (
@@ -50,7 +51,16 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
                     aria-haspopup="listbox"
                     aria-expanded={isExpanded}
                     onClick={() => {
-                        setIsExpanded((value) => !value);
+                        setIsExpanded((value) => {
+                            if (value) {
+                                if (nativeSelectRef.current) {
+                                    nativeSelectRef.current.value = selectedIdx
+                                        ? options[selectedIdx - 1].value
+                                        : '';
+                                }
+                            }
+                            return !value;
+                        });
                     }}
                     onFocus={() => {
                         setIsFocused(true);
@@ -62,11 +72,15 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
                     onKeyDown={(e) => {
                         switch (e.key) {
                             case 'ArrowDown':
-                                setSelectedIdx((idx) =>
-                                    idx < options.length
-                                        ? idx + 1
-                                        : options.length
-                                );
+                                setSelectedIdx((idx) => {
+                                    const newIdx =
+                                        idx < options.length
+                                            ? idx + 1
+                                            : options.length;
+
+                                    return newIdx;
+                                });
+
                                 break;
                             case 'ArrowUp':
                                 setSelectedIdx((idx) => (idx ? idx - 1 : 0));
@@ -85,7 +99,7 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
                     >
                         <span>
                             {selectedIdx
-                                ? options[selectedIdx - 1].value
+                                ? options[selectedIdx - 1].key
                                 : isFocused && t('select-input.default')}
                         </span>
                         <div
@@ -113,6 +127,7 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
                         <div
                             className="absolute w-full left-0 top-[108%] text-start bg-white outline-2 outline-sky-blue outline shadow-lg rounded-sm animate-[fadeInTop_0.5s_forwards]"
                             role="listbox"
+                            aria-label="listbox"
                         >
                             {!isRequired && (
                                 <div
@@ -153,7 +168,7 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
                                         }
                                     }}
                                 >
-                                    {option.value}
+                                    {option.key}
                                 </div>
                             ))}
                         </div>
