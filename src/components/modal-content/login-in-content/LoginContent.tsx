@@ -11,7 +11,7 @@ import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
 import TraitIcon from '@/icons/eye/trait/TraitIcon';
-import { SnackbarSeverity } from '@/services/snackbar.service';
+import { SnackbarSeverity } from '@/services/browser/snackbar.service';
 import ClientActionButton from '@/shared/client-action-button/ClientActionButton';
 import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
 import {
@@ -27,7 +27,11 @@ import clsx from 'clsx';
 import { cookies, headers } from 'next/headers';
 import { redirect, RedirectType } from 'next/navigation';
 import { stripQueryParamFromUrl } from '@/utils/query-params';
-import { JwtPayload, UserWithTokens } from '@/services/types/auth';
+import {
+    JwtAuthResponseType,
+    JwtPayload,
+    UserWithTokens,
+} from '@/services/types/auth';
 import { isUserAuthorized } from '@/config';
 import { addServerToastsCookie } from '@/utils/server';
 
@@ -69,7 +73,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     accessTokenNames.ACCESS_TOKEN,
                     response.accessToken,
                     {
-                        httpOnly: true,
+                        // httpOnly: true,
                         path: '/',
                         secure: true,
                         maxAge: 99999999,
@@ -79,7 +83,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     accessTokenNames.REFRESH_TOKEN,
                     response.refreshToken,
                     {
-                        httpOnly: true,
+                        // httpOnly: true,
                         path: '/',
                         secure: true,
                         maxAge: 99999999,
@@ -98,15 +102,14 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
                     }
                 );
 
-                addServerToastsCookie('successfully connected', SnackbarSeverity.SUCCESS)
+                addServerToastsCookie(
+                    'successfully connected',
+                    SnackbarSeverity.SUCCESS
+                );
             }
         }
 
-        const response: {
-            success: boolean;
-            message?: string;
-            userPayload?: JwtPayload;
-        } = await (isSignin
+        const response: JwtAuthResponseType = await (isSignin
             ? authService.signinUser(
                   {
                       email,
@@ -148,7 +151,7 @@ const LoginContent = async function ({ lng }: LoginContentProps) {
         }
 
         // Error notification
-        addServerToastsCookie(response.message!, SnackbarSeverity.ERROR)
+        addServerToastsCookie(response.message!, SnackbarSeverity.ERROR);
 
         return redirect(pathWithSearch);
     }

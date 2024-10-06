@@ -4,7 +4,7 @@ import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages } from '@/i18n/settings';
 import BottomArrowIcon from '@/icons/bottom-arrow-icon/BottomArrowIcon';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import FieldsetControl from '../fieldset-control/FieldsetControl';
 
 interface FieldsetSelectInputProps {
@@ -22,12 +22,11 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
     const [selectedIdx, setSelectedIdx] = useState<number>(0);
     const [isExpanded, setIsExpanded] = useState(false);
     const [isFocused, setIsFocused] = useState(true);
-    const nativeSelectRef = useRef<HTMLSelectElement | null>(null);
     const t = i18nTranslation(lng, 'sheared');
 
     useEffect(() => {
         setIsFocused(false);
-        if (nativeSelectRef.current) nativeSelectRef.current.value = '';
+        setSelectedIdx(0);
     }, []);
 
     return (
@@ -38,7 +37,16 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
                 forceFocus={!!isFocused}
                 utilities={utilities}
             >
-                <select name={name} hidden ref={nativeSelectRef}>
+                <select
+                    name={name}
+                    hidden
+                    value={
+                        options[selectedIdx - 1]
+                            ? options[selectedIdx - 1].value
+                            : ''
+                    }
+                >
+                    {!isRequired && <option key={t('select-input.default')} />}
                     {options.map((option) => (
                         <option key={option.value} value={option.value} />
                     ))}
@@ -52,13 +60,6 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
                     aria-expanded={isExpanded}
                     onClick={() => {
                         setIsExpanded((value) => {
-                            if (value) {
-                                if (nativeSelectRef.current) {
-                                    nativeSelectRef.current.value = selectedIdx
-                                        ? options[selectedIdx - 1].value
-                                        : '';
-                                }
-                            }
                             return !value;
                         });
                     }}
@@ -136,10 +137,7 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
                                     aria-selected={0 === selectedIdx}
                                     data-value=""
                                     onClick={() => {
-                                        if (nativeSelectRef.current) {
-                                            nativeSelectRef.current.value = '';
-                                            setSelectedIdx(0);
-                                        }
+                                        setSelectedIdx(0);
                                     }}
                                     className={clsx(
                                         'hover:bg-[#d4571a] p-2 first-letter:uppercase',
@@ -161,11 +159,9 @@ function FieldsetSelectInput(props: FieldsetSelectInputProps) {
                                     aria-selected={idx + 1 === selectedIdx}
                                     data-value={option.value}
                                     onClick={(e) => {
-                                        if (nativeSelectRef.current) {
-                                            nativeSelectRef.current.value =
-                                                option.value;
-                                            setSelectedIdx(idx + 1);
-                                        }
+                                        e.stopPropagation();
+                                        setSelectedIdx(idx + 1);
+                                        setIsExpanded((value) => !value);
                                     }}
                                 >
                                     {option.key}

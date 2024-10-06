@@ -20,7 +20,9 @@ export default function SideModal({
         let content: ReactElement | Promise<ReactElement> | null = null;
         switch (currentModalContent) {
             case ModalContentMapping.MENU_DRAWER:
-                content = <MenuDrawerNavContent lng={lng} />;
+                content = (
+                    <MenuDrawerNavContent lng={lng} isMobile={isMobile} />
+                );
                 break;
         }
 

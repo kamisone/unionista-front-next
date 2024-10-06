@@ -1,9 +1,12 @@
 'use client';
 import { isUserAuthorized } from '@/config';
 import { getLocale, i18nTranslation } from '@/i18n';
-import { AuthService } from '@/services/auth.service';
-import { LoaderService } from '@/services/loader.service';
-import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
+import { AuthService } from '@/services/browser/auth.service';
+import { LoaderService } from '@/services/browser/loader.service';
+import {
+    SnackbarService,
+    SnackbarSeverity,
+} from '@/services/browser/snackbar.service';
 import styles from '@/shared/link-transparent-button/LinkTransparentButton.module.css';
 import {
     modalContentNames,

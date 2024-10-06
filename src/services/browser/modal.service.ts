@@ -1,7 +1,7 @@
 'use client';
 
 import { isBrowser } from '@/utils/is-browser';
-import { ComponentsStateNotify } from './components-state-notify.service';
+import { ComponentsStateNotify } from '../components-state-notify.service';
 import { RouterService } from './router.service';
 import { stripQueryParamFromUrl } from '@/utils/query-params';
 import { modalContentNames } from '@/utils/constants';

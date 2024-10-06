@@ -18,10 +18,6 @@ export const config = {
 export async function middleware(req: NextRequest) {
     // Sub middlewares can return NextResponse only for redirecting.
     const cbs = [];
-    console.log(
-        'request: ',
-        req.method + ' -- ' + req.nextUrl.pathname + req.nextUrl.search
-    );
     const getLocaleResult = getLocaleMiddleware(req);
     if (getLocaleResult instanceof NextResponse) {
         return getLocaleResult;
@@ -115,14 +111,6 @@ export async function middleware(req: NextRequest) {
         secure: true,
         maxAge: 99999999,
     });
-
-    console.log(
-        'arrived here: ',
-        pathnameResult.request.method +
-            ' ... ' +
-            pathnameResult.request.nextUrl.pathname +
-            pathnameResult.request.nextUrl.search
-    );
 
     return response;
 }

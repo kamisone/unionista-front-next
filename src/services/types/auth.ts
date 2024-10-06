@@ -7,9 +7,21 @@ export interface JwtPayload {
     role: Role;
 }
 
-export interface JwtResponse {
+export interface JwtVerifyResponseType {
     success: boolean;
     payload?: JwtPayload;
+    message?: string;
+}
+
+export interface JwtRefreshResponseType {
+    success: boolean;
+    accessToken?: string;
+    message?: string;
+}
+
+export interface JwtAuthResponseType {
+    success: boolean;
+    userPayload?: JwtPayload;
     message?: string;
 }
 

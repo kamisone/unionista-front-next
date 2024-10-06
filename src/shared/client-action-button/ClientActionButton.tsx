@@ -7,7 +7,7 @@ import Link from 'next/link';
 import React, { ReactNode } from 'react';
 import LoadingIndicator from '../loading-indicator/LoadingIndicator';
 import './ClientActionButton.css';
-import { SnackbarService } from '@/services/snackbar.service';
+import { SnackbarService } from '@/services/browser/snackbar.service';
 
 interface ClientActionButtonProps {
     lng: SupportedLanguages;

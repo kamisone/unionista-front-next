@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { TOAST_COOKIE_NAME } from '../constants';
-import { SnackbarSeverity } from '@/services/snackbar.service';
+import { SnackbarSeverity } from '@/services/browser/snackbar.service';
 import { NextResponse } from 'next/server';
 
 export function addServerToastsCookie(

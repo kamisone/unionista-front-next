@@ -1,4 +1,4 @@
-import { ComponentsStateNotify } from './components-state-notify.service';
+import { ComponentsStateNotify } from '../components-state-notify.service';
 
 export interface INotifyOptions {
     state: LoaderState;

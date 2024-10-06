@@ -4,11 +4,26 @@ import { ReactNode } from 'react';
 
 interface ScaleBgWrapperProps {
     children: ReactNode;
+    size?: string;
+    isFixedSize?: boolean;
 }
 
 const ScaleBgWrapper = (props: ScaleBgWrapperProps) => {
-    const { children } = props;
-    return <div className={clsx(styles.container)}>{children}</div>;
+    const { children, isFixedSize = true, size = '1.5rem' } = props;
+    return (
+        <div
+            style={{
+                height: isFixedSize ? size : 'auto',
+                width: isFixedSize ? size : 'auto',
+            }}
+            className={clsx(
+                styles.container,
+                'grid items-center relative isolate text-inherit'
+            )}
+        >
+            {children}
+        </div>
+    );
 };
 
 export default ScaleBgWrapper;

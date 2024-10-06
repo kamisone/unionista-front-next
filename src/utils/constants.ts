@@ -9,6 +9,8 @@ export enum modalContentNames {
     HEADER_NAME = 'x-modal_content',
 }
 
+export const LANGUAGE_FILTER_QUERY_NAME = 'lng_filter';
+
 export const PENDING_REDIRECT_PATH_NAME = 'pending_redirect_path';
 
 export const CURRENT_USER_PAYLOAD_HEADER_NAME = 'x-user-payload';

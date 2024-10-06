@@ -1,54 +1,52 @@
-import { fetchProductsCategories } from '@/actions';
+import { fetchParentsProductsCategories } from '@/actions';
 import { Graphik, UthmanicFont } from '@/fonts/fonts';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
-import DropListArrowIcon from '@/icons/drop-list-arrow/DropListArrowIcon';
+import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
 import clsx from 'clsx';
-import Link from 'next/link';
-
-interface MenuDrawerNavItem {
-    id: string;
-    hasChildren: boolean;
-    translations: {
-        name: string;
-    };
-}
+import ProductCategoryChildren from '@/components/modal-content/menu-drawer-nav-content/product-category-children/ProductCategoryChildren';
 
 interface MenuDrawerNavContentProps {
     lng: SupportedLanguages;
+    isMobile?: boolean;
 }
 
 async function MenuDrawerNavContent(props: MenuDrawerNavContentProps) {
-    const { lng } = props;
+    const { lng, isMobile } = props;
 
-    const menuItems = await fetchProductsCategories(lng);
+    const menuItems = await fetchParentsProductsCategories(lng);
 
     return (
-        <ul
-            className={clsx(
-                'grid content-start overflow-y-scroll px-4',
-                lng === SupportedLanguagesEnum.AR
-                    ? UthmanicFont.className
-                    : Graphik.className
-            )}
-        >
-            {menuItems.map((menuItem) => {
-                return (
-                    <li
-                        key={menuItem.id}
-                        className="flex items-center justify-between text-sm capitalize"
-                    >
-                        {menuItem.hasChildren ? (
-                            <Link href={`/${lng}/${menuItem.id}`}>
-                                {menuItem.translations.name}
-                            </Link>
-                        ) : (
-                            <p>{menuItem.translations.name}</p>
-                        )}
-                        <DropListArrowIcon />
-                    </li>
-                );
-            })}
-        </ul>
+        <nav>
+            <ul
+                className={clsx(
+                    'grid content-start px-4',
+                    lng === SupportedLanguagesEnum.AR
+                        ? UthmanicFont.className
+                        : Graphik.className
+                )}
+            >
+                {menuItems.map((menuItem) => {
+                    return (
+                        <li
+                            key={menuItem.id}
+                            className="grid grid-cols-[1fr_auto]  justify-between items-center text-sm capitalize"
+                        >
+                            <LinkTransparentButton
+                                to={`/${lng}/${menuItem.slug}`}
+                            >
+                                <span>{menuItem.translations.name}</span>
+                            </LinkTransparentButton>
+
+                            <ProductCategoryChildren
+                                lng={lng}
+                                parentId={menuItem.id}
+                                isMobile={isMobile}
+                            />
+                        </li>
+                    );
+                })}
+            </ul>
+        </nav>
     );
 }
 

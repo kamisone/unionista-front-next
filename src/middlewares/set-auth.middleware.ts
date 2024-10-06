@@ -2,7 +2,7 @@ import { getAdminPaths } from '@/config';
 import { SupportedLanguages } from '@/i18n/settings';
 import { SubMiddlewareReturnType } from '@/middleware';
 import { AuthService } from '@/services/server/auth.service';
-import { JwtResponse } from '@/services/types/auth';
+import { JwtVerifyResponseType } from '@/services/types/auth';
 import {
     accessTokenNames,
     CURRENT_USER_COOKIE_NAME,
@@ -21,7 +21,7 @@ export async function setAuthMiddleware(
     const accessToken = cookies.get(accessTokenNames.ACCESS_TOKEN);
     const refreshToken = cookies.get(accessTokenNames.REFRESH_TOKEN);
     const pathWithSearch = req.nextUrl.pathname + req.nextUrl.search;
-    let res: JwtResponse;
+    let res: JwtVerifyResponseType;
     if (
         accessToken &&
         (res = await AuthService.verifyJwt(accessToken.value)).success
@@ -52,7 +52,9 @@ export async function setAuthMiddleware(
     ) {
         return AuthService.refreshToken(
             refreshToken.value,
-            async (data: { accessToken: string }) => {
+            async (data: {
+                accessToken: string;
+            }): Promise<SubMiddlewareReturnType> => {
                 const res = await AuthService.verifyJwt(data.accessToken);
                 req.headers.set(
                     CURRENT_USER_PAYLOAD_HEADER_NAME,
@@ -65,7 +67,7 @@ export async function setAuthMiddleware(
                             accessTokenNames.ACCESS_TOKEN,
                             data.accessToken,
                             {
-                                httpOnly: true,
+                                // httpOnly: true,
                                 path: '/',
                                 secure: true,
                                 maxAge: 99999999,
@@ -82,7 +84,7 @@ export async function setAuthMiddleware(
                         );
                         return response;
                     },
-                };
+                } as SubMiddlewareReturnType;
             }
         ) as unknown as SubMiddlewareReturnType;
     } else {

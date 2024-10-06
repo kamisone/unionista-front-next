@@ -1,7 +1,14 @@
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
 import { HttpService } from '@/services/server/http.service';
 import * as jose from 'jose';
-import { JwtPayload, JwtResponse, UserWithTokens } from '@/services/types/auth';
+import {
+    JwtAuthResponseType,
+    JwtPayload,
+    JwtVerifyResponseType,
+    UserWithTokens,
+} from '@/services/types/auth';
+import { accessTokenNames } from '@/utils/constants';
+import { SubMiddlewareReturnType } from '@/middleware';
 
 export interface AuthState {}
 
@@ -40,11 +47,7 @@ export class AuthService extends ComponentsStateNotify<
     async signinUser(
         data: Record<string, unknown> | FormData,
         onSuccess: (...args: any) => unknown
-    ): Promise<{
-        success: boolean;
-        message?: string;
-        userPayload?: JwtPayload;
-    }> {
+    ): Promise<JwtAuthResponseType> {
         return this.httpService
             .post<UserWithTokens>({
                 path: AuthService.endpoints.SIGN_IN,
@@ -62,16 +65,12 @@ export class AuthService extends ComponentsStateNotify<
                     message: error.message,
                     success: false,
                 };
-            }) as Promise<{ success: boolean; message?: string }>;
+            }) as Promise<JwtAuthResponseType>;
     }
     async signupClient(
         data: Record<string, any>,
         onSuccess: (...args: any[]) => unknown
-    ): Promise<{
-        success: boolean;
-        message?: string;
-        userPayload?: JwtPayload;
-    }> {
+    ): Promise<JwtAuthResponseType> {
         const formData = new FormData();
         for (let key in data) {
             formData.append(key, data[key]);
@@ -94,7 +93,7 @@ export class AuthService extends ComponentsStateNotify<
                     message: error.message,
                     success: false,
                 };
-            }) as Promise<{ success: boolean; message?: string }>;
+            }) as Promise<JwtAuthResponseType>;
     }
 
     static async refreshToken(
@@ -106,7 +105,7 @@ export class AuthService extends ComponentsStateNotify<
             {
                 method: 'post',
                 body: JSON.stringify({
-                    refresh_token: refreshToken,
+                    [accessTokenNames.REFRESH_TOKEN]: refreshToken,
                 }),
                 headers: {
                     'Content-Type': 'application/json',
@@ -128,7 +127,7 @@ export class AuthService extends ComponentsStateNotify<
     static async verifyJwt(
         token: string,
         isRefresh: boolean = false
-    ): Promise<JwtResponse> {
+    ): Promise<JwtVerifyResponseType> {
         const secret = isRefresh
             ? new TextEncoder().encode(process.env.JWT_REFRESH_KEY)
             : new TextEncoder().encode(process.env.JWT_ACCESS_KEY);

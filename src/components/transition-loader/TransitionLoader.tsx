@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from './TransitionLoader.module.css';
 import clsx from 'clsx';
-import { LoaderService } from '@/services/loader.service';
+import { LoaderService } from '@/services/browser/loader.service';
 
 interface TransitionLoaderState {
     isLoading: boolean;

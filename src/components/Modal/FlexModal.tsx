@@ -32,6 +32,7 @@ async function FlexModal(props: FlexModalProps) {
                     lng={props.lng}
                     currentModalContent={currentModalContent}
                     isMobile={props.isMobileDevice}
+                    searchParams={props.searchParams}
                 />
             );
         } else {
@@ -40,6 +41,7 @@ async function FlexModal(props: FlexModalProps) {
                     lng={props.lng}
                     currentModalContent={currentModalContent}
                     isMobile={props.isMobileDevice}
+                    searchParams={props.searchParams}
                 />
             );
         }

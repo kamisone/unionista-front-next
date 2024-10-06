@@ -1,7 +1,7 @@
 'use client';
 
 import BottomArrowIcon from '@/icons/bottom-arrow-icon/BottomArrowIcon';
-import RightArrowIcon from '@/icons/right-arrow-icon/RightArrowIcon';
+import LeftArrowIcon from '@/icons/left-arrow-icon/LeftArrowIcon';
 import ScaleBgWrapper from '@/shared/scale-bg-wrapper/ScaleBgWrapper';
 import clsx from 'clsx';
 import { useState } from 'react';
@@ -37,7 +37,7 @@ export default function ToggleTitlesArrow({
             }}
         >
             <ScaleBgWrapper>
-                <RightArrowIcon />
+                <LeftArrowIcon />
             </ScaleBgWrapper>
         </div>
     );

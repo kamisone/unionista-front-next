@@ -1,5 +1,8 @@
 'use client';
-import { SnackbarService, SnackbarSeverity } from '@/services/snackbar.service';
+import {
+    SnackbarService,
+    SnackbarSeverity,
+} from '@/services/browser/snackbar.service';
 import { useEffect, useState } from 'react';
 import styles from './Notifier.module.css';
 

@@ -1,8 +1,8 @@
 'use client';
 
-import { LoaderService } from '@/services/loader.service';
-import { ModalService } from '@/services/modal.service';
-import { RouterService } from '@/services/router.service';
+import { LoaderService } from '@/services/browser/loader.service';
+import { ModalService } from '@/services/browser/modal.service';
+import { RouterService } from '@/services/browser/router.service';
 import { useRouter } from 'next/navigation';
 import { useEffect, useId, useRef, useTransition } from 'react';
 

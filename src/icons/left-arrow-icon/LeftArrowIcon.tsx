@@ -1,4 +1,4 @@
-export default function RightArrowIcon() {
+export default function LeftArrowIcon() {
     return (
         <svg
             width="24"
@@ -12,7 +12,7 @@ export default function RightArrowIcon() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="52"
-                d="M184 112l144 144-144 144"
+                d="M328 112L184 256l144 144"
             />
         </svg>
     );

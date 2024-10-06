@@ -1,6 +1,6 @@
 import { SupportedLanguages } from '@/i18n/settings';
+import { HttpService } from '@/services/browser/http.service';
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
-import { HttpService } from '@/services/server/http.service';
 import { HttpException } from '@/shared/http-exception/HttpException';
 import { ListResponseType, PostResponseType } from '../types/http';
 
@@ -128,7 +128,7 @@ export class ProductCategoryService extends ComponentsStateNotify<
                     where: [
                         {
                             operands: ['parentId', parentId],
-                            operator: 'eq',
+                            operator: 'is',
                         },
                     ],
                 },

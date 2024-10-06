@@ -5,9 +5,21 @@ import {
     httpHeadersNames,
     httpHeadersValues,
     httpMethods,
+    modalContentNames,
+    PENDING_REDIRECT_PATH_NAME,
 } from '@/utils/constants';
-import { cookies } from 'next/headers';
+import {
+    addQueryParamToUrl,
+    getCookies,
+    setCookie,
+} from '@/utils/query-params';
 import { IWhere } from '@/services/types/http';
+import { JwtRefreshResponseType } from '@/services/types/auth';
+import { AuthService } from './auth.service';
+import { RouterService } from './router.service';
+import { ModalContentMapping } from '@/utils/modal';
+
+const routerService = RouterService.instance;
 
 export class HttpService {
     private static _instance: HttpService;
@@ -28,6 +40,8 @@ export class HttpService {
             where?: IWhere[] | IWhere[][];
         };
     }) {
+        // @ts-ignore
+        const args = arguments;
         if (queryParams) {
             queryParams =
                 filterInvalidValues<Record<string, unknown>>(queryParams);
@@ -36,18 +50,26 @@ export class HttpService {
         if (queryParams) {
             path = this._addQueryParams(path, queryParams);
         }
-
-        const accessToken =
-            cookies().get(accessTokenNames.ACCESS_TOKEN) || null;
-        return fetch(process.env.API_BASE_URL_SERVER + '/' + path, {
+        const accessToken = getCookies()[accessTokenNames.ACCESS_TOKEN] || null;
+        return fetch(process.env.API_BASE_URL_BROWSER + '/' + path, {
             method: httpMethods.GET,
             headers: {
-                Authorization: `bearer ${accessToken && accessToken.value}`,
+                Authorization: `bearer ${accessToken && accessToken}`,
             },
         }).then(async (headers) => {
             if (headers.status >= 200 && headers.status < 300) {
-                return headers.json() as T;
+                return headers.json() as Promise<T>;
             }
+
+            if (headers.status === 401 || headers.status === 403) {
+                const refreshToken =
+                    getCookies()[accessTokenNames.REFRESH_TOKEN];
+                return this._interceptAndRefreshJwt<T>(
+                    accessToken,
+                    refreshToken
+                );
+            }
+
             const error = await headers.json();
             throw new HttpException(error.message, error.status);
         });
@@ -79,18 +101,25 @@ export class HttpService {
             headers[httpHeadersNames.CONTENT_TYPE] =
                 httpHeadersValues.APPLICATION_JSON;
         }
-        const accessToken =
-            cookies().get(accessTokenNames.ACCESS_TOKEN) || null;
-        return fetch(`${process.env.API_BASE_URL_SERVER}/${path}`, {
+        const accessToken = getCookies()[accessTokenNames.ACCESS_TOKEN] || null;
+        return fetch(`${process.env.API_BASE_URL_BROWSER}/${path}`, {
             method: httpMethods.POST,
             body: isFormData ? (body as FormData) : JSON.stringify(body),
             headers: {
                 ...headers,
-                Authorization: `bearer ${accessToken && accessToken.value}`,
+                Authorization: `bearer ${accessToken && accessToken}`,
             },
         }).then(async (headers) => {
             if (headers.status >= 200 && headers.status < 300) {
                 return headers.json();
+            }
+            if (headers.status === 401 || headers.status === 403) {
+                const refreshToken =
+                    getCookies()[accessTokenNames.REFRESH_TOKEN];
+                return this._interceptAndRefreshJwt<T>(
+                    accessToken,
+                    refreshToken
+                );
             }
             const error = await headers.json();
             throw new HttpException(error.message, error.status);
@@ -161,5 +190,46 @@ export class HttpService {
             }
         }
         return `${path}?${queryParams.toString()}`;
+    }
+
+    private async _interceptAndRefreshJwt<T>(
+        accessToken: string | null,
+        refreshToken: string | null
+    ) {
+        return fetch(
+            process.env.API_BASE_URL_BROWSER +
+                '/' +
+                AuthService.endpoints.REFRESH_TOKEN,
+            {
+                method: httpMethods.POST,
+                body: JSON.stringify({
+                    [accessTokenNames.REFRESH_TOKEN]: refreshToken,
+                }),
+                headers: {
+                    Authorization: `bearer ${accessToken && accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        ).then((headers): Promise<T> | undefined => {
+            if (headers.status < 200 || headers.status > 299) {
+                const pathWithSearch = location.pathname + location.search;
+                setCookie(PENDING_REDIRECT_PATH_NAME, pathWithSearch);
+                routerService.state = {
+                    url: addQueryParamToUrl(
+                        pathWithSearch,
+                        modalContentNames.QUERY_NAME,
+                        ModalContentMapping.SIGN_IN
+                    ),
+                };
+                return;
+            }
+            return (headers.json() as Promise<JwtRefreshResponseType>).then(
+                (data) => {
+                    setCookie(accessTokenNames.ACCESS_TOKEN, data.accessToken!);
+                    // @ts-ignore
+                    return this.get.apply(this, args) as Promise<T>;
+                }
+            );
+        });
     }
 }

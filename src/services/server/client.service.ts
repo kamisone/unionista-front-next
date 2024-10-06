@@ -1,5 +1,6 @@
 import { Client } from '@/services/types/auth';
 import { HttpService } from './http.service';
+import { ListResponseType } from '../types/http';
 
 const httpService = HttpService.instance;
 
@@ -14,11 +15,7 @@ export class ClientService {
         return this._instance;
     }
 
-    async findAll(): Promise<{
-        success: boolean;
-        data?: Client[];
-        message?: string;
-    }> {
+    async findAll(): Promise<ListResponseType<Client>> {
         return httpService
             .get<Client[]>({ path: 'clients' })
             .then((data) => {

@@ -1,5 +1,5 @@
 import { ComponentsStateNotify } from '@/services/components-state-notify.service';
-import { HttpService } from '@/services/http.service';
+import { HttpService } from '@/services/browser/http.service';
 import { isBrowser } from '@/utils/is-browser';
 import { getCookies } from '@/utils/query-params';
 import { shallowCompareObjs } from '@/utils';
@@ -52,6 +52,14 @@ export class AuthService extends ComponentsStateNotify<
         }
 
         return this._instance;
+    }
+
+    static get endpoints() {
+        return {
+            REFRESH_TOKEN: 'auth/refresh',
+            SIGN_IN: 'auth/signin',
+            SIGN_UP: 'auth/signup',
+        };
     }
 
     static checkUserAuth(): JwtPayload | null {

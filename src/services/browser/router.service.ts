@@ -1,7 +1,6 @@
 'use client';
 
-import { isBrowser } from '@/utils/is-browser';
-import { ComponentsStateNotify } from './components-state-notify.service';
+import { ComponentsStateNotify } from '../components-state-notify.service';
 
 export interface INotifyOptions {
     state: RouterState;

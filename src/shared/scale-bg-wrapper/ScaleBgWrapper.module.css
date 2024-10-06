@@ -1,9 +1,3 @@
-.container {
-    position: relative;
-    isolation: isolate;
-    color: inherit;
-}
-
 .container::before {
     content: '';
     position: absolute;
@@ -11,7 +5,7 @@
     z-index: -1;
     aspect-ratio: 1;
     background-color: var(--clr-light-black-overlay);
-    border-radius: 100vmax;
+    border-radius: 100%;
     box-shadow: 0 0 0 10px var(--clr-light-black-overlay);
     transform: scale(0);
     transition: transform 0.2s;

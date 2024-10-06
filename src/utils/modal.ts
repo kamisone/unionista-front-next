@@ -5,6 +5,7 @@ export enum ModalContentMapping {
     SIGN_IN = 'signin',
     SIGN_UP = 'signup',
     MENU_DRAWER = 'menu-drawer',
+    PRODUCT_CATEGERY_CREATE = 'product-category-create',
 }
 
 export function getModalTitle(
@@ -19,6 +20,8 @@ export function getModalTitle(
             return t('signin-heading');
         case ModalContentMapping.SIGN_UP:
             return t('signup-heading');
+        case ModalContentMapping.PRODUCT_CATEGERY_CREATE:
+            return t('product-category-create-heading');
         default:
             return '';
     }

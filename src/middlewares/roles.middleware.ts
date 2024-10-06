@@ -2,7 +2,7 @@ import { getAdminPaths } from '@/config';
 import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages } from '@/i18n/settings';
 import { SubMiddlewareReturnType } from '@/middleware';
-import { SnackbarSeverity } from '@/services/snackbar.service';
+import { SnackbarSeverity } from '@/services/browser/snackbar.service';
 import { JwtPayload } from '@/services/types/auth';
 import { CURRENT_USER_PAYLOAD_HEADER_NAME } from '@/utils/constants';
 import { addServerToastsCookie } from '@/utils/server';

@@ -1,5 +1,6 @@
 import { Admin } from '@/services/types/auth';
 import { HttpService } from '@/services/server/http.service';
+import { ListResponseType } from '../types/http';
 
 const httpService = HttpService.instance;
 
@@ -14,11 +15,7 @@ export class AdminService {
         return this._instance;
     }
 
-    async findAll(): Promise<{
-        success: boolean;
-        data?: Admin[];
-        message?: string;
-    }> {
+    async findAll(): Promise<ListResponseType<Admin>> {
         return httpService
             .get<Admin[]>({ path: 'admins' })
             .then((data) => {
