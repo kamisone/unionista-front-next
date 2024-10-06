@@ -128,7 +128,7 @@ export class ProductCategoryService extends ComponentsStateNotify<
                     where: [
                         {
                             operands: ['parentId', parentId],
-                            operator: 'is',
+                            operator: 'eq',
                         },
                     ],
                 },

@@ -34,11 +34,6 @@ export default function ProductCategoryChildren({
                     setIsDisplayed((prev) => !prev);
                     if (children.length) return;
                     setIsLoading(true);
-                    // fetchChildrenProductsCategories({
-                    //     lng,
-                    //     parentId,
-                    // })
-
                     productCategoryService
                         .listChildren({
                             parentId,
