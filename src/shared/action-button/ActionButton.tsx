@@ -15,6 +15,7 @@ interface ActionButtonProps {
     animationOnHover?: boolean;
     disabled?: boolean;
     loading?: boolean;
+    utilities?: string;
 }
 
 const ActionButton = (props: ActionButtonProps) => {
@@ -28,12 +29,14 @@ const ActionButton = (props: ActionButtonProps) => {
         animationOnHover = false,
         disabled = false,
         loading = false,
+        utilities,
     } = props;
     return (
         <button
             disabled={disabled}
             className={clsx(
                 'ab_container',
+                utilities,
                 lng === SupportedLanguagesEnum.AR
                     ? UthmanicFont.className
                     : Graphik.className,
@@ -50,6 +53,5 @@ const ActionButton = (props: ActionButtonProps) => {
         </button>
     );
 };
-
 
 export default ActionButton;

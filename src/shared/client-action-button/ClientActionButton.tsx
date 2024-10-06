@@ -20,6 +20,7 @@ interface ClientActionButtonProps {
     animationOnHover?: boolean;
     disabled?: boolean;
     isSubmit?: boolean;
+    utilities?: string;
 }
 
 interface ClientActionButtonState {
@@ -75,6 +76,7 @@ export default class ClientActionButton extends React.Component<
                 disabled={this.props.disabled}
                 className={clsx(
                     'cab_container',
+                    this.props.utilities,
                     this.props.lng,
                     this.props.lng === SupportedLanguagesEnum.AR
                         ? UthmanicFont.className

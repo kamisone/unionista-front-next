@@ -41,7 +41,8 @@ export default function ProductCategoryChildren({
                         })
                         .then((response) => {
                             setIsLoading(false);
-                            response.data && setChildren(response.data as any);
+                            response.success &&
+                                setChildren(response.data as ProductCategory[]);
                         });
                 }}
             >

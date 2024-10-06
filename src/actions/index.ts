@@ -1,8 +1,16 @@
 'use server';
 
 import { SupportedLanguages } from '@/i18n/settings';
-import { ProductCategory } from '@/services/server/product-category.service';
-import { ProductCategoryService } from '@/services/server/product-category.service';
+import { SnackbarSeverity } from '@/services/browser/snackbar.service';
+import {
+    ProductCategory,
+    ProductCategoryService,
+} from '@/services/server/product-category.service';
+import { modalContentNames, PATHNAME_HEADER_NAME } from '@/utils/constants';
+import { stripQueryParamFromUrl } from '@/utils/query-params';
+import { addServerToastsCookie } from '@/utils/server';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const productCategoryService = ProductCategoryService.instance;
 
@@ -51,9 +59,21 @@ export async function fetchChildrenProductsCategories({
 export async function saveProductCategory(data: FormData) {
     const response = await productCategoryService.save(data);
 
-    if (response.success) {
-        return response.data as ProductCategory;
+    if (!response.success) {
+        addServerToastsCookie(
+            'Error saving product category: ' + response.message,
+            SnackbarSeverity.ERROR
+        );
+        return;
     }
 
-    return response;
+    const pathWithSearch = headers().get(PATHNAME_HEADER_NAME) || '';
+
+    addServerToastsCookie(
+        'Successfuly created category',
+        SnackbarSeverity.SUCCESS
+    );
+    return redirect(
+        stripQueryParamFromUrl(pathWithSearch, modalContentNames.QUERY_NAME)
+    );
 }

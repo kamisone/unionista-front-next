@@ -1,19 +1,16 @@
-import { fetchAllProductsCategories, saveProductCategory } from '@/actions';
+import { fetchAllProductsCategories } from '@/actions';
+import styles from '@/app/[lng]/(admin)/admin/listings/page.module.css';
+import AdminPageLayout from '@/components/layouts/admin-page-layout/AdminPageLayout';
 import { i18nTranslation } from '@/i18n';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
-import FieldsetSelectInput from '@/shared/fieldset-select-input/FieldsetSelectInput';
-import FieldsetTextInput from '@/shared/fieldset-text-input/FieldsetTextInput';
-import FieldsetTextareaInput from '@/shared/fieldset-textarea-input/FieldsetTextareaInput';
+import ActionButton from '@/shared/action-button/ActionButton';
 import LinkTransparentButton from '@/shared/link-transparent-button/LinkTransparentButton';
 import {
     LANGUAGE_FILTER_QUERY_NAME,
     modalContentNames,
 } from '@/utils/constants';
-import styles from '@/app/[lng]/(admin)/admin/listings/page.module.css';
-import clsx from 'clsx';
-import AdminPageLayout from '@/components/layouts/admin-page-layout/AdminPageLayout';
 import { ModalContentMapping } from '@/utils/modal';
-import ActionButton from '@/shared/action-button/ActionButton';
+import clsx from 'clsx';
 
 export const dynamic = 'force-dynamic';
 
@@ -100,9 +97,14 @@ export default async function ListingsPage({
                         value: ModalContentMapping.PRODUCT_CATEGERY_CREATE,
                     }}
                 >
-                    <ActionButton lng={params.lng}  variant='primary' radius='pilled'>create</ActionButton>
+                    <ActionButton
+                        lng={params.lng}
+                        variant="primary"
+                        radius="pilled"
+                    >
+                        create
+                    </ActionButton>
                 </LinkTransparentButton>
-                
             </div>
         </AdminPageLayout>
     );

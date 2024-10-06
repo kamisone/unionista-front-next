@@ -1,5 +1,6 @@
 import { fetchAllProductsCategories, saveProductCategory } from '@/actions';
 import { SupportedLanguages, SupportedLanguagesEnum } from '@/i18n/settings';
+import ClientActionButton from '@/shared/client-action-button/ClientActionButton';
 import FieldsetSelectInput from '@/shared/fieldset-select-input/FieldsetSelectInput';
 import FieldsetTextInput from '@/shared/fieldset-text-input/FieldsetTextInput';
 import FieldsetTextareaInput from '@/shared/fieldset-textarea-input/FieldsetTextareaInput';
@@ -23,10 +24,13 @@ export default async function ProductCategoryCreateContent({
     return (
         <form
             action={saveProductCategory}
-            className={clsx('mt-4 grid content-start gap-2', isMobile ? 'px-2' : 'px-4')}
+            className={clsx(
+                'mt-4 grid content-start gap-2',
+                isMobile ? 'px-2' : 'px-4'
+            )}
         >
-            <fieldset className='grid gap-2 p-2'>
-                <legend className='mx-4'>fill in these inputs</legend>
+            <fieldset className="grid gap-2 p-2">
+                <legend className="mx-4">fill in these inputs</legend>
                 <FieldsetTextInput
                     lng={lng}
                     name="name"
@@ -68,7 +72,14 @@ export default async function ProductCategoryCreateContent({
                 />
             </fieldset>
 
-            <button type="submit">Save</button>
+            <ClientActionButton
+                lng={lng}
+                variant="secondary"
+                utilities="rounded-md"
+                isSubmit
+            >
+                Save
+            </ClientActionButton>
         </form>
     );
 }
