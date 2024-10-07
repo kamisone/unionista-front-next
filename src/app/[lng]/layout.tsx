@@ -7,7 +7,12 @@ import {
     SupportedLanguagesEnum,
     languages,
 } from '@/i18n/settings';
+import { Viewport } from 'next';
 import { ReactNode } from 'react';
+
+export const viewport: Viewport = {
+    themeColor: '#f1641e',
+};
 
 interface RootLayoutProps {
     children: ReactNode;
