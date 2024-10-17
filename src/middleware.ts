@@ -17,102 +17,91 @@ export const config = {
 
 export async function middleware(req: NextRequest) {
     // Sub middlewares can return NextResponse only for redirecting.
-    const cbs = [];
-    const getLocaleResult = getLocaleMiddleware(req);
-    if (getLocaleResult instanceof NextResponse) {
-        return getLocaleResult;
-    }
-    if (getLocaleResult.cb) {
-        cbs.push(getLocaleResult.cb);
-    }
-
-    const lng = getLocaleResult.lng as SupportedLanguages;
-
-    // exclude prefetch requests from other middlewares (only in PROD)
-    const headers = getLocaleResult.request.headers;
-    const isPrefetch =
-        headers.get('x-next-router-prefetch') ||
-        headers.get('x-purpose') === 'prefetch';
-    if (isPrefetch) {
-        // Modal middleware
-        const modalResult = modalMiddleware(req);
-        if (modalResult instanceof NextResponse) {
-            return modalResult;
-        }
-        if (modalResult.cb) {
-            cbs.push(modalResult.cb);
-        }
-
-        // Prepare response
-        const response = NextResponse.next({
-            request: modalResult.request,
-        });
-        cbs.forEach((cb) => {
-            cb(response);
-        });
-        return response;
-    }
-
-    // I18n middleware
-    const i18Result = i18nMiddleware(getLocaleResult.request, lng);
-    if (i18Result instanceof NextResponse) {
-        return i18Result;
-    }
-    if (i18Result.cb) {
-        cbs.push(i18Result.cb);
-    }
-
-    // Auth middleware
-    const authResult = await setAuthMiddleware(i18Result.request, lng);
-    if (authResult instanceof NextResponse) {
-        return authResult;
-    }
-    if (authResult.cb) {
-        cbs.push(authResult.cb);
-    }
-
-    // Roles middleware
-    const rolesResult = await rolesMiddleware(authResult.request, lng);
-    if (rolesResult instanceof NextResponse) {
-        return rolesResult;
-    }
-    if (rolesResult.cb) {
-        cbs.push(rolesResult.cb);
-    }
-
-    // Modal middleware
-    const modalResult = modalMiddleware(rolesResult.request);
-    if (modalResult instanceof NextResponse) {
-        return modalResult;
-    }
-    if (modalResult.cb) {
-        cbs.push(modalResult.cb);
-    }
-
-    // SetPathname middleware
-    const pathnameResult = setPathnameMiddleware(modalResult.request);
-    if (pathnameResult instanceof NextResponse) {
-        return pathnameResult;
-    }
-    if (pathnameResult.cb) {
-        cbs.push(pathnameResult.cb);
-    }
-
-    // Prepare response
-    let response = NextResponse.next({
-        request: pathnameResult.request,
-    });
-    cbs.forEach((cb) => {
-        response = cb(response);
-    });
-
-    response.cookies.set(lngCookieName, lng, {
-        path: '/',
-        secure: true,
-        maxAge: 99999999,
-    });
-
-    return response;
+    // const cbs = [];
+    // const getLocaleResult = getLocaleMiddleware(req);
+    // if (getLocaleResult instanceof NextResponse) {
+    //     return getLocaleResult;
+    // }
+    // if (getLocaleResult.cb) {
+    //     cbs.push(getLocaleResult.cb);
+    // }
+    // const lng = getLocaleResult.lng as SupportedLanguages;
+    // // exclude prefetch requests from other middlewares (only in PROD)
+    // const headers = getLocaleResult.request.headers;
+    // const isPrefetch =
+    //     headers.get('x-next-router-prefetch') ||
+    //     headers.get('x-purpose') === 'prefetch';
+    // if (isPrefetch) {
+    //     // Modal middleware
+    //     const modalResult = modalMiddleware(req);
+    //     if (modalResult instanceof NextResponse) {
+    //         return modalResult;
+    //     }
+    //     if (modalResult.cb) {
+    //         cbs.push(modalResult.cb);
+    //     }
+    //     // Prepare response
+    //     const response = NextResponse.next({
+    //         request: modalResult.request,
+    //     });
+    //     cbs.forEach((cb) => {
+    //         cb(response);
+    //     });
+    //     return response;
+    // }
+    // // I18n middleware
+    // const i18Result = i18nMiddleware(getLocaleResult.request, lng);
+    // if (i18Result instanceof NextResponse) {
+    //     return i18Result;
+    // }
+    // if (i18Result.cb) {
+    //     cbs.push(i18Result.cb);
+    // }
+    // // Auth middleware
+    // const authResult = await setAuthMiddleware(i18Result.request, lng);
+    // if (authResult instanceof NextResponse) {
+    //     return authResult;
+    // }
+    // if (authResult.cb) {
+    //     cbs.push(authResult.cb);
+    // }
+    // // Roles middleware
+    // const rolesResult = await rolesMiddleware(authResult.request, lng);
+    // if (rolesResult instanceof NextResponse) {
+    //     return rolesResult;
+    // }
+    // if (rolesResult.cb) {
+    //     cbs.push(rolesResult.cb);
+    // }
+    // // Modal middleware
+    // const modalResult = modalMiddleware(rolesResult.request);
+    // if (modalResult instanceof NextResponse) {
+    //     return modalResult;
+    // }
+    // if (modalResult.cb) {
+    //     cbs.push(modalResult.cb);
+    // }
+    // // SetPathname middleware
+    // const pathnameResult = setPathnameMiddleware(modalResult.request);
+    // if (pathnameResult instanceof NextResponse) {
+    //     return pathnameResult;
+    // }
+    // if (pathnameResult.cb) {
+    //     cbs.push(pathnameResult.cb);
+    // }
+    // // Prepare response
+    // let response = NextResponse.next({
+    //     request: pathnameResult.request,
+    // });
+    // cbs.forEach((cb) => {
+    //     response = cb(response);
+    // });
+    // response.cookies.set(lngCookieName, lng, {
+    //     path: '/',
+    //     secure: true,
+    //     maxAge: 99999999,
+    // });
+    // return response;
 }
 
 export interface SubMiddlewareReturnType {
